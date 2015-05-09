@@ -1,0 +1,365 @@
+   1               		.file	"zombies.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.text.setup_zombies,"ax",@progbits
+  11               	.global	setup_zombies
+  13               	setup_zombies:
+  14               	.LFB2:
+  15               		.file 1 "zombies.c"
+   1:zombies.c     **** /*
+   2:zombies.c     ****  * zombies.c
+   3:zombies.c     ****  *
+   4:zombies.c     ****  *  Created on: 9 May 2015
+   5:zombies.c     ****  *      Author: Jai Spicer
+   6:zombies.c     ****  */
+   7:zombies.c     **** 
+   8:zombies.c     **** #include "sprite.h"
+   9:zombies.c     **** #include "graphics.h"
+  10:zombies.c     **** #include "friendly_ports.h"
+  11:zombies.c     **** 
+  12:zombies.c     **** #include "zombies.h"
+  13:zombies.c     **** 
+  14:zombies.c     **** void setup_zombies( Sprite zombies[], byte width, byte height, byte *bitmaps[] );
+  15:zombies.c     **** void draw_zombies( Sprite * zombies );
+  16:zombies.c     **** 
+  17:zombies.c     **** void zombies_start() {
+  18:zombies.c     **** 	byte bitmap_zombies[] = {
+  19:zombies.c     **** 			BYTE( 11100000 ),
+  20:zombies.c     **** 			BYTE( 01000000 ),
+  21:zombies.c     **** 			BYTE( 10100000 )
+  22:zombies.c     **** 	};
+  23:zombies.c     **** 
+  24:zombies.c     **** 	const int zombies_width = 8;
+  25:zombies.c     **** 	const int zombies_height = 3;
+  26:zombies.c     **** 
+  27:zombies.c     **** #define zombie_count (8)
+  28:zombies.c     **** 
+  29:zombies.c     **** 	Sprite zombies[zombie_count];
+  30:zombies.c     **** 
+  31:zombies.c     **** 	setup_zombies ( zombies, zombies_width, zombies_height, bitmap_zombies );
+  32:zombies.c     **** 	draw_zombies ( zombies );
+  33:zombies.c     **** 
+  34:zombies.c     **** 	refresh();
+  35:zombies.c     **** }
+  36:zombies.c     **** 
+  37:zombies.c     **** void setup_zombies( Sprite zombies[], byte width, byte height, byte *bitmaps[]) {
+  16               		.loc 1 37 0
+  17               		.cfi_startproc
+  18               	.LVL0:
+  19 0000 7F92      		push r7
+  20               	.LCFI0:
+  21               		.cfi_def_cfa_offset 3
+  22               		.cfi_offset 7, -2
+  23 0002 8F92      		push r8
+  24               	.LCFI1:
+  25               		.cfi_def_cfa_offset 4
+  26               		.cfi_offset 8, -3
+  27 0004 9F92      		push r9
+  28               	.LCFI2:
+  29               		.cfi_def_cfa_offset 5
+  30               		.cfi_offset 9, -4
+  31 0006 AF92      		push r10
+  32               	.LCFI3:
+  33               		.cfi_def_cfa_offset 6
+  34               		.cfi_offset 10, -5
+  35 0008 BF92      		push r11
+  36               	.LCFI4:
+  37               		.cfi_def_cfa_offset 7
+  38               		.cfi_offset 11, -6
+  39 000a CF92      		push r12
+  40               	.LCFI5:
+  41               		.cfi_def_cfa_offset 8
+  42               		.cfi_offset 12, -7
+  43 000c DF92      		push r13
+  44               	.LCFI6:
+  45               		.cfi_def_cfa_offset 9
+  46               		.cfi_offset 13, -8
+  47 000e EF92      		push r14
+  48               	.LCFI7:
+  49               		.cfi_def_cfa_offset 10
+  50               		.cfi_offset 14, -9
+  51 0010 FF92      		push r15
+  52               	.LCFI8:
+  53               		.cfi_def_cfa_offset 11
+  54               		.cfi_offset 15, -10
+  55 0012 0F93      		push r16
+  56               	.LCFI9:
+  57               		.cfi_def_cfa_offset 12
+  58               		.cfi_offset 16, -11
+  59 0014 1F93      		push r17
+  60               	.LCFI10:
+  61               		.cfi_def_cfa_offset 13
+  62               		.cfi_offset 17, -12
+  63 0016 CF93      		push r28
+  64               	.LCFI11:
+  65               		.cfi_def_cfa_offset 14
+  66               		.cfi_offset 28, -13
+  67 0018 DF93      		push r29
+  68               	.LCFI12:
+  69               		.cfi_def_cfa_offset 15
+  70               		.cfi_offset 29, -14
+  71               	/* prologue: function */
+  72               	/* frame size = 0 */
+  73               	/* stack size = 13 */
+  74               	.L__stack_usage = 13
+  75 001a 782E      		mov r7,r24
+  76 001c 192F      		mov r17,r25
+  77               	.LVL1:
+  78 001e C82F      		mov r28,r24
+  79 0020 D92F      		mov r29,r25
+  80               		.loc 1 37 0
+  81 0022 6E01      		movw r12,r28
+  82 0024 88EA      		ldi r24,-88
+  83 0026 C80E      		add r12,r24
+  84 0028 D11C      		adc r13,__zero_reg__
+  85               	.LVL2:
+  86               	.LBB2:
+  87               	.LBB3:
+  38:zombies.c     **** 	for (int i = 0; i < zombie_count; i++ ) {
+  39:zombies.c     **** 		Sprite * sprite = &zombies[i];
+  40:zombies.c     **** 
+  41:zombies.c     **** 		init_sprite( sprite, 20,20, 8, 3, zombies);
+  42:zombies.c     **** 
+  43:zombies.c     **** 
+  44:zombies.c     **** 		sprite->dx = 1;
+  88               		.loc 1 44 0
+  89 002a 812C      		mov r8,__zero_reg__
+  90 002c 912C      		mov r9,__zero_reg__
+  91 002e 80E8      		ldi r24,lo8(-128)
+  92 0030 A82E      		mov r10,r24
+  93 0032 8FE3      		ldi r24,lo8(63)
+  94 0034 B82E      		mov r11,r24
+  95               	.LVL3:
+  96               	.L2:
+  41:zombies.c     **** 		init_sprite( sprite, 20,20, 8, 3, zombies);
+  97               		.loc 1 41 0 discriminator 2
+  98 0036 E72C      		mov r14,r7
+  99 0038 F12E      		mov r15,r17
+ 100 003a 03E0      		ldi r16,lo8(3)
+ 101 003c 28E0      		ldi r18,lo8(8)
+ 102 003e 44E1      		ldi r20,lo8(20)
+ 103 0040 64E1      		ldi r22,lo8(20)
+ 104 0042 CE01      		movw r24,r28
+ 105 0044 0E94 0000 		call init_sprite
+ 106               	.LVL4:
+ 107               		.loc 1 44 0 discriminator 2
+ 108 0048 8D86      		std Y+13,r8
+ 109 004a 9E86      		std Y+14,r9
+ 110 004c AF86      		std Y+15,r10
+ 111 004e B88A      		std Y+16,r11
+  45:zombies.c     **** 		sprite->dy = 0;
+ 112               		.loc 1 45 0 discriminator 2
+ 113 0050 198A      		std Y+17,__zero_reg__
+ 114 0052 1A8A      		std Y+18,__zero_reg__
+ 115 0054 1B8A      		std Y+19,__zero_reg__
+ 116 0056 1C8A      		std Y+20,__zero_reg__
+ 117 0058 6596      		adiw r28,21
+ 118               	.LVL5:
+ 119               	.LBE3:
+  38:zombies.c     **** 	for (int i = 0; i < zombie_count; i++ ) {
+ 120               		.loc 1 38 0 discriminator 2
+ 121 005a CC15      		cp r28,r12
+ 122 005c DD05      		cpc r29,r13
+ 123 005e 01F4      		brne .L2
+ 124               	/* epilogue start */
+ 125               	.LBE2:
+  46:zombies.c     **** 	}
+  47:zombies.c     **** }
+ 126               		.loc 1 47 0
+ 127 0060 DF91      		pop r29
+ 128 0062 CF91      		pop r28
+ 129               	.LVL6:
+ 130 0064 1F91      		pop r17
+ 131 0066 0F91      		pop r16
+ 132 0068 FF90      		pop r15
+ 133 006a EF90      		pop r14
+ 134 006c DF90      		pop r13
+ 135 006e CF90      		pop r12
+ 136 0070 BF90      		pop r11
+ 137 0072 AF90      		pop r10
+ 138 0074 9F90      		pop r9
+ 139 0076 8F90      		pop r8
+ 140 0078 7F90      		pop r7
+ 141 007a 0895      		ret
+ 142               		.cfi_endproc
+ 143               	.LFE2:
+ 145               		.section	.text.draw_zombies,"ax",@progbits
+ 146               	.global	draw_zombies
+ 148               	draw_zombies:
+ 149               	.LFB3:
+  48:zombies.c     **** 
+  49:zombies.c     **** void draw_zombies( Sprite * zombies ) {
+ 150               		.loc 1 49 0
+ 151               		.cfi_startproc
+ 152               	.LVL7:
+ 153 0000 0F93      		push r16
+ 154               	.LCFI13:
+ 155               		.cfi_def_cfa_offset 3
+ 156               		.cfi_offset 16, -2
+ 157 0002 1F93      		push r17
+ 158               	.LCFI14:
+ 159               		.cfi_def_cfa_offset 4
+ 160               		.cfi_offset 17, -3
+ 161 0004 CF93      		push r28
+ 162               	.LCFI15:
+ 163               		.cfi_def_cfa_offset 5
+ 164               		.cfi_offset 28, -4
+ 165 0006 DF93      		push r29
+ 166               	.LCFI16:
+ 167               		.cfi_def_cfa_offset 6
+ 168               		.cfi_offset 29, -5
+ 169               	/* prologue: function */
+ 170               	/* frame size = 0 */
+ 171               	/* stack size = 4 */
+ 172               	.L__stack_usage = 4
+ 173 0008 8C01      		movw r16,r24
+ 174               	.LVL8:
+ 175               		.loc 1 49 0
+ 176 000a C0E0      		ldi r28,0
+ 177 000c D0E0      		ldi r29,0
+ 178               	.LVL9:
+ 179               	.L5:
+ 180               	.LBB4:
+  50:zombies.c     **** 	for ( int i = 0; i < zombie_count; i++ ) {
+  51:zombies.c     **** 		draw_sprite( zombies + i );
+ 181               		.loc 1 51 0 discriminator 2
+ 182 000e C801      		movw r24,r16
+ 183 0010 8C0F      		add r24,r28
+ 184 0012 9D1F      		adc r25,r29
+ 185 0014 0E94 0000 		call draw_sprite
+ 186               	.LVL10:
+ 187 0018 6596      		adiw r28,21
+  50:zombies.c     **** 	for ( int i = 0; i < zombie_count; i++ ) {
+ 188               		.loc 1 50 0 discriminator 2
+ 189 001a C83A      		cpi r28,-88
+ 190 001c D105      		cpc r29,__zero_reg__
+ 191 001e 01F4      		brne .L5
+ 192               	/* epilogue start */
+ 193               	.LBE4:
+  52:zombies.c     **** 	}
+  53:zombies.c     **** }
+ 194               		.loc 1 53 0
+ 195 0020 DF91      		pop r29
+ 196 0022 CF91      		pop r28
+ 197 0024 1F91      		pop r17
+ 198 0026 0F91      		pop r16
+ 199               	.LVL11:
+ 200 0028 0895      		ret
+ 201               		.cfi_endproc
+ 202               	.LFE3:
+ 204               		.section	.text.zombies_start,"ax",@progbits
+ 205               	.global	zombies_start
+ 207               	zombies_start:
+ 208               	.LFB1:
+  17:zombies.c     **** void zombies_start() {
+ 209               		.loc 1 17 0
+ 210               		.cfi_startproc
+ 211 0000 CF93      		push r28
+ 212               	.LCFI17:
+ 213               		.cfi_def_cfa_offset 3
+ 214               		.cfi_offset 28, -2
+ 215 0002 DF93      		push r29
+ 216               	.LCFI18:
+ 217               		.cfi_def_cfa_offset 4
+ 218               		.cfi_offset 29, -3
+ 219 0004 CDB7      		in r28,__SP_L__
+ 220 0006 DEB7      		in r29,__SP_H__
+ 221               	.LCFI19:
+ 222               		.cfi_def_cfa_register 28
+ 223 0008 CB5A      		subi r28,-85
+ 224 000a D109      		sbc r29,__zero_reg__
+ 225               	.LCFI20:
+ 226               		.cfi_def_cfa_offset 175
+ 227 000c 0FB6      		in __tmp_reg__,__SREG__
+ 228 000e F894      		cli
+ 229 0010 DEBF      		out __SP_H__,r29
+ 230 0012 0FBE      		out __SREG__,__tmp_reg__
+ 231 0014 CDBF      		out __SP_L__,r28
+ 232               	/* prologue: function */
+ 233               	/* frame size = 171 */
+ 234               	/* stack size = 173 */
+ 235               	.L__stack_usage = 173
+  18:zombies.c     **** 	byte bitmap_zombies[] = {
+ 236               		.loc 1 18 0
+ 237 0016 80EE      		ldi r24,lo8(-32)
+ 238 0018 C755      		subi r28,lo8(-169)
+ 239 001a DF4F      		sbci r29,hi8(-169)
+ 240 001c 8883      		st Y,r24
+ 241 001e C95A      		subi r28,lo8(169)
+ 242 0020 D040      		sbci r29,hi8(169)
+ 243 0022 80E4      		ldi r24,lo8(64)
+ 244 0024 C655      		subi r28,lo8(-170)
+ 245 0026 DF4F      		sbci r29,hi8(-170)
+ 246 0028 8883      		st Y,r24
+ 247 002a CA5A      		subi r28,lo8(170)
+ 248 002c D040      		sbci r29,hi8(170)
+ 249 002e 80EA      		ldi r24,lo8(-96)
+ 250 0030 C555      		subi r28,lo8(-171)
+ 251 0032 DF4F      		sbci r29,hi8(-171)
+ 252 0034 8883      		st Y,r24
+ 253 0036 CB5A      		subi r28,lo8(171)
+ 254 0038 D040      		sbci r29,hi8(171)
+ 255               	.LVL12:
+  31:zombies.c     **** 	setup_zombies ( zombies, zombies_width, zombies_height, bitmap_zombies );
+ 256               		.loc 1 31 0
+ 257 003a 9E01      		movw r18,r28
+ 258 003c 2755      		subi r18,87
+ 259 003e 3F4F      		sbci r19,-1
+ 260 0040 43E0      		ldi r20,lo8(3)
+ 261 0042 68E0      		ldi r22,lo8(8)
+ 262 0044 CE01      		movw r24,r28
+ 263 0046 0196      		adiw r24,1
+ 264 0048 0E94 0000 		call setup_zombies
+ 265               	.LVL13:
+  32:zombies.c     **** 	draw_zombies ( zombies );
+ 266               		.loc 1 32 0
+ 267 004c CE01      		movw r24,r28
+ 268 004e 0196      		adiw r24,1
+ 269 0050 0E94 0000 		call draw_zombies
+ 270               	.LVL14:
+  34:zombies.c     **** 	refresh();
+ 271               		.loc 1 34 0
+ 272 0054 0E94 0000 		call refresh
+ 273               	.LVL15:
+ 274               	/* epilogue start */
+  35:zombies.c     **** }
+ 275               		.loc 1 35 0
+ 276 0058 C555      		subi r28,85
+ 277 005a DF4F      		sbci r29,-1
+ 278 005c 0FB6      		in __tmp_reg__,__SREG__
+ 279 005e F894      		cli
+ 280 0060 DEBF      		out __SP_H__,r29
+ 281 0062 0FBE      		out __SREG__,__tmp_reg__
+ 282 0064 CDBF      		out __SP_L__,r28
+ 283 0066 DF91      		pop r29
+ 284 0068 CF91      		pop r28
+ 285 006a 0895      		ret
+ 286               		.cfi_endproc
+ 287               	.LFE1:
+ 289               		.text
+ 290               	.Letext0:
+ 291               		.file 2 "../teensy_graphics/sprite.h"
+ 292               		.file 3 "../teensy_graphics/byte.h"
+ 293               		.file 4 "../teensy_graphics/ascii_font.h"
+ 294               		.file 5 "../teensy_graphics/graphics.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 zombies.c
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc2Hw4ii.s:2      *ABS*:0000003e __SP_H__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc2Hw4ii.s:3      *ABS*:0000003d __SP_L__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc2Hw4ii.s:4      *ABS*:0000003f __SREG__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc2Hw4ii.s:5      *ABS*:00000000 __tmp_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc2Hw4ii.s:6      *ABS*:00000001 __zero_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc2Hw4ii.s:13     .text.setup_zombies:00000000 setup_zombies
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc2Hw4ii.s:148    .text.draw_zombies:00000000 draw_zombies
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc2Hw4ii.s:207    .text.zombies_start:00000000 zombies_start
+
+UNDEFINED SYMBOLS
+init_sprite
+draw_sprite
+refresh

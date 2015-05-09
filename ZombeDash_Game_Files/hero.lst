@@ -1,0 +1,702 @@
+   1               		.file	"hero.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               	.global	__addsf3
+  11               	.global	__floatsisf
+  12               	.global	__gesf2
+  13               	.global	__ltsf2
+  14               		.section	.text.move_hero,"ax",@progbits
+  15               	.global	move_hero
+  17               	move_hero:
+  18               	.LFB8:
+  19               		.file 1 "hero.c"
+   1:hero.c        **** /*
+   2:hero.c        ****  * hero.c
+   3:hero.c        ****  *
+   4:hero.c        ****  *  Created on: 8 May 2015
+   5:hero.c        ****  *      Author: Jai Spicer
+   6:hero.c        ****  */
+   7:hero.c        **** #include <util/delay.h>
+   8:hero.c        **** 
+   9:hero.c        **** #include "sprite.h"
+  10:hero.c        **** #include "graphics.h"
+  11:hero.c        **** #include "friendly_ports.h"
+  12:hero.c        **** 
+  13:hero.c        **** #include "start_screen.h"
+  14:hero.c        **** #include "screen.h"
+  15:hero.c        **** #include "lives.h"
+  16:hero.c        **** #include "score.h"
+  17:hero.c        **** #include "hero.h"
+  18:hero.c        **** #include "zombies.h"
+  19:hero.c        **** 
+  20:hero.c        **** void start_hero() {
+  21:hero.c        **** 	byte bitmap_hero[] = {
+  22:hero.c        **** 			BYTE( 1110000 ),
+  23:hero.c        **** 			BYTE( 0100000 ),
+  24:hero.c        **** 			BYTE( 1110000 )
+  25:hero.c        **** 	};
+  26:hero.c        **** 
+  27:hero.c        **** 	const int hero_width = 4;
+  28:hero.c        **** 	const int hero_height = 3;
+  29:hero.c        **** 
+  30:hero.c        **** 	Sprite hero;
+  31:hero.c        **** 
+  32:hero.c        **** 	init_sprite( &hero, 38,28,hero_width,hero_height, bitmap_hero );
+  33:hero.c        **** 	hero.dx = 1;
+  34:hero.c        **** 	hero.dy = 0;
+  35:hero.c        **** 
+  36:hero.c        **** 	draw_sprite( &hero );
+  37:hero.c        **** 
+  38:hero.c        **** 	while (1) {
+  39:hero.c        **** 		clear();
+  40:hero.c        **** 		screen_lines();
+  41:hero.c        ****     	lives_setup();
+  42:hero.c        **** 		score_setup();
+  43:hero.c        **** 		zombies_start();
+  44:hero.c        **** 		move_hero( &hero );
+  45:hero.c        **** 		draw_sprite (&hero );
+  46:hero.c        **** 		refresh();
+  47:hero.c        **** 		_delay_ms( 100 );
+  48:hero.c        **** 	}
+  49:hero.c        **** 
+  50:hero.c        **** }
+  51:hero.c        **** 
+  52:hero.c        **** void move_hero( Sprite * hero ) {
+  20               		.loc 1 52 0
+  21               		.cfi_startproc
+  22               	.LVL0:
+  23 0000 AF92      		push r10
+  24               	.LCFI0:
+  25               		.cfi_def_cfa_offset 3
+  26               		.cfi_offset 10, -2
+  27 0002 BF92      		push r11
+  28               	.LCFI1:
+  29               		.cfi_def_cfa_offset 4
+  30               		.cfi_offset 11, -3
+  31 0004 CF92      		push r12
+  32               	.LCFI2:
+  33               		.cfi_def_cfa_offset 5
+  34               		.cfi_offset 12, -4
+  35 0006 DF92      		push r13
+  36               	.LCFI3:
+  37               		.cfi_def_cfa_offset 6
+  38               		.cfi_offset 13, -5
+  39 0008 EF92      		push r14
+  40               	.LCFI4:
+  41               		.cfi_def_cfa_offset 7
+  42               		.cfi_offset 14, -6
+  43 000a FF92      		push r15
+  44               	.LCFI5:
+  45               		.cfi_def_cfa_offset 8
+  46               		.cfi_offset 15, -7
+  47 000c 0F93      		push r16
+  48               	.LCFI6:
+  49               		.cfi_def_cfa_offset 9
+  50               		.cfi_offset 16, -8
+  51 000e 1F93      		push r17
+  52               	.LCFI7:
+  53               		.cfi_def_cfa_offset 10
+  54               		.cfi_offset 17, -9
+  55 0010 CF93      		push r28
+  56               	.LCFI8:
+  57               		.cfi_def_cfa_offset 11
+  58               		.cfi_offset 28, -10
+  59 0012 DF93      		push r29
+  60               	.LCFI9:
+  61               		.cfi_def_cfa_offset 12
+  62               		.cfi_offset 29, -11
+  63               	/* prologue: function */
+  64               	/* frame size = 0 */
+  65               	/* stack size = 10 */
+  66               	.L__stack_usage = 10
+  67 0014 EC01      		movw r28,r24
+  68               	.LVL1:
+  53:hero.c        **** 	int px = 1;
+  54:hero.c        **** 	int py = 0;
+  55:hero.c        **** 
+  56:hero.c        **** 	hero->x += hero->dx;
+  69               		.loc 1 56 0
+  70 0016 2D85      		ldd r18,Y+13
+  71 0018 3E85      		ldd r19,Y+14
+  72 001a 4F85      		ldd r20,Y+15
+  73 001c 5889      		ldd r21,Y+16
+  74 001e 6881      		ld r22,Y
+  75 0020 7981      		ldd r23,Y+1
+  76 0022 8A81      		ldd r24,Y+2
+  77 0024 9B81      		ldd r25,Y+3
+  78 0026 0E94 0000 		call __addsf3
+  79               	.LVL2:
+  80 002a 5B01      		movw r10,r22
+  81 002c 6C01      		movw r12,r24
+  82 002e 862F      		mov r24,r22
+  83 0030 9B2D      		mov r25,r11
+  84 0032 AC2D      		mov r26,r12
+  85 0034 BD2D      		mov r27,r13
+  86 0036 8883      		st Y,r24
+  87 0038 9983      		std Y+1,r25
+  88 003a AA83      		std Y+2,r26
+  89 003c BB83      		std Y+3,r27
+  57:hero.c        **** 	hero->y += hero->dy;
+  90               		.loc 1 57 0
+  91 003e 2989      		ldd r18,Y+17
+  92 0040 3A89      		ldd r19,Y+18
+  93 0042 4B89      		ldd r20,Y+19
+  94 0044 5C89      		ldd r21,Y+20
+  95 0046 6C81      		ldd r22,Y+4
+  96 0048 7D81      		ldd r23,Y+5
+  97 004a 8E81      		ldd r24,Y+6
+  98 004c 9F81      		ldd r25,Y+7
+  99 004e 0E94 0000 		call __addsf3
+ 100               	.LVL3:
+ 101 0052 7B01      		movw r14,r22
+ 102 0054 8C01      		movw r16,r24
+ 103 0056 982F      		mov r25,r24
+ 104 0058 4E2D      		mov r20,r14
+ 105 005a 5F2D      		mov r21,r15
+ 106 005c 692F      		mov r22,r25
+ 107 005e 712F      		mov r23,r17
+ 108 0060 4C83      		std Y+4,r20
+ 109 0062 5D83      		std Y+5,r21
+ 110 0064 6E83      		std Y+6,r22
+ 111 0066 7F83      		std Y+7,r23
+  58:hero.c        **** 
+  59:hero.c        **** 	if ( pressed ( SW1 ) ) {
+ 112               		.loc 1 59 0
+ 113 0068 199B      		sbis 0x3,1
+ 114 006a 00C0      		rjmp .L2
+  60:hero.c        **** 		if ( ( px = 1) ) {
+  61:hero.c        **** 			hero->dx = 0;
+ 115               		.loc 1 61 0
+ 116 006c 1D86      		std Y+13,__zero_reg__
+ 117 006e 1E86      		std Y+14,__zero_reg__
+ 118 0070 1F86      		std Y+15,__zero_reg__
+ 119 0072 188A      		std Y+16,__zero_reg__
+  62:hero.c        **** 			hero->dy = 1;
+ 120               		.loc 1 62 0
+ 121 0074 80E0      		ldi r24,0
+ 122 0076 90E0      		ldi r25,0
+ 123 0078 A0E8      		ldi r26,lo8(-128)
+ 124 007a BFE3      		ldi r27,lo8(63)
+ 125 007c 898B      		std Y+17,r24
+ 126 007e 9A8B      		std Y+18,r25
+ 127 0080 AB8B      		std Y+19,r26
+ 128 0082 BC8B      		std Y+20,r27
+ 129               	.LVL4:
+ 130               	.L2:
+  63:hero.c        **** 			px = 0;
+  64:hero.c        **** 			py = 1;
+  65:hero.c        **** 		}
+  66:hero.c        **** 		else if ( (px = -1) ) {
+  67:hero.c        **** 			hero->dx = 0;
+  68:hero.c        **** 			hero->dy = -1;
+  69:hero.c        **** 			px = 0;
+  70:hero.c        **** 			py = -1;
+  71:hero.c        **** 		}
+  72:hero.c        **** 		else if ( ( py = 1 ) ) {
+  73:hero.c        **** 			hero->dx = -1;
+  74:hero.c        **** 			hero->dy = 0;
+  75:hero.c        **** 			px = -1;
+  76:hero.c        **** 			py = 0;
+  77:hero.c        **** 		}
+  78:hero.c        **** 		else if ( ( py = -1 ) ) {
+  79:hero.c        **** 			hero->dx = 1;
+  80:hero.c        **** 			hero->dy = 0;
+  81:hero.c        **** 			px = 1;
+  82:hero.c        **** 			py = 0;
+  83:hero.c        **** 		}
+  84:hero.c        **** 	}
+  85:hero.c        **** 
+  86:hero.c        **** 	if ( pressed ( SW0 ) ) {
+ 131               		.loc 1 86 0
+ 132 0084 189B      		sbis 0x3,0
+ 133 0086 00C0      		rjmp .L3
+ 134               	.LVL5:
+  87:hero.c        **** 		if ( ( px = 1 ) ) {
+  88:hero.c        **** 			hero->dx = 0;
+ 135               		.loc 1 88 0
+ 136 0088 1D86      		std Y+13,__zero_reg__
+ 137 008a 1E86      		std Y+14,__zero_reg__
+ 138 008c 1F86      		std Y+15,__zero_reg__
+ 139 008e 188A      		std Y+16,__zero_reg__
+  89:hero.c        **** 			hero->dy = -1;
+ 140               		.loc 1 89 0
+ 141 0090 80E0      		ldi r24,0
+ 142 0092 90E0      		ldi r25,0
+ 143 0094 A0E8      		ldi r26,lo8(-128)
+ 144 0096 BFEB      		ldi r27,lo8(-65)
+ 145 0098 898B      		std Y+17,r24
+ 146 009a 9A8B      		std Y+18,r25
+ 147 009c AB8B      		std Y+19,r26
+ 148 009e BC8B      		std Y+20,r27
+ 149               	.LVL6:
+ 150               	.L3:
+  90:hero.c        **** 			px = 0;
+  91:hero.c        **** 			py = -1;
+  92:hero.c        **** 		}
+  93:hero.c        **** 		else if ( ( px = -1 ) ) {
+  94:hero.c        **** 			hero->dx = 0;
+  95:hero.c        **** 			hero->dy = 1;
+  96:hero.c        **** 			px = 0;
+  97:hero.c        **** 			py = 1;
+  98:hero.c        **** 		}
+  99:hero.c        **** 		else if ( ( py = 1 ) ) {
+ 100:hero.c        **** 			hero->dx = 1;
+ 101:hero.c        **** 			hero->dy = 0;
+ 102:hero.c        **** 			px = 1;
+ 103:hero.c        **** 			py = 0;
+ 104:hero.c        **** 		}
+ 105:hero.c        **** 		else if ( ( py = -1 ) ) {
+ 106:hero.c        **** 			hero->dx = -1;
+ 107:hero.c        **** 			hero->dy = 0;
+ 108:hero.c        **** 			px = -1;
+ 109:hero.c        **** 			py = 0;
+ 110:hero.c        **** 		}
+ 111:hero.c        **** 	}
+ 112:hero.c        **** 
+ 113:hero.c        **** 	if ( hero->x >= (LCD_X - 1) - hero->width || hero->x < 1 ) {
+ 151               		.loc 1 113 0
+ 152 00a0 8885      		ldd r24,Y+8
+ 153 00a2 63E5      		ldi r22,lo8(83)
+ 154 00a4 70E0      		ldi r23,0
+ 155 00a6 681B      		sub r22,r24
+ 156 00a8 7109      		sbc r23,__zero_reg__
+ 157 00aa 8827      		clr r24
+ 158 00ac 77FD      		sbrc r23,7
+ 159 00ae 8095      		com r24
+ 160 00b0 982F      		mov r25,r24
+ 161 00b2 0E94 0000 		call __floatsisf
+ 162               	.LVL7:
+ 163 00b6 9B01      		movw r18,r22
+ 164 00b8 AC01      		movw r20,r24
+ 165 00ba 6A2D      		mov r22,r10
+ 166 00bc 7B2D      		mov r23,r11
+ 167 00be 8C2D      		mov r24,r12
+ 168 00c0 9D2D      		mov r25,r13
+ 169 00c2 0E94 0000 		call __gesf2
+ 170               	.LVL8:
+ 171 00c6 87FF      		sbrs r24,7
+ 172 00c8 00C0      		rjmp .L4
+ 173               		.loc 1 113 0 is_stmt 0 discriminator 1
+ 174 00ca 20E0      		ldi r18,0
+ 175 00cc 30E0      		ldi r19,0
+ 176 00ce 40E8      		ldi r20,lo8(-128)
+ 177 00d0 5FE3      		ldi r21,lo8(63)
+ 178 00d2 6A2D      		mov r22,r10
+ 179 00d4 7B2D      		mov r23,r11
+ 180 00d6 8C2D      		mov r24,r12
+ 181 00d8 9D2D      		mov r25,r13
+ 182 00da 0E94 0000 		call __ltsf2
+ 183               	.LVL9:
+ 184 00de 87FF      		sbrs r24,7
+ 185 00e0 00C0      		rjmp .L5
+ 186               	.L4:
+ 114:hero.c        **** 		hero->dx = 0;
+ 187               		.loc 1 114 0 is_stmt 1
+ 188 00e2 1D86      		std Y+13,__zero_reg__
+ 189 00e4 1E86      		std Y+14,__zero_reg__
+ 190 00e6 1F86      		std Y+15,__zero_reg__
+ 191 00e8 188A      		std Y+16,__zero_reg__
+ 192               	.L5:
+ 115:hero.c        **** 	}
+ 116:hero.c        **** 
+ 117:hero.c        **** 	if ( hero->y >= (LCD_Y - 1) - hero->height || hero->y < 14 ) {
+ 193               		.loc 1 117 0
+ 194 00ea 8985      		ldd r24,Y+9
+ 195 00ec 6FE2      		ldi r22,lo8(47)
+ 196 00ee 70E0      		ldi r23,0
+ 197 00f0 681B      		sub r22,r24
+ 198 00f2 7109      		sbc r23,__zero_reg__
+ 199 00f4 8827      		clr r24
+ 200 00f6 77FD      		sbrc r23,7
+ 201 00f8 8095      		com r24
+ 202 00fa 982F      		mov r25,r24
+ 203 00fc 0E94 0000 		call __floatsisf
+ 204               	.LVL10:
+ 205 0100 9B01      		movw r18,r22
+ 206 0102 AC01      		movw r20,r24
+ 207 0104 6E2D      		mov r22,r14
+ 208 0106 7F2D      		mov r23,r15
+ 209 0108 802F      		mov r24,r16
+ 210 010a 912F      		mov r25,r17
+ 211 010c 0E94 0000 		call __gesf2
+ 212               	.LVL11:
+ 213 0110 87FF      		sbrs r24,7
+ 214 0112 00C0      		rjmp .L7
+ 215               		.loc 1 117 0 is_stmt 0 discriminator 1
+ 216 0114 20E0      		ldi r18,0
+ 217 0116 30E0      		ldi r19,0
+ 218 0118 40E6      		ldi r20,lo8(96)
+ 219 011a 51E4      		ldi r21,lo8(65)
+ 220 011c 6E2D      		mov r22,r14
+ 221 011e 7F2D      		mov r23,r15
+ 222 0120 802F      		mov r24,r16
+ 223 0122 912F      		mov r25,r17
+ 224 0124 0E94 0000 		call __ltsf2
+ 225               	.LVL12:
+ 226 0128 87FF      		sbrs r24,7
+ 227 012a 00C0      		rjmp .L1
+ 228               	.L7:
+ 118:hero.c        **** 		hero->dy = 0;
+ 229               		.loc 1 118 0 is_stmt 1
+ 230 012c 198A      		std Y+17,__zero_reg__
+ 231 012e 1A8A      		std Y+18,__zero_reg__
+ 232 0130 1B8A      		std Y+19,__zero_reg__
+ 233 0132 1C8A      		std Y+20,__zero_reg__
+ 234               	.L1:
+ 235               	/* epilogue start */
+ 119:hero.c        **** 	}
+ 120:hero.c        **** 
+ 121:hero.c        **** }
+ 236               		.loc 1 121 0
+ 237 0134 DF91      		pop r29
+ 238 0136 CF91      		pop r28
+ 239               	.LVL13:
+ 240 0138 1F91      		pop r17
+ 241 013a 0F91      		pop r16
+ 242 013c FF90      		pop r15
+ 243 013e EF90      		pop r14
+ 244 0140 DF90      		pop r13
+ 245 0142 CF90      		pop r12
+ 246 0144 BF90      		pop r11
+ 247 0146 AF90      		pop r10
+ 248 0148 0895      		ret
+ 249               		.cfi_endproc
+ 250               	.LFE8:
+ 252               		.section	.text.start_hero,"ax",@progbits
+ 253               	.global	start_hero
+ 255               	start_hero:
+ 256               	.LFB7:
+  20:hero.c        **** void start_hero() {
+ 257               		.loc 1 20 0
+ 258               		.cfi_startproc
+ 259 0000 CF93      		push r28
+ 260               	.LCFI10:
+ 261               		.cfi_def_cfa_offset 3
+ 262               		.cfi_offset 28, -2
+ 263 0002 DF93      		push r29
+ 264               	.LCFI11:
+ 265               		.cfi_def_cfa_offset 4
+ 266               		.cfi_offset 29, -3
+ 267 0004 CDB7      		in r28,__SP_L__
+ 268 0006 DEB7      		in r29,__SP_H__
+ 269               	.LCFI12:
+ 270               		.cfi_def_cfa_register 28
+ 271 0008 6897      		sbiw r28,24
+ 272               	.LCFI13:
+ 273               		.cfi_def_cfa_offset 28
+ 274 000a 0FB6      		in __tmp_reg__,__SREG__
+ 275 000c F894      		cli
+ 276 000e DEBF      		out __SP_H__,r29
+ 277 0010 0FBE      		out __SREG__,__tmp_reg__
+ 278 0012 CDBF      		out __SP_L__,r28
+ 279               	/* prologue: function */
+ 280               	/* frame size = 24 */
+ 281               	/* stack size = 26 */
+ 282               	.L__stack_usage = 26
+  21:hero.c        **** 	byte bitmap_hero[] = {
+ 283               		.loc 1 21 0
+ 284 0014 80E7      		ldi r24,lo8(112)
+ 285 0016 8E8B      		std Y+22,r24
+ 286 0018 90E2      		ldi r25,lo8(32)
+ 287 001a 9F8B      		std Y+23,r25
+ 288 001c 888F      		std Y+24,r24
+ 289               	.LVL14:
+  32:hero.c        **** 	init_sprite( &hero, 38,28,hero_width,hero_height, bitmap_hero );
+ 290               		.loc 1 32 0
+ 291 001e 86E1      		ldi r24,lo8(22)
+ 292 0020 E82E      		mov r14,r24
+ 293 0022 F12C      		mov r15,__zero_reg__
+ 294 0024 EC0E      		add r14,r28
+ 295 0026 FD1E      		adc r15,r29
+ 296 0028 03E0      		ldi r16,lo8(3)
+ 297 002a 24E0      		ldi r18,lo8(4)
+ 298 002c 4CE1      		ldi r20,lo8(28)
+ 299 002e 66E2      		ldi r22,lo8(38)
+ 300 0030 CC24      		clr r12
+ 301 0032 C394      		inc r12
+ 302 0034 D12C      		mov r13,__zero_reg__
+ 303 0036 CC0E      		add r12,r28
+ 304 0038 DD1E      		adc r13,r29
+ 305 003a C601      		movw r24,r12
+ 306 003c 0E94 0000 		call init_sprite
+ 307               	.LVL15:
+  33:hero.c        **** 	hero.dx = 1;
+ 308               		.loc 1 33 0
+ 309 0040 40E0      		ldi r20,0
+ 310 0042 50E0      		ldi r21,0
+ 311 0044 60E8      		ldi r22,lo8(-128)
+ 312 0046 7FE3      		ldi r23,lo8(63)
+ 313 0048 4E87      		std Y+14,r20
+ 314 004a 5F87      		std Y+15,r21
+ 315 004c 688B      		std Y+16,r22
+ 316 004e 798B      		std Y+17,r23
+  34:hero.c        **** 	hero.dy = 0;
+ 317               		.loc 1 34 0
+ 318 0050 1A8A      		std Y+18,__zero_reg__
+ 319 0052 1B8A      		std Y+19,__zero_reg__
+ 320 0054 1C8A      		std Y+20,__zero_reg__
+ 321 0056 1D8A      		std Y+21,__zero_reg__
+  36:hero.c        **** 	draw_sprite( &hero );
+ 322               		.loc 1 36 0
+ 323 0058 C601      		movw r24,r12
+ 324 005a 0E94 0000 		call draw_sprite
+ 325               	.LVL16:
+ 326               	.L17:
+ 327               	.LBB5:
+  39:hero.c        **** 		clear();
+ 328               		.loc 1 39 0 discriminator 1
+ 329 005e 0E94 0000 		call clear
+ 330               	.LVL17:
+  40:hero.c        **** 		screen_lines();
+ 331               		.loc 1 40 0 discriminator 1
+ 332 0062 0E94 0000 		call screen_lines
+ 333               	.LVL18:
+  41:hero.c        ****     	lives_setup();
+ 334               		.loc 1 41 0 discriminator 1
+ 335 0066 0E94 0000 		call lives_setup
+ 336               	.LVL19:
+  42:hero.c        **** 		score_setup();
+ 337               		.loc 1 42 0 discriminator 1
+ 338 006a 0E94 0000 		call score_setup
+ 339               	.LVL20:
+  43:hero.c        **** 		zombies_start();
+ 340               		.loc 1 43 0 discriminator 1
+ 341 006e 0E94 0000 		call zombies_start
+ 342               	.LVL21:
+  44:hero.c        **** 		move_hero( &hero );
+ 343               		.loc 1 44 0 discriminator 1
+ 344 0072 C601      		movw r24,r12
+ 345 0074 0E94 0000 		call move_hero
+ 346               	.LVL22:
+  45:hero.c        **** 		draw_sprite (&hero );
+ 347               		.loc 1 45 0 discriminator 1
+ 348 0078 C601      		movw r24,r12
+ 349 007a 0E94 0000 		call draw_sprite
+ 350               	.LVL23:
+  46:hero.c        **** 		refresh();
+ 351               		.loc 1 46 0 discriminator 1
+ 352 007e 0E94 0000 		call refresh
+ 353               	.LVL24:
+ 354               	.LBB6:
+ 355               	.LBB7:
+ 356               		.file 2 "/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h"
+   1:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** /* Copyright (c) 2002, Marek Michalkiewicz
+   2:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    Copyright (c) 2004,2005,2007 Joerg Wunsch
+   3:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    Copyright (c) 2007  Florin-Viorel Petrov
+   4:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    All rights reserved.
+   5:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+   6:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    Redistribution and use in source and binary forms, with or without
+   7:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    modification, are permitted provided that the following conditions are met:
+   8:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+   9:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    * Redistributions of source code must retain the above copyright
+  10:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer.
+  11:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+  12:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    * Redistributions in binary form must reproduce the above copyright
+  13:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer in
+  14:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****      the documentation and/or other materials provided with the
+  15:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****      distribution.
+  16:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+  17:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    * Neither the name of the copyright holders nor the names of
+  18:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****      contributors may be used to endorse or promote products derived
+  19:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****      from this software without specific prior written permission.
+  20:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+  21:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  22:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  23:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  24:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+  25:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  26:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  27:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  28:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  29:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  30:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  31:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****   POSSIBILITY OF SUCH DAMAGE. */
+  32:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+  33:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** /* $Id: delay.h.in 2251 2011-09-14 08:20:33Z joerg_wunsch $ */
+  34:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+  35:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** #ifndef _UTIL_DELAY_H_
+  36:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** #define _UTIL_DELAY_H_ 1
+  37:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+  38:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** #ifndef __HAS_DELAY_CYCLES
+  39:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** #define __HAS_DELAY_CYCLES 1
+  40:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** #endif
+  41:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+  42:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** #include <inttypes.h>
+  43:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** #include <util/delay_basic.h>
+  44:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** #include <math.h>
+  45:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+  46:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** /** \file */
+  47:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** /** \defgroup util_delay <util/delay.h>: Convenience functions for busy-wait delay loops
+  48:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****     \code
+  49:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****     #define F_CPU 1000000UL  // 1 MHz
+  50:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****     //#define F_CPU 14.7456E6
+  51:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****     #include <util/delay.h>
+  52:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****     \endcode
+  53:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+  54:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****     \note As an alternative method, it is possible to pass the
+  55:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****     F_CPU macro down to the compiler from the Makefile.
+  56:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****     Obviously, in that case, no \c \#define statement should be
+  57:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****     used.
+  58:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+  59:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****     The functions in this header file are wrappers around the basic
+  60:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****     busy-wait functions from <util/delay_basic.h>.  They are meant as
+  61:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****     convenience functions where actual time values can be specified
+  62:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****     rather than a number of cycles to wait for.  The idea behind is
+  63:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****     that compile-time constant expressions will be eliminated by
+  64:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****     compiler optimization so floating-point expressions can be used
+  65:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****     to calculate the number of delay cycles needed based on the CPU
+  66:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****     frequency passed by the macro F_CPU.
+  67:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+  68:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****     \note In order for these functions to work as intended, compiler
+  69:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****     optimizations <em>must</em> be enabled, and the delay time
+  70:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****     <em>must</em> be an expression that is a known constant at
+  71:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****     compile-time.  If these requirements are not met, the resulting
+  72:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****     delay will be much longer (and basically unpredictable), and
+  73:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****     applications that otherwise do not use floating-point calculations
+  74:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****     will experience severe code bloat by the floating-point library
+  75:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****     routines linked into the application.
+  76:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+  77:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****     The functions available allow the specification of microsecond, and
+  78:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****     millisecond delays directly, using the application-supplied macro
+  79:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****     F_CPU as the CPU clock frequency (in Hertz).
+  80:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+  81:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** */
+  82:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+  83:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** #if !defined(__DOXYGEN__)
+  84:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** static inline void _delay_us(double __us) __attribute__((always_inline));
+  85:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** static inline void _delay_ms(double __ms) __attribute__((always_inline));
+  86:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** #endif
+  87:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+  88:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** #ifndef F_CPU
+  89:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** /* prevent compiler error by supplying a default */
+  90:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** # warning "F_CPU not defined for <util/delay.h>"
+  91:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** # define F_CPU 1000000UL
+  92:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** #endif
+  93:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+  94:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** #ifndef __OPTIMIZE__
+  95:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** # warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+  96:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** #endif
+  97:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+  98:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+  99:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 100:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****   __STDC_HOSTED__
+ 101:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** #  include <math.h>
+ 102:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** #endif
+ 103:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+ 104:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** /**
+ 105:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    \ingroup util_delay
+ 106:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+ 107:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    Perform a delay of \c __ms milliseconds, using _delay_loop_2().
+ 108:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+ 109:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    The macro F_CPU is supposed to be defined to a
+ 110:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    constant defining the CPU clock frequency (in Hertz).
+ 111:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+ 112:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    The maximal possible delay is 262.14 ms / F_CPU in MHz.
+ 113:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+ 114:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    When the user request delay which exceed the maximum possible one,
+ 115:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    _delay_ms() provides a decreased resolution functionality. In this
+ 116:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    mode _delay_ms() will work with a resolution of 1/10 ms, providing
+ 117:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    delays up to 6.5535 seconds (independent from CPU frequency).  The
+ 118:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    user will not be informed about decreased resolution.
+ 119:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+ 120:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    If the avr-gcc toolchain has __builtin_avr_delay_cycles(unsigned long)
+ 121:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    support, maximal possible delay is 4294967.295 ms/ F_CPU in MHz. For
+ 122:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    values greater than the maximal possible delay, overflows results in
+ 123:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    no delay i.e., 0ms.
+ 124:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+ 125:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    Conversion of __us into clock cycles may not always result in integer.
+ 126:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    By default, the clock cycles rounded up to next integer. This ensures that
+ 127:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    the user gets atleast __us microseconds of delay.
+ 128:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+ 129:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    Alternatively, user can define __DELAY_ROUND_DOWN__ and __DELAY_ROUND_CLOSEST__
+ 130:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    to round down and round to closest integer.
+ 131:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+ 132:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    Note: The new implementation of _delay_ms(double __ms) with 
+ 133:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****     __builtin_avr_delay_cycles(unsigned long) support is not backward compatible. 
+ 134:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    User can define __DELAY_BACKWARD_COMPATIBLE__ to get a backward compatible delay.
+ 135:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    Also, the backward compatible
+ 136:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    algorithm will be chosen if the code is compiled in a <em>freestanding
+ 137:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    environment</em> (GCC option \c -ffreestanding), as the math functions
+ 138:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    required for rounding are not available to the compiler then.
+ 139:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+ 140:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****  */
+ 141:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** void
+ 142:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** _delay_ms(double __ms)
+ 143:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** {
+ 144:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 	uint16_t __ticks;
+ 145:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 	double __tmp ; 
+ 146:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
+ 147:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
+ 148:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****   __STDC_HOSTED__
+ 149:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 	uint32_t __ticks_dc;
+ 150:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 151:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e3) * __ms;
+ 152:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+ 153:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
+ 154:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
+ 155:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+ 156:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 	#elif defined(__DELAY_ROUND_CLOSEST__)
+ 157:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(fabs(__tmp)+0.5);
+ 158:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+ 159:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 	#else
+ 160:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 		//round up by default
+ 161:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+ 162:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 	#endif
+ 163:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
+ 164:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
+ 357               		.loc 2 164 0 discriminator 1
+ 358 0082 2FEF      		ldi r18,lo8(159999)
+ 359 0084 80E7      		ldi r24,hi8(159999)
+ 360 0086 92E0      		ldi r25,hlo8(159999)
+ 361 0088 2150      		1: subi r18,1
+ 362 008a 8040      		sbci r24,0
+ 363 008c 9040      		sbci r25,0
+ 364 008e 01F4      		brne 1b
+ 365 0090 00C0      		rjmp .
+ 366 0092 0000      		nop
+ 367 0094 00C0      		rjmp .L17
+ 368               	.LBE7:
+ 369               	.LBE6:
+ 370               	.LBE5:
+ 371               		.cfi_endproc
+ 372               	.LFE7:
+ 374               		.text
+ 375               	.Letext0:
+ 376               		.file 3 "/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/stdint.h"
+ 377               		.file 4 "../teensy_graphics/byte.h"
+ 378               		.file 5 "../teensy_graphics/sprite.h"
+ 379               		.file 6 "../teensy_graphics/ascii_font.h"
+ 380               		.file 7 "../teensy_graphics/graphics.h"
+ 381               		.file 8 "screen.h"
+ 382               		.file 9 "lives.h"
+ 383               		.file 10 "score.h"
+ 384               		.file 11 "zombies.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 hero.c
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccysu72u.s:2      *ABS*:0000003e __SP_H__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccysu72u.s:3      *ABS*:0000003d __SP_L__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccysu72u.s:4      *ABS*:0000003f __SREG__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccysu72u.s:5      *ABS*:00000000 __tmp_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccysu72u.s:6      *ABS*:00000001 __zero_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccysu72u.s:17     .text.move_hero:00000000 move_hero
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccysu72u.s:255    .text.start_hero:00000000 start_hero
+
+UNDEFINED SYMBOLS
+__addsf3
+__floatsisf
+__gesf2
+__ltsf2
+init_sprite
+draw_sprite
+clear
+screen_lines
+lives_setup
+score_setup
+zombies_start
+refresh

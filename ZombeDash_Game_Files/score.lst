@@ -1,0 +1,74 @@
+   1               		.file	"score.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.rodata.str1.1,"aMS",@progbits,1
+  11               	.LC0:
+  12 0000 5363 6F72 		.string	"Score:"
+  12      653A 00
+  13               	.LC1:
+  14 0007 3030 3000 		.string	"000"
+  15               		.section	.text.score_setup,"ax",@progbits
+  16               	.global	score_setup
+  18               	score_setup:
+  19               	.LFB0:
+  20               		.file 1 "score.c"
+   1:score.c       **** /*
+   2:score.c       ****  * score.c
+   3:score.c       ****  *
+   4:score.c       ****  *  Created on: 9 May 2015
+   5:score.c       ****  *      Author: Reflectin88
+   6:score.c       ****  */
+   7:score.c       **** 
+   8:score.c       **** #include "score.h"
+   9:score.c       **** 
+  10:score.c       **** void score_setup() {
+  21               		.loc 1 10 0
+  22               		.cfi_startproc
+  23               	/* prologue: function */
+  24               	/* frame size = 0 */
+  25               	/* stack size = 0 */
+  26               	.L__stack_usage = 0
+  27               	.LVL0:
+  11:score.c       **** 	int score = 0;
+  12:score.c       **** 	draw_string("Score:", 38,2);
+  28               		.loc 1 12 0
+  29 0000 42E0      		ldi r20,lo8(2)
+  30 0002 50E0      		ldi r21,0
+  31 0004 66E2      		ldi r22,lo8(38)
+  32 0006 70E0      		ldi r23,0
+  33 0008 80E0      		ldi r24,lo8(.LC0)
+  34 000a 90E0      		ldi r25,hi8(.LC0)
+  35 000c 0E94 0000 		call draw_string
+  36               	.LVL1:
+  13:score.c       **** 	draw_string("000", 67,2);
+  37               		.loc 1 13 0
+  38 0010 42E0      		ldi r20,lo8(2)
+  39 0012 50E0      		ldi r21,0
+  40 0014 63E4      		ldi r22,lo8(67)
+  41 0016 70E0      		ldi r23,0
+  42 0018 80E0      		ldi r24,lo8(.LC1)
+  43 001a 90E0      		ldi r25,hi8(.LC1)
+  44 001c 0C94 0000 		jmp draw_string
+  45               	.LVL2:
+  46               		.cfi_endproc
+  47               	.LFE0:
+  49               		.text
+  50               	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 score.c
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cceIqJXd.s:2      *ABS*:0000003e __SP_H__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cceIqJXd.s:3      *ABS*:0000003d __SP_L__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cceIqJXd.s:4      *ABS*:0000003f __SREG__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cceIqJXd.s:5      *ABS*:00000000 __tmp_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cceIqJXd.s:6      *ABS*:00000001 __zero_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cceIqJXd.s:18     .text.score_setup:00000000 score_setup
+
+UNDEFINED SYMBOLS
+draw_string
+__do_copy_data

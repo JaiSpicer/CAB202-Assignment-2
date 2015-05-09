@@ -1,0 +1,973 @@
+   1               		.file	"lcd.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.text.LCDWrite,"ax",@progbits
+  11               	.global	LCDWrite
+  13               	LCDWrite:
+  14               	.LFB7:
+  15               		.file 1 "lcd.c"
+   1:lcd.c         **** /*
+   2:lcd.c         ****  * lcd.c
+   3:lcd.c         ****  *
+   4:lcd.c         ****  * Created: 32/13/2015 12:34:56 AM
+   5:lcd.c         ****  *  Author: Michael
+   6:lcd.c         ****  */ 
+   7:lcd.c         **** 
+   8:lcd.c         **** #include "lcd.h"
+   9:lcd.c         **** #include <avr/io.h>
+  10:lcd.c         ****  #include <avr/pgmspace.h>
+  11:lcd.c         **** #include <util/delay.h>
+  12:lcd.c         **** // Include our font pixel data
+  13:lcd.c         **** #include "ascii_font.h"
+  14:lcd.c         **** 
+  15:lcd.c         **** void LCDWrite(unsigned char dc, unsigned char data) {
+  16               		.loc 1 15 0
+  17               		.cfi_startproc
+  18               	.LVL0:
+  19               	/* prologue: function */
+  20               	/* frame size = 0 */
+  21               	/* stack size = 0 */
+  22               	.L__stack_usage = 0
+  16:lcd.c         **** 	// Set the DC pin based on the parameter 'dc' (Hint: use the OUTPUT_WRITE macro)
+  17:lcd.c         **** 	OUTPUT_WRITE(PORTB,DCPIN,dc);
+  23               		.loc 1 17 0
+  24 0000 25B1      		in r18,0x5
+  25 0002 30E2      		ldi r19,lo8(32)
+  26 0004 839F      		mul r24,r19
+  27 0006 C001      		movw r24,r0
+  28 0008 1124      		clr __zero_reg__
+  29               	.LVL1:
+  30 000a 2F7D      		andi r18,lo8(-33)
+  31 000c 282B      		or r18,r24
+  32 000e 25B9      		out 0x5,r18
+  18:lcd.c         **** 	
+  19:lcd.c         **** 	// Pull the SCE/SS pin low to signal the LCD we have data
+  20:lcd.c         **** 	OUTPUT_LOW(PORTD,SCEPIN);
+  33               		.loc 1 20 0
+  34 0010 5F98      		cbi 0xb,7
+  35               	.LVL2:
+  21:lcd.c         **** 	
+  22:lcd.c         **** 	// Write the byte of data using "bit bashing"
+  23:lcd.c         **** 	int i;
+  24:lcd.c         **** 	for(i = 7; i >= 0; i--) {
+  36               		.loc 1 24 0
+  37 0012 87E0      		ldi r24,lo8(7)
+  38 0014 90E0      		ldi r25,0
+  25:lcd.c         **** 		OUTPUT_LOW(PORTF, SCKPIN) ;
+  26:lcd.c         **** 		if((data>>i) & (1 == 1)) {
+  39               		.loc 1 26 0
+  40 0016 70E0      		ldi r23,0
+  41               	.LVL3:
+  42               	.L4:
+  25:lcd.c         **** 		OUTPUT_LOW(PORTF, SCKPIN) ;
+  43               		.loc 1 25 0
+  44 0018 8F98      		cbi 0x11,7
+  45               		.loc 1 26 0
+  46 001a 9B01      		movw r18,r22
+  47 001c 082E      		mov r0,r24
+  48 001e 00C0      		rjmp 2f
+  49               		1:
+  50 0020 3595      		asr r19
+  51 0022 2795      		ror r18
+  52               		2:
+  53 0024 0A94      		dec r0
+  54 0026 02F4      		brpl 1b
+  55 0028 20FF      		sbrs r18,0
+  56 002a 00C0      		rjmp .L2
+  27:lcd.c         **** 			OUTPUT_HIGH(PORTB, DINPIN);
+  57               		.loc 1 27 0
+  58 002c 2E9A      		sbi 0x5,6
+  59 002e 00C0      		rjmp .L3
+  60               	.L2:
+  28:lcd.c         **** 		} else {
+  29:lcd.c         **** 			OUTPUT_LOW(PORTB, DINPIN);
+  61               		.loc 1 29 0
+  62 0030 2E98      		cbi 0x5,6
+  63               	.L3:
+  30:lcd.c         **** 		}
+  31:lcd.c         **** 		OUTPUT_HIGH(PORTF, SCKPIN);
+  64               		.loc 1 31 0
+  65 0032 8F9A      		sbi 0x11,7
+  24:lcd.c         **** 	for(i = 7; i >= 0; i--) {
+  66               		.loc 1 24 0
+  67               	.LVL4:
+  68 0034 0197      		sbiw r24,1
+  69 0036 00F4      		brcc .L4
+  32:lcd.c         **** 	}
+  33:lcd.c         **** 	
+  34:lcd.c         **** 	// Pull SCE/SS high to signal the LCD we are done
+  35:lcd.c         **** 	OUTPUT_HIGH(PORTD,SCEPIN);
+  70               		.loc 1 35 0
+  71 0038 5F9A      		sbi 0xb,7
+  72 003a 0895      		ret
+  73               		.cfi_endproc
+  74               	.LFE7:
+  76               		.section	.text.LCDInitialise,"ax",@progbits
+  77               	.global	LCDInitialise
+  79               	LCDInitialise:
+  80               	.LFB8:
+  36:lcd.c         **** }
+  37:lcd.c         **** 
+  38:lcd.c         **** // Initialise the LCD with our desired settings
+  39:lcd.c         **** void LCDInitialise(unsigned char contrast) {
+  81               		.loc 1 39 0
+  82               		.cfi_startproc
+  83               	.LVL5:
+  84 0000 CF93      		push r28
+  85               	.LCFI0:
+  86               		.cfi_def_cfa_offset 3
+  87               		.cfi_offset 28, -2
+  88               	/* prologue: function */
+  89               	/* frame size = 0 */
+  90               	/* stack size = 1 */
+  91               	.L__stack_usage = 1
+  92 0002 C82F      		mov r28,r24
+  40:lcd.c         **** 	SET_OUTPUT(DDRD, SCEPIN);
+  93               		.loc 1 40 0
+  94 0004 579A      		sbi 0xa,7
+  41:lcd.c         **** 	SET_OUTPUT(DDRB, RSTPIN);
+  95               		.loc 1 41 0
+  96 0006 249A      		sbi 0x4,4
+  42:lcd.c         **** 	SET_OUTPUT(DDRB, DCPIN);
+  97               		.loc 1 42 0
+  98 0008 259A      		sbi 0x4,5
+  43:lcd.c         **** 	SET_OUTPUT(DDRB, DINPIN);
+  99               		.loc 1 43 0
+ 100 000a 269A      		sbi 0x4,6
+  44:lcd.c         **** 	SET_OUTPUT(DDRF, SCKPIN);
+ 101               		.loc 1 44 0
+ 102 000c 879A      		sbi 0x10,7
+  45:lcd.c         **** 		
+  46:lcd.c         **** 	OUTPUT_LOW(PORTB, RSTPIN);
+ 103               		.loc 1 46 0
+ 104 000e 2C98      		cbi 0x5,4
+  47:lcd.c         **** 	OUTPUT_HIGH(PORTD, SCEPIN);
+ 105               		.loc 1 47 0
+ 106 0010 5F9A      		sbi 0xb,7
+  48:lcd.c         **** 	OUTPUT_HIGH(PORTB, RSTPIN);
+ 107               		.loc 1 48 0
+ 108 0012 2C9A      		sbi 0x5,4
+  49:lcd.c         ****   
+  50:lcd.c         **** 	LCDWrite(LCD_C, 0x21); // Enable LCD extended command set
+ 109               		.loc 1 50 0
+ 110 0014 61E2      		ldi r22,lo8(33)
+ 111 0016 80E0      		ldi r24,0
+ 112               	.LVL6:
+ 113 0018 0E94 0000 		call LCDWrite
+ 114               	.LVL7:
+  51:lcd.c         **** 	LCDWrite(LCD_C, 0x80 | contrast ); // Set LCD Vop (Contrast)
+ 115               		.loc 1 51 0
+ 116 001c 6C2F      		mov r22,r28
+ 117 001e 6068      		ori r22,lo8(-128)
+ 118 0020 80E0      		ldi r24,0
+ 119 0022 0E94 0000 		call LCDWrite
+ 120               	.LVL8:
+  52:lcd.c         **** 	LCDWrite(LCD_C, 0x04);
+ 121               		.loc 1 52 0
+ 122 0026 64E0      		ldi r22,lo8(4)
+ 123 0028 80E0      		ldi r24,0
+ 124 002a 0E94 0000 		call LCDWrite
+ 125               	.LVL9:
+  53:lcd.c         **** 	LCDWrite(LCD_C, 0x13); // LCD bias mode 1:48
+ 126               		.loc 1 53 0
+ 127 002e 63E1      		ldi r22,lo8(19)
+ 128 0030 80E0      		ldi r24,0
+ 129 0032 0E94 0000 		call LCDWrite
+ 130               	.LVL10:
+  54:lcd.c         ****   
+  55:lcd.c         **** 	LCDWrite(LCD_C, 0x0C); // LCD in normal mode.
+ 131               		.loc 1 55 0
+ 132 0036 6CE0      		ldi r22,lo8(12)
+ 133 0038 80E0      		ldi r24,0
+ 134 003a 0E94 0000 		call LCDWrite
+ 135               	.LVL11:
+  56:lcd.c         ****   	LCDWrite(LCD_C, 0x20); // Enable LCD basic command set
+ 136               		.loc 1 56 0
+ 137 003e 60E2      		ldi r22,lo8(32)
+ 138 0040 80E0      		ldi r24,0
+ 139 0042 0E94 0000 		call LCDWrite
+ 140               	.LVL12:
+  57:lcd.c         **** 	LCDWrite(LCD_C, 0x0C);
+ 141               		.loc 1 57 0
+ 142 0046 6CE0      		ldi r22,lo8(12)
+ 143 0048 80E0      		ldi r24,0
+ 144 004a 0E94 0000 		call LCDWrite
+ 145               	.LVL13:
+  58:lcd.c         **** 
+  59:lcd.c         **** 	LCDWrite(LCD_C, 0x40); // Reset row to 0
+ 146               		.loc 1 59 0
+ 147 004e 60E4      		ldi r22,lo8(64)
+ 148 0050 80E0      		ldi r24,0
+ 149 0052 0E94 0000 		call LCDWrite
+ 150               	.LVL14:
+  60:lcd.c         **** 	LCDWrite(LCD_C, 0x80); // Reset column to 0
+ 151               		.loc 1 60 0
+ 152 0056 60E8      		ldi r22,lo8(-128)
+ 153 0058 80E0      		ldi r24,0
+ 154               	/* epilogue start */
+  61:lcd.c         **** }
+ 155               		.loc 1 61 0
+ 156 005a CF91      		pop r28
+ 157               	.LVL15:
+  60:lcd.c         **** 	LCDWrite(LCD_C, 0x80); // Reset column to 0
+ 158               		.loc 1 60 0
+ 159 005c 0C94 0000 		jmp LCDWrite
+ 160               	.LVL16:
+ 161               		.cfi_endproc
+ 162               	.LFE8:
+ 164               		.section	.text.LCDClear,"ax",@progbits
+ 165               	.global	LCDClear
+ 167               	LCDClear:
+ 168               	.LFB9:
+  62:lcd.c         **** 
+  63:lcd.c         **** // Simply blank out the memory of the LCD to clear the screen
+  64:lcd.c         **** void LCDClear(void) {
+ 169               		.loc 1 64 0
+ 170               		.cfi_startproc
+ 171 0000 CF93      		push r28
+ 172               	.LCFI1:
+ 173               		.cfi_def_cfa_offset 3
+ 174               		.cfi_offset 28, -2
+ 175 0002 DF93      		push r29
+ 176               	.LCFI2:
+ 177               		.cfi_def_cfa_offset 4
+ 178               		.cfi_offset 29, -3
+ 179               	/* prologue: function */
+ 180               	/* frame size = 0 */
+ 181               	/* stack size = 2 */
+ 182               	.L__stack_usage = 2
+ 183               	.LVL17:
+ 184               		.loc 1 64 0
+ 185 0004 C8EF      		ldi r28,lo8(-8)
+ 186 0006 D1E0      		ldi r29,lo8(1)
+ 187               	.LVL18:
+ 188               	.L8:
+  65:lcd.c         **** 	int i;
+  66:lcd.c         **** 	for (i = 0; i < LCD_X * LCD_Y / 8; i++) {
+  67:lcd.c         **** 		LCDWrite(LCD_D, 0x00);
+ 189               		.loc 1 67 0 discriminator 2
+ 190 0008 60E0      		ldi r22,0
+ 191 000a 81E0      		ldi r24,lo8(1)
+ 192 000c 0E94 0000 		call LCDWrite
+ 193               	.LVL19:
+ 194 0010 2197      		sbiw r28,1
+  66:lcd.c         **** 	for (i = 0; i < LCD_X * LCD_Y / 8; i++) {
+ 195               		.loc 1 66 0 discriminator 2
+ 196 0012 01F4      		brne .L8
+ 197               	/* epilogue start */
+  68:lcd.c         **** 	}
+  69:lcd.c         **** }
+ 198               		.loc 1 69 0
+ 199 0014 DF91      		pop r29
+ 200 0016 CF91      		pop r28
+ 201 0018 0895      		ret
+ 202               		.cfi_endproc
+ 203               	.LFE9:
+ 205               		.section	.text.LCDCharacter,"ax",@progbits
+ 206               	.global	LCDCharacter
+ 208               	LCDCharacter:
+ 209               	.LFB10:
+  70:lcd.c         **** 
+  71:lcd.c         **** void LCDCharacter(unsigned char character) {
+ 210               		.loc 1 71 0
+ 211               		.cfi_startproc
+ 212               	.LVL20:
+ 213 0000 0F93      		push r16
+ 214               	.LCFI3:
+ 215               		.cfi_def_cfa_offset 3
+ 216               		.cfi_offset 16, -2
+ 217 0002 1F93      		push r17
+ 218               	.LCFI4:
+ 219               		.cfi_def_cfa_offset 4
+ 220               		.cfi_offset 17, -3
+ 221 0004 CF93      		push r28
+ 222               	.LCFI5:
+ 223               		.cfi_def_cfa_offset 5
+ 224               		.cfi_offset 28, -4
+ 225 0006 DF93      		push r29
+ 226               	.LCFI6:
+ 227               		.cfi_def_cfa_offset 6
+ 228               		.cfi_offset 29, -5
+ 229               	/* prologue: function */
+ 230               	/* frame size = 0 */
+ 231               	/* stack size = 4 */
+ 232               	.L__stack_usage = 4
+ 233 0008 182F      		mov r17,r24
+  72:lcd.c         **** 	/*
+  73:lcd.c         **** 		Blank pixel column before the character, to increase readability
+  74:lcd.c         **** 		Also, our font is only 5 pixels wide, since our LCD is 84 pixels wide
+  75:lcd.c         **** 		we can fit twelve 7 pixel wide characters across.
+  76:lcd.c         **** 	*/
+  77:lcd.c         **** 	LCDWrite(LCD_D, 0x00);
+ 234               		.loc 1 77 0
+ 235 000a 60E0      		ldi r22,0
+ 236 000c 81E0      		ldi r24,lo8(1)
+ 237               	.LVL21:
+ 238 000e 0E94 0000 		call LCDWrite
+ 239               	.LVL22:
+  78:lcd.c         **** 	
+  79:lcd.c         **** 	int index;
+  80:lcd.c         **** 	for (index = 0; index < 5; index++) {
+ 240               		.loc 1 80 0
+ 241 0012 C0E0      		ldi r28,0
+ 242 0014 D0E0      		ldi r29,0
+ 243               	.LBB2:
+  81:lcd.c         **** 		// Write each of the 5 pixel rows to the LCD, we subtract 0x20 since
+  82:lcd.c         **** 		// our table doesn't have the unprintable ASCII characters (...)
+  83:lcd.c         **** 		LCDWrite(LCD_D, pgm_read_byte(&(ASCII[character - 0x20][index])));
+ 244               		.loc 1 83 0
+ 245 0016 812F      		mov r24,r17
+ 246 0018 90E0      		ldi r25,0
+ 247 001a 8097      		sbiw r24,32
+ 248 001c 25E0      		ldi r18,lo8(5)
+ 249 001e 289F      		mul r18,r24
+ 250 0020 8001      		movw r16,r0
+ 251 0022 299F      		mul r18,r25
+ 252 0024 100D      		add r17,r0
+ 253 0026 1124      		clr __zero_reg__
+ 254               	.LVL23:
+ 255               	.L11:
+ 256               		.loc 1 83 0 is_stmt 0 discriminator 2
+ 257 0028 FE01      		movw r30,r28
+ 258 002a E00F      		add r30,r16
+ 259 002c F11F      		adc r31,r17
+ 260 002e E050      		subi r30,lo8(-(ASCII))
+ 261 0030 F040      		sbci r31,hi8(-(ASCII))
+ 262               	/* #APP */
+ 263               	 ;  83 "lcd.c" 1
+ 264 0032 6491      		lpm r22, Z
+ 265               		
+ 266               	 ;  0 "" 2
+ 267               	.LVL24:
+ 268               	/* #NOAPP */
+ 269               	.LBE2:
+ 270 0034 81E0      		ldi r24,lo8(1)
+ 271 0036 0E94 0000 		call LCDWrite
+ 272               	.LVL25:
+  80:lcd.c         **** 	for (index = 0; index < 5; index++) {
+ 273               		.loc 1 80 0 is_stmt 1 discriminator 2
+ 274 003a 2196      		adiw r28,1
+ 275               	.LVL26:
+ 276 003c C530      		cpi r28,5
+ 277 003e D105      		cpc r29,__zero_reg__
+ 278 0040 01F4      		brne .L11
+  84:lcd.c         **** 	}
+  85:lcd.c         **** 	
+  86:lcd.c         **** 	LCDWrite(LCD_D, 0x00);
+ 279               		.loc 1 86 0
+ 280 0042 60E0      		ldi r22,0
+ 281 0044 81E0      		ldi r24,lo8(1)
+ 282               	/* epilogue start */
+  87:lcd.c         **** }
+ 283               		.loc 1 87 0
+ 284 0046 DF91      		pop r29
+ 285 0048 CF91      		pop r28
+ 286               	.LVL27:
+ 287 004a 1F91      		pop r17
+ 288               	.LVL28:
+ 289 004c 0F91      		pop r16
+  86:lcd.c         **** 	LCDWrite(LCD_D, 0x00);
+ 290               		.loc 1 86 0
+ 291 004e 0C94 0000 		jmp LCDWrite
+ 292               	.LVL29:
+ 293               		.cfi_endproc
+ 294               	.LFE10:
+ 296               		.section	.text.LCDString,"ax",@progbits
+ 297               	.global	LCDString
+ 299               	LCDString:
+ 300               	.LFB11:
+  88:lcd.c         **** 
+  89:lcd.c         **** void LCDString(unsigned char *characters) {
+ 301               		.loc 1 89 0
+ 302               		.cfi_startproc
+ 303               	.LVL30:
+ 304 0000 CF93      		push r28
+ 305               	.LCFI7:
+ 306               		.cfi_def_cfa_offset 3
+ 307               		.cfi_offset 28, -2
+ 308 0002 DF93      		push r29
+ 309               	.LCFI8:
+ 310               		.cfi_def_cfa_offset 4
+ 311               		.cfi_offset 29, -3
+ 312               	/* prologue: function */
+ 313               	/* frame size = 0 */
+ 314               	/* stack size = 2 */
+ 315               	.L__stack_usage = 2
+ 316 0004 EC01      		movw r28,r24
+  90:lcd.c         **** 	// Your code goes here...
+  91:lcd.c         **** 	while(*characters != 0){
+ 317               		.loc 1 91 0
+ 318 0006 00C0      		rjmp .L14
+ 319               	.LVL31:
+ 320               	.L15:
+  92:lcd.c         **** 		LCDCharacter(*characters);
+ 321               		.loc 1 92 0
+ 322 0008 0E94 0000 		call LCDCharacter
+ 323               	.LVL32:
+ 324               	.L14:
+  91:lcd.c         **** 	while(*characters != 0){
+ 325               		.loc 1 91 0 discriminator 1
+ 326 000c 8991      		ld r24,Y+
+ 327 000e 8111      		cpse r24,__zero_reg__
+ 328 0010 00C0      		rjmp .L15
+ 329               	/* epilogue start */
+  93:lcd.c         **** 		characters++;
+  94:lcd.c         **** 	}
+  95:lcd.c         **** }
+ 330               		.loc 1 95 0
+ 331 0012 DF91      		pop r29
+ 332 0014 CF91      		pop r28
+ 333 0016 0895      		ret
+ 334               		.cfi_endproc
+ 335               	.LFE11:
+ 337               		.section	.text.LCDPosition,"ax",@progbits
+ 338               	.global	LCDPosition
+ 340               	LCDPosition:
+ 341               	.LFB12:
+  96:lcd.c         **** 
+  97:lcd.c         **** // Set the position in the LCD's memory that we want to begin writing from
+  98:lcd.c         **** void LCDPosition(unsigned char x, unsigned char y) {
+ 342               		.loc 1 98 0
+ 343               		.cfi_startproc
+ 344               	.LVL33:
+ 345 0000 CF93      		push r28
+ 346               	.LCFI9:
+ 347               		.cfi_def_cfa_offset 3
+ 348               		.cfi_offset 28, -2
+ 349               	/* prologue: function */
+ 350               	/* frame size = 0 */
+ 351               	/* stack size = 1 */
+ 352               	.L__stack_usage = 1
+ 353 0002 C82F      		mov r28,r24
+  99:lcd.c         **** 	LCDWrite(LCD_C, (0x40 | y )); // Reset row to 0
+ 354               		.loc 1 99 0
+ 355 0004 6064      		ori r22,lo8(64)
+ 356               	.LVL34:
+ 357 0006 80E0      		ldi r24,0
+ 358               	.LVL35:
+ 359 0008 0E94 0000 		call LCDWrite
+ 360               	.LVL36:
+ 100:lcd.c         **** 	LCDWrite(LCD_C, (0x80 | x )); // Reset column to 0
+ 361               		.loc 1 100 0
+ 362 000c 6C2F      		mov r22,r28
+ 363 000e 6068      		ori r22,lo8(-128)
+ 364 0010 80E0      		ldi r24,0
+ 365               	/* epilogue start */
+ 101:lcd.c         **** }...
+ 366               		.loc 1 101 0
+ 367 0012 CF91      		pop r28
+ 368               	.LVL37:
+ 100:lcd.c         **** 	LCDWrite(LCD_C, (0x80 | x )); // Reset column to 0
+ 369               		.loc 1 100 0
+ 370 0014 0C94 0000 		jmp LCDWrite
+ 371               	.LVL38:
+ 372               		.cfi_endproc
+ 373               	.LFE12:
+ 375               		.section	.progmem.data,"a",@progbits
+ 378               	ASCII:
+ 379 0000 00        		.byte	0
+ 380 0001 00        		.byte	0
+ 381 0002 00        		.byte	0
+ 382 0003 00        		.byte	0
+ 383 0004 00        		.byte	0
+ 384 0005 00        		.byte	0
+ 385 0006 00        		.byte	0
+ 386 0007 5F        		.byte	95
+ 387 0008 00        		.byte	0
+ 388 0009 00        		.byte	0
+ 389 000a 00        		.byte	0
+ 390 000b 07        		.byte	7
+ 391 000c 00        		.byte	0
+ 392 000d 07        		.byte	7
+ 393 000e 00        		.byte	0
+ 394 000f 14        		.byte	20
+ 395 0010 7F        		.byte	127
+ 396 0011 14        		.byte	20
+ 397 0012 7F        		.byte	127
+ 398 0013 14        		.byte	20
+ 399 0014 24        		.byte	36
+ 400 0015 2A        		.byte	42
+ 401 0016 7F        		.byte	127
+ 402 0017 2A        		.byte	42
+ 403 0018 12        		.byte	18
+ 404 0019 23        		.byte	35
+ 405 001a 13        		.byte	19
+ 406 001b 08        		.byte	8
+ 407 001c 64        		.byte	100
+ 408 001d 62        		.byte	98
+ 409 001e 36        		.byte	54
+ 410 001f 49        		.byte	73
+ 411 0020 55        		.byte	85
+ 412 0021 22        		.byte	34
+ 413 0022 50        		.byte	80
+ 414 0023 00        		.byte	0
+ 415 0024 05        		.byte	5
+ 416 0025 03        		.byte	3
+ 417 0026 00        		.byte	0
+ 418 0027 00        		.byte	0
+ 419 0028 00        		.byte	0
+ 420 0029 1C        		.byte	28
+ 421 002a 22        		.byte	34
+ 422 002b 41        		.byte	65
+ 423 002c 00        		.byte	0
+ 424 002d 00        		.byte	0
+ 425 002e 41        		.byte	65
+ 426 002f 22        		.byte	34
+ 427 0030 1C        		.byte	28
+ 428 0031 00        		.byte	0
+ 429 0032 14        		.byte	20
+ 430 0033 08        		.byte	8
+ 431 0034 3E        		.byte	62
+ 432 0035 08        		.byte	8
+ 433 0036 14        		.byte	20
+ 434 0037 08        		.byte	8
+ 435 0038 08        		.byte	8
+ 436 0039 3E        		.byte	62
+ 437 003a 08        		.byte	8
+ 438 003b 08        		.byte	8
+ 439 003c 00        		.byte	0
+ 440 003d 50        		.byte	80
+ 441 003e 30        		.byte	48
+ 442 003f 00        		.byte	0
+ 443 0040 00        		.byte	0
+ 444 0041 08        		.byte	8
+ 445 0042 08        		.byte	8
+ 446 0043 08        		.byte	8
+ 447 0044 08        		.byte	8
+ 448 0045 08        		.byte	8
+ 449 0046 00        		.byte	0
+ 450 0047 60        		.byte	96
+ 451 0048 60        		.byte	96
+ 452 0049 00        		.byte	0
+ 453 004a 00        		.byte	0
+ 454 004b 20        		.byte	32
+ 455 004c 10        		.byte	16
+ 456 004d 08        		.byte	8
+ 457 004e 04        		.byte	4
+ 458 004f 02        		.byte	2
+ 459 0050 3E        		.byte	62
+ 460 0051 51        		.byte	81
+ 461 0052 49        		.byte	73
+ 462 0053 45        		.byte	69
+ 463 0054 3E        		.byte	62
+ 464 0055 00        		.byte	0
+ 465 0056 42        		.byte	66
+ 466 0057 7F        		.byte	127
+ 467 0058 40        		.byte	64
+ 468 0059 00        		.byte	0
+ 469 005a 42        		.byte	66
+ 470 005b 61        		.byte	97
+ 471 005c 51        		.byte	81
+ 472 005d 49        		.byte	73
+ 473 005e 46        		.byte	70
+ 474 005f 21        		.byte	33
+ 475 0060 41        		.byte	65
+ 476 0061 45        		.byte	69
+ 477 0062 4B        		.byte	75
+ 478 0063 31        		.byte	49
+ 479 0064 18        		.byte	24
+ 480 0065 14        		.byte	20
+ 481 0066 12        		.byte	18
+ 482 0067 7F        		.byte	127
+ 483 0068 10        		.byte	16
+ 484 0069 27        		.byte	39
+ 485 006a 45        		.byte	69
+ 486 006b 45        		.byte	69
+ 487 006c 45        		.byte	69
+ 488 006d 39        		.byte	57
+ 489 006e 3C        		.byte	60
+ 490 006f 4A        		.byte	74
+ 491 0070 49        		.byte	73
+ 492 0071 49        		.byte	73
+ 493 0072 30        		.byte	48
+ 494 0073 01        		.byte	1
+ 495 0074 71        		.byte	113
+ 496 0075 09        		.byte	9
+ 497 0076 05        		.byte	5
+ 498 0077 03        		.byte	3
+ 499 0078 36        		.byte	54
+ 500 0079 49        		.byte	73
+ 501 007a 49        		.byte	73
+ 502 007b 49        		.byte	73
+ 503 007c 36        		.byte	54
+ 504 007d 06        		.byte	6
+ 505 007e 49        		.byte	73
+ 506 007f 49        		.byte	73
+ 507 0080 29        		.byte	41
+ 508 0081 1E        		.byte	30
+ 509 0082 00        		.byte	0
+ 510 0083 36        		.byte	54
+ 511 0084 36        		.byte	54
+ 512 0085 00        		.byte	0
+ 513 0086 00        		.byte	0
+ 514 0087 00        		.byte	0
+ 515 0088 56        		.byte	86
+ 516 0089 36        		.byte	54
+ 517 008a 00        		.byte	0
+ 518 008b 00        		.byte	0
+ 519 008c 08        		.byte	8
+ 520 008d 14        		.byte	20
+ 521 008e 22        		.byte	34
+ 522 008f 41        		.byte	65
+ 523 0090 00        		.byte	0
+ 524 0091 14        		.byte	20
+ 525 0092 14        		.byte	20
+ 526 0093 14        		.byte	20
+ 527 0094 14        		.byte	20
+ 528 0095 14        		.byte	20
+ 529 0096 00        		.byte	0
+ 530 0097 41        		.byte	65
+ 531 0098 22        		.byte	34
+ 532 0099 14        		.byte	20
+ 533 009a 08        		.byte	8
+ 534 009b 02        		.byte	2
+ 535 009c 01        		.byte	1
+ 536 009d 51        		.byte	81
+ 537 009e 09        		.byte	9
+ 538 009f 06        		.byte	6
+ 539 00a0 32        		.byte	50
+ 540 00a1 49        		.byte	73
+ 541 00a2 79        		.byte	121
+ 542 00a3 41        		.byte	65
+ 543 00a4 3E        		.byte	62
+ 544 00a5 7E        		.byte	126
+ 545 00a6 11        		.byte	17
+ 546 00a7 11        		.byte	17
+ 547 00a8 11        		.byte	17
+ 548 00a9 7E        		.byte	126
+ 549 00aa 7F        		.byte	127
+ 550 00ab 49        		.byte	73
+ 551 00ac 49        		.byte	73
+ 552 00ad 49        		.byte	73
+ 553 00ae 36        		.byte	54
+ 554 00af 3E        		.byte	62
+ 555 00b0 41        		.byte	65
+ 556 00b1 41        		.byte	65
+ 557 00b2 41        		.byte	65
+ 558 00b3 22        		.byte	34
+ 559 00b4 7F        		.byte	127
+ 560 00b5 41        		.byte	65
+ 561 00b6 41        		.byte	65
+ 562 00b7 22        		.byte	34
+ 563 00b8 1C        		.byte	28
+ 564 00b9 7F        		.byte	127
+ 565 00ba 49        		.byte	73
+ 566 00bb 49        		.byte	73
+ 567 00bc 49        		.byte	73
+ 568 00bd 41        		.byte	65
+ 569 00be 7F        		.byte	127
+ 570 00bf 09        		.byte	9
+ 571 00c0 09        		.byte	9
+ 572 00c1 09        		.byte	9
+ 573 00c2 01        		.byte	1
+ 574 00c3 3E        		.byte	62
+ 575 00c4 41        		.byte	65
+ 576 00c5 49        		.byte	73
+ 577 00c6 49        		.byte	73
+ 578 00c7 7A        		.byte	122
+ 579 00c8 7F        		.byte	127
+ 580 00c9 08        		.byte	8
+ 581 00ca 08        		.byte	8
+ 582 00cb 08        		.byte	8
+ 583 00cc 7F        		.byte	127
+ 584 00cd 00        		.byte	0
+ 585 00ce 41        		.byte	65
+ 586 00cf 7F        		.byte	127
+ 587 00d0 41        		.byte	65
+ 588 00d1 00        		.byte	0
+ 589 00d2 20        		.byte	32
+ 590 00d3 40        		.byte	64
+ 591 00d4 41        		.byte	65
+ 592 00d5 3F        		.byte	63
+ 593 00d6 01        		.byte	1
+ 594 00d7 7F        		.byte	127
+ 595 00d8 08        		.byte	8
+ 596 00d9 14        		.byte	20
+ 597 00da 22        		.byte	34
+ 598 00db 41        		.byte	65
+ 599 00dc 7F        		.byte	127
+ 600 00dd 40        		.byte	64
+ 601 00de 40        		.byte	64
+ 602 00df 40        		.byte	64
+ 603 00e0 40        		.byte	64
+ 604 00e1 7F        		.byte	127
+ 605 00e2 02        		.byte	2
+ 606 00e3 0C        		.byte	12
+ 607 00e4 02        		.byte	2
+ 608 00e5 7F        		.byte	127
+ 609 00e6 7F        		.byte	127
+ 610 00e7 04        		.byte	4
+ 611 00e8 08        		.byte	8
+ 612 00e9 10        		.byte	16
+ 613 00ea 7F        		.byte	127
+ 614 00eb 3E        		.byte	62
+ 615 00ec 41        		.byte	65
+ 616 00ed 41        		.byte	65
+ 617 00ee 41        		.byte	65
+ 618 00ef 3E        		.byte	62
+ 619 00f0 7F        		.byte	127
+ 620 00f1 09        		.byte	9
+ 621 00f2 09        		.byte	9
+ 622 00f3 09        		.byte	9
+ 623 00f4 06        		.byte	6
+ 624 00f5 3E        		.byte	62
+ 625 00f6 41        		.byte	65
+ 626 00f7 51        		.byte	81
+ 627 00f8 21        		.byte	33
+ 628 00f9 5E        		.byte	94
+ 629 00fa 7F        		.byte	127
+ 630 00fb 09        		.byte	9
+ 631 00fc 19        		.byte	25
+ 632 00fd 29        		.byte	41
+ 633 00fe 46        		.byte	70
+ 634 00ff 46        		.byte	70
+ 635 0100 49        		.byte	73
+ 636 0101 49        		.byte	73
+ 637 0102 49        		.byte	73
+ 638 0103 31        		.byte	49
+ 639 0104 01        		.byte	1
+ 640 0105 01        		.byte	1
+ 641 0106 7F        		.byte	127
+ 642 0107 01        		.byte	1
+ 643 0108 01        		.byte	1
+ 644 0109 3F        		.byte	63
+ 645 010a 40        		.byte	64
+ 646 010b 40        		.byte	64
+ 647 010c 40        		.byte	64
+ 648 010d 3F        		.byte	63
+ 649 010e 1F        		.byte	31
+ 650 010f 20        		.byte	32
+ 651 0110 40        		.byte	64
+ 652 0111 20        		.byte	32
+ 653 0112 1F        		.byte	31
+ 654 0113 3F        		.byte	63
+ 655 0114 40        		.byte	64
+ 656 0115 38        		.byte	56
+ 657 0116 40        		.byte	64
+ 658 0117 3F        		.byte	63
+ 659 0118 63        		.byte	99
+ 660 0119 14        		.byte	20
+ 661 011a 08        		.byte	8
+ 662 011b 14        		.byte	20
+ 663 011c 63        		.byte	99
+ 664 011d 07        		.byte	7
+ 665 011e 08        		.byte	8
+ 666 011f 70        		.byte	112
+ 667 0120 08        		.byte	8
+ 668 0121 07        		.byte	7
+ 669 0122 61        		.byte	97
+ 670 0123 51        		.byte	81
+ 671 0124 49        		.byte	73
+ 672 0125 45        		.byte	69
+ 673 0126 43        		.byte	67
+ 674 0127 00        		.byte	0
+ 675 0128 7F        		.byte	127
+ 676 0129 41        		.byte	65
+ 677 012a 41        		.byte	65
+ 678 012b 00        		.byte	0
+ 679 012c 02        		.byte	2
+ 680 012d 04        		.byte	4
+ 681 012e 08        		.byte	8
+ 682 012f 10        		.byte	16
+ 683 0130 20        		.byte	32
+ 684 0131 00        		.byte	0
+ 685 0132 41        		.byte	65
+ 686 0133 41        		.byte	65
+ 687 0134 7F        		.byte	127
+ 688 0135 00        		.byte	0
+ 689 0136 04        		.byte	4
+ 690 0137 02        		.byte	2
+ 691 0138 01        		.byte	1
+ 692 0139 02        		.byte	2
+ 693 013a 04        		.byte	4
+ 694 013b 40        		.byte	64
+ 695 013c 40        		.byte	64
+ 696 013d 40        		.byte	64
+ 697 013e 40        		.byte	64
+ 698 013f 40        		.byte	64
+ 699 0140 00        		.byte	0
+ 700 0141 01        		.byte	1
+ 701 0142 02        		.byte	2
+ 702 0143 04        		.byte	4
+ 703 0144 00        		.byte	0
+ 704 0145 20        		.byte	32
+ 705 0146 54        		.byte	84
+ 706 0147 54        		.byte	84
+ 707 0148 54        		.byte	84
+ 708 0149 78        		.byte	120
+ 709 014a 7F        		.byte	127
+ 710 014b 48        		.byte	72
+ 711 014c 44        		.byte	68
+ 712 014d 44        		.byte	68
+ 713 014e 38        		.byte	56
+ 714 014f 38        		.byte	56
+ 715 0150 44        		.byte	68
+ 716 0151 44        		.byte	68
+ 717 0152 44        		.byte	68
+ 718 0153 20        		.byte	32
+ 719 0154 38        		.byte	56
+ 720 0155 44        		.byte	68
+ 721 0156 44        		.byte	68
+ 722 0157 48        		.byte	72
+ 723 0158 7F        		.byte	127
+ 724 0159 38        		.byte	56
+ 725 015a 54        		.byte	84
+ 726 015b 54        		.byte	84
+ 727 015c 54        		.byte	84
+ 728 015d 18        		.byte	24
+ 729 015e 08        		.byte	8
+ 730 015f 7E        		.byte	126
+ 731 0160 09        		.byte	9
+ 732 0161 01        		.byte	1
+ 733 0162 02        		.byte	2
+ 734 0163 0C        		.byte	12
+ 735 0164 52        		.byte	82
+ 736 0165 52        		.byte	82
+ 737 0166 52        		.byte	82
+ 738 0167 3E        		.byte	62
+ 739 0168 7F        		.byte	127
+ 740 0169 08        		.byte	8
+ 741 016a 04        		.byte	4
+ 742 016b 04        		.byte	4
+ 743 016c 78        		.byte	120
+ 744 016d 00        		.byte	0
+ 745 016e 44        		.byte	68
+ 746 016f 7D        		.byte	125
+ 747 0170 40        		.byte	64
+ 748 0171 00        		.byte	0
+ 749 0172 20        		.byte	32
+ 750 0173 40        		.byte	64
+ 751 0174 44        		.byte	68
+ 752 0175 3D        		.byte	61
+ 753 0176 00        		.byte	0
+ 754 0177 7F        		.byte	127
+ 755 0178 10        		.byte	16
+ 756 0179 28        		.byte	40
+ 757 017a 44        		.byte	68
+ 758 017b 00        		.byte	0
+ 759 017c 00        		.byte	0
+ 760 017d 41        		.byte	65
+ 761 017e 7F        		.byte	127
+ 762 017f 40        		.byte	64
+ 763 0180 00        		.byte	0
+ 764 0181 7C        		.byte	124
+ 765 0182 04        		.byte	4
+ 766 0183 18        		.byte	24
+ 767 0184 04        		.byte	4
+ 768 0185 78        		.byte	120
+ 769 0186 7C        		.byte	124
+ 770 0187 08        		.byte	8
+ 771 0188 04        		.byte	4
+ 772 0189 04        		.byte	4
+ 773 018a 78        		.byte	120
+ 774 018b 38        		.byte	56
+ 775 018c 44        		.byte	68
+ 776 018d 44        		.byte	68
+ 777 018e 44        		.byte	68
+ 778 018f 38        		.byte	56
+ 779 0190 7C        		.byte	124
+ 780 0191 14        		.byte	20
+ 781 0192 14        		.byte	20
+ 782 0193 14        		.byte	20
+ 783 0194 08        		.byte	8
+ 784 0195 08        		.byte	8
+ 785 0196 14        		.byte	20
+ 786 0197 14        		.byte	20
+ 787 0198 18        		.byte	24
+ 788 0199 7C        		.byte	124
+ 789 019a 7C        		.byte	124
+ 790 019b 08        		.byte	8
+ 791 019c 04        		.byte	4
+ 792 019d 04        		.byte	4
+ 793 019e 08        		.byte	8
+ 794 019f 48        		.byte	72
+ 795 01a0 54        		.byte	84
+ 796 01a1 54        		.byte	84
+ 797 01a2 54        		.byte	84
+ 798 01a3 20        		.byte	32
+ 799 01a4 04        		.byte	4
+ 800 01a5 3F        		.byte	63
+ 801 01a6 44        		.byte	68
+ 802 01a7 40        		.byte	64
+ 803 01a8 20        		.byte	32
+ 804 01a9 3C        		.byte	60
+ 805 01aa 40        		.byte	64
+ 806 01ab 40        		.byte	64
+ 807 01ac 20        		.byte	32
+ 808 01ad 7C        		.byte	124
+ 809 01ae 1C        		.byte	28
+ 810 01af 20        		.byte	32
+ 811 01b0 40        		.byte	64
+ 812 01b1 20        		.byte	32
+ 813 01b2 1C        		.byte	28
+ 814 01b3 3C        		.byte	60
+ 815 01b4 40        		.byte	64
+ 816 01b5 30        		.byte	48
+ 817 01b6 40        		.byte	64
+ 818 01b7 3C        		.byte	60
+ 819 01b8 44        		.byte	68
+ 820 01b9 28        		.byte	40
+ 821 01ba 10        		.byte	16
+ 822 01bb 28        		.byte	40
+ 823 01bc 44        		.byte	68
+ 824 01bd 0C        		.byte	12
+ 825 01be 50        		.byte	80
+ 826 01bf 50        		.byte	80
+ 827 01c0 50        		.byte	80
+ 828 01c1 3C        		.byte	60
+ 829 01c2 44        		.byte	68
+ 830 01c3 64        		.byte	100
+ 831 01c4 54        		.byte	84
+ 832 01c5 4C        		.byte	76
+ 833 01c6 44        		.byte	68
+ 834 01c7 00        		.byte	0
+ 835 01c8 08        		.byte	8
+ 836 01c9 36        		.byte	54
+ 837 01ca 41        		.byte	65
+ 838 01cb 00        		.byte	0
+ 839 01cc 00        		.byte	0
+ 840 01cd 00        		.byte	0
+ 841 01ce 7F        		.byte	127
+ 842 01cf 00        		.byte	0
+ 843 01d0 00        		.byte	0
+ 844 01d1 00        		.byte	0
+ 845 01d2 41        		.byte	65
+ 846 01d3 36        		.byte	54
+ 847 01d4 08        		.byte	8
+ 848 01d5 00        		.byte	0
+ 849 01d6 10        		.byte	16
+ 850 01d7 08        		.byte	8
+ 851 01d8 08        		.byte	8
+ 852 01d9 10        		.byte	16
+ 853 01da 08        		.byte	8
+ 854 01db 78        		.byte	120
+ 855 01dc 46        		.byte	70
+ 856 01dd 41        		.byte	65
+ 857 01de 46        		.byte	70
+ 858 01df 78        		.byte	120
+ 859               		.text
+ 860               	.Letext0:
+ 861               		.file 2 "/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/stdint.h"
+ 862               		.file 3 "ascii_font.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 lcd.c
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccrFVHbY.s:2      *ABS*:0000003e __SP_H__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccrFVHbY.s:3      *ABS*:0000003d __SP_L__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccrFVHbY.s:4      *ABS*:0000003f __SREG__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccrFVHbY.s:5      *ABS*:00000000 __tmp_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccrFVHbY.s:6      *ABS*:00000001 __zero_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccrFVHbY.s:13     .text.LCDWrite:00000000 LCDWrite
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccrFVHbY.s:79     .text.LCDInitialise:00000000 LCDInitialise
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccrFVHbY.s:167    .text.LCDClear:00000000 LCDClear
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccrFVHbY.s:208    .text.LCDCharacter:00000000 LCDCharacter
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccrFVHbY.s:378    .progmem.data:00000000 ASCII
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccrFVHbY.s:299    .text.LCDString:00000000 LCDString
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccrFVHbY.s:340    .text.LCDPosition:00000000 LCDPosition
+
+NO UNDEFINED SYMBOLS

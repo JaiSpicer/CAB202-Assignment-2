@@ -1,0 +1,1061 @@
+Archive member included because of file (symbol)
+
+/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3.o)
+                              hero.o (__addsf3)
+/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3x.o)
+                              /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3.o) (__addsf3x)
+/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(cmpsf2.o)
+                              hero.o (__ltsf2)
+/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(floatsisf.o)
+                              hero.o (__floatsisf)
+/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_cmp.o)
+                              /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(cmpsf2.o) (__fp_cmp)
+/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_inf.o)
+                              /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3x.o) (__fp_inf)
+/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_nan.o)
+                              /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3x.o) (__fp_nan)
+/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_pscA.o)
+                              /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3x.o) (__fp_pscA)
+/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_pscB.o)
+                              /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3x.o) (__fp_pscB)
+/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_round.o)
+                              /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3.o) (__fp_round)
+/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_split3.o)
+                              /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3x.o) (__fp_split3)
+/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_zero.o)
+                              /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3x.o) (__fp_zero)
+/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(gesf2.o)
+                              hero.o (__gesf2)
+../teensy_graphics/libteensy_graphics.a(graphics.o)
+                              main.o (refresh)
+../teensy_graphics/libteensy_graphics.a(lcd.o)
+                              ../teensy_graphics/libteensy_graphics.a(graphics.o) (LCDWrite)
+../teensy_graphics/libteensy_graphics.a(sprite.o)
+                              hero.o (init_sprite)
+/usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_exit.o)
+                              /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o (exit)
+/usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_copy_data.o)
+                              start_screen.o (__do_copy_data)
+/usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_clear_bss.o)
+                              ../teensy_graphics/libteensy_graphics.a(graphics.o) (__do_clear_bss)
+/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(divsf3.o)
+                              ../teensy_graphics/libteensy_graphics.a(graphics.o) (__divsf3)
+/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(divsf3x.o)
+                              /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(divsf3.o) (__divsf3x)
+/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fixunssfsi.o)
+                              ../teensy_graphics/libteensy_graphics.a(sprite.o) (__fixunssfsi)
+/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(mulsf3.o)
+                              ../teensy_graphics/libteensy_graphics.a(graphics.o) (__mulsf3)
+/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(mulsf3x.o)
+                              /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(mulsf3.o) (__mulsf3x)
+
+Allocating common symbols
+Common symbol       size              file
+
+screenBuffer        0x1f8             ../teensy_graphics/libteensy_graphics.a(graphics.o)
+
+Discarded input sections
+
+ .bss           0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+ .text          0x00000000        0x0 main.o
+ .bss           0x00000000        0x0 main.o
+ .text.setup_device
+                0x00000000       0x1a main.o
+ .text          0x00000000        0x0 start_screen.o
+ .bss           0x00000000        0x0 start_screen.o
+ .text          0x00000000        0x0 screen.o
+ .bss           0x00000000        0x0 screen.o
+ .text          0x00000000        0x0 lives.o
+ .bss           0x00000000        0x0 lives.o
+ .text          0x00000000        0x0 score.o
+ .bss           0x00000000        0x0 score.o
+ .text          0x00000000        0x0 hero.o
+ .bss           0x00000000        0x0 hero.o
+ .text          0x00000000        0x0 zombies.o
+ .bss           0x00000000        0x0 zombies.o
+ .text          0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3.o)
+ .bss           0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3.o)
+ .text          0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3x.o)
+ .bss           0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3x.o)
+ .text          0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(cmpsf2.o)
+ .bss           0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(cmpsf2.o)
+ .text          0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(floatsisf.o)
+ .bss           0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(floatsisf.o)
+ .text          0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_cmp.o)
+ .bss           0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_cmp.o)
+ .text          0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_inf.o)
+ .bss           0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_inf.o)
+ .text          0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_nan.o)
+ .bss           0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_nan.o)
+ .text          0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_pscA.o)
+ .bss           0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_pscA.o)
+ .text          0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_pscB.o)
+ .bss           0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_pscB.o)
+ .text          0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_round.o)
+ .bss           0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_round.o)
+ .text          0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_split3.o)
+ .bss           0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_split3.o)
+ .text          0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_zero.o)
+ .bss           0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_zero.o)
+ .text          0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(gesf2.o)
+ .bss           0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(gesf2.o)
+ .text          0x00000000        0x0 ../teensy_graphics/libteensy_graphics.a(graphics.o)
+ .bss           0x00000000        0x0 ../teensy_graphics/libteensy_graphics.a(graphics.o)
+ .text          0x00000000        0x0 ../teensy_graphics/libteensy_graphics.a(lcd.o)
+ .bss           0x00000000        0x0 ../teensy_graphics/libteensy_graphics.a(lcd.o)
+ .text.LCDClear
+                0x00000000       0x1a ../teensy_graphics/libteensy_graphics.a(lcd.o)
+ .text.LCDCharacter
+                0x00000000       0x52 ../teensy_graphics/libteensy_graphics.a(lcd.o)
+ .text.LCDString
+                0x00000000       0x18 ../teensy_graphics/libteensy_graphics.a(lcd.o)
+ .progmem.data  0x00000000      0x1e0 ../teensy_graphics/libteensy_graphics.a(lcd.o)
+ .text          0x00000000        0x0 ../teensy_graphics/libteensy_graphics.a(sprite.o)
+ .bss           0x00000000        0x0 ../teensy_graphics/libteensy_graphics.a(sprite.o)
+ .text          0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_exit.o)
+ .bss           0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_exit.o)
+ .text.libgcc.mul
+                0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_exit.o)
+ .text.libgcc.div
+                0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_exit.o)
+ .text.libgcc   0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_exit.o)
+ .text.libgcc.prologue
+                0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_exit.o)
+ .text.libgcc.builtins
+                0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_exit.o)
+ .text.libgcc.fmul
+                0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_exit.o)
+ .text          0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_copy_data.o)
+ .bss           0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_copy_data.o)
+ .text.libgcc.mul
+                0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_copy_data.o)
+ .text.libgcc.div
+                0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_copy_data.o)
+ .text.libgcc   0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_copy_data.o)
+ .text.libgcc.prologue
+                0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_copy_data.o)
+ .text.libgcc.builtins
+                0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_copy_data.o)
+ .text.libgcc.fmul
+                0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_copy_data.o)
+ .text          0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_clear_bss.o)
+ .bss           0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_clear_bss.o)
+ .text.libgcc.mul
+                0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_clear_bss.o)
+ .text.libgcc.div
+                0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_clear_bss.o)
+ .text.libgcc   0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_clear_bss.o)
+ .text.libgcc.prologue
+                0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_clear_bss.o)
+ .text.libgcc.builtins
+                0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_clear_bss.o)
+ .text.libgcc.fmul
+                0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_clear_bss.o)
+ .text          0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(divsf3.o)
+ .bss           0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(divsf3.o)
+ .text          0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(divsf3x.o)
+ .bss           0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(divsf3x.o)
+ .text          0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fixunssfsi.o)
+ .bss           0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fixunssfsi.o)
+ .text          0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(mulsf3.o)
+ .bss           0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(mulsf3.o)
+ .text          0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(mulsf3x.o)
+ .bss           0x00000000        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(mulsf3x.o)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+text             0x00000000         0x00020000         xr
+data             0x00800060         0x0000ffa0         rw !x
+eeprom           0x00810000         0x00010000         rw !x
+fuse             0x00820000         0x00000400         rw !x
+lock             0x00830000         0x00000400         rw !x
+signature        0x00840000         0x00000400         rw !x
+user_signatures  0x00850000         0x00000400         rw !x
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+Address of section .data set to 0x800100
+LOAD /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+LOAD main.o
+LOAD start_screen.o
+LOAD screen.o
+LOAD lives.o
+LOAD score.o
+LOAD hero.o
+LOAD zombies.o
+LOAD /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a
+LOAD ../teensy_graphics/libteensy_graphics.a
+START GROUP
+LOAD /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a
+LOAD /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a
+LOAD /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libc.a
+END GROUP
+
+.hash
+ *(.hash)
+
+.dynsym
+ *(.dynsym)
+
+.dynstr
+ *(.dynstr)
+
+.gnu.version
+ *(.gnu.version)
+
+.gnu.version_d
+ *(.gnu.version_d)
+
+.gnu.version_r
+ *(.gnu.version_r)
+
+.rel.init
+ *(.rel.init)
+
+.rela.init
+ *(.rela.init)
+
+.rel.text
+ *(.rel.text)
+ *(.rel.text.*)
+ *(.rel.gnu.linkonce.t*)
+
+.rela.text
+ *(.rela.text)
+ *(.rela.text.*)
+ *(.rela.gnu.linkonce.t*)
+
+.rel.fini
+ *(.rel.fini)
+
+.rela.fini
+ *(.rela.fini)
+
+.rel.rodata
+ *(.rel.rodata)
+ *(.rel.rodata.*)
+ *(.rel.gnu.linkonce.r*)
+
+.rela.rodata
+ *(.rela.rodata)
+ *(.rela.rodata.*)
+ *(.rela.gnu.linkonce.r*)
+
+.rel.data
+ *(.rel.data)
+ *(.rel.data.*)
+ *(.rel.gnu.linkonce.d*)
+
+.rela.data
+ *(.rela.data)
+ *(.rela.data.*)
+ *(.rela.gnu.linkonce.d*)
+
+.rel.ctors
+ *(.rel.ctors)
+
+.rela.ctors
+ *(.rela.ctors)
+
+.rel.dtors
+ *(.rel.dtors)
+
+.rela.dtors
+ *(.rela.dtors)
+
+.rel.got
+ *(.rel.got)
+
+.rela.got
+ *(.rela.got)
+
+.rel.bss
+ *(.rel.bss)
+
+.rela.bss
+ *(.rela.bss)
+
+.rel.plt
+ *(.rel.plt)
+
+.rela.plt
+ *(.rela.plt)
+
+.text           0x00000000     0x130c
+ *(.vectors)
+ .vectors       0x00000000       0xac /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+                0x00000000                __vectors
+                0x00000000                __vector_default
+ *(.vectors)
+ *(.progmem.gcc*)
+ *(.progmem*)
+ .progmem.data  0x000000ac      0x1e0 ../teensy_graphics/libteensy_graphics.a(graphics.o)
+                0x0000028c                . = ALIGN (0x2)
+                0x0000028c                __trampolines_start = .
+ *(.trampolines)
+ .trampolines   0x0000028c        0x0 linker stubs
+ *(.trampolines*)
+                0x0000028c                __trampolines_end = .
+ *(.jumptables)
+ *(.jumptables*)
+ *(.lowtext)
+ *(.lowtext*)
+                0x0000028c                __ctors_start = .
+ *(.ctors)
+                0x0000028c                __ctors_end = .
+                0x0000028c                __dtors_start = .
+ *(.dtors)
+                0x0000028c                __dtors_end = .
+ SORT(*)(.ctors)
+ SORT(*)(.dtors)
+ *(.init0)
+ .init0         0x0000028c        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+                0x0000028c                __init
+ *(.init0)
+ *(.init1)
+ *(.init1)
+ *(.init2)
+ .init2         0x0000028c        0xc /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+ *(.init2)
+ *(.init3)
+ *(.init3)
+ *(.init4)
+ .init4         0x00000298       0x16 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_copy_data.o)
+                0x00000298                __do_copy_data
+ .init4         0x000002ae       0x10 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_clear_bss.o)
+                0x000002ae                __do_clear_bss
+ *(.init4)
+ *(.init5)
+ *(.init5)
+ *(.init6)
+ *(.init6)
+ *(.init7)
+ *(.init7)
+ *(.init8)
+ *(.init8)
+ *(.init9)
+ .init9         0x000002be        0x6 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+ *(.init9)
+ *(.text)
+ .text          0x000002c4        0x2 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+                0x000002c4                __vector_42
+                0x000002c4                __vector_22
+                0x000002c4                __vector_28
+                0x000002c4                __vector_1
+                0x000002c4                __vector_32
+                0x000002c4                __vector_34
+                0x000002c4                __vector_24
+                0x000002c4                __vector_12
+                0x000002c4                __bad_interrupt
+                0x000002c4                __vector_6
+                0x000002c4                __vector_31
+                0x000002c4                __vector_35
+                0x000002c4                __vector_39
+                0x000002c4                __vector_3
+                0x000002c4                __vector_23
+                0x000002c4                __vector_30
+                0x000002c4                __vector_25
+                0x000002c4                __vector_11
+                0x000002c4                __vector_13
+                0x000002c4                __vector_17
+                0x000002c4                __vector_19
+                0x000002c4                __vector_7
+                0x000002c4                __vector_41
+                0x000002c4                __vector_27
+                0x000002c4                __vector_5
+                0x000002c4                __vector_33
+                0x000002c4                __vector_37
+                0x000002c4                __vector_4
+                0x000002c4                __vector_9
+                0x000002c4                __vector_2
+                0x000002c4                __vector_21
+                0x000002c4                __vector_15
+                0x000002c4                __vector_36
+                0x000002c4                __vector_29
+                0x000002c4                __vector_40
+                0x000002c4                __vector_8
+                0x000002c4                __vector_26
+                0x000002c4                __vector_14
+                0x000002c4                __vector_10
+                0x000002c4                __vector_16
+                0x000002c4                __vector_18
+                0x000002c4                __vector_20
+                0x000002c4                __vector_38
+                0x000002c6                . = ALIGN (0x2)
+ *(.text.*)
+ .text.startup.main
+                0x000002c6       0x1a main.o
+                0x000002c6                main
+ .text.game_countdown
+                0x000002e0       0x70 start_screen.o
+                0x000002e0                game_countdown
+ .text.setup_start_screen
+                0x00000350       0x48 start_screen.o
+                0x00000350                setup_start_screen
+ .text.screen_lines
+                0x00000398       0x5c screen.o
+                0x00000398                screen_lines
+ .text.lives_setup
+                0x000003f4       0x1c lives.o
+                0x000003f4                lives_setup
+ .text.score_setup
+                0x00000410       0x1c score.o
+                0x00000410                score_setup
+ .text.move_hero
+                0x0000042c      0x13a hero.o
+                0x0000042c                move_hero
+ .text.start_hero
+                0x00000566       0x82 hero.o
+                0x00000566                start_hero
+ .text.setup_zombies
+                0x000005e8       0x7a zombies.o
+                0x000005e8                setup_zombies
+ .text.draw_zombies
+                0x00000662       0x28 zombies.o
+                0x00000662                draw_zombies
+ .text.zombies_start
+                0x0000068a       0x66 zombies.o
+                0x0000068a                zombies_start
+ .text.avr-libc.fplib
+                0x000006f0        0xa /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3.o)
+                0x000006f0                __subsf3
+                0x000006f2                __addsf3
+ .text.avr-libc.fplib
+                0x000006fa       0xc0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3x.o)
+                0x00000714                __addsf3x
+ .text.avr-libc.fplib
+                0x000007ba        0x8 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(cmpsf2.o)
+                0x000007ba                __lesf2
+                0x000007ba                __nesf2
+                0x000007ba                __eqsf2
+                0x000007ba                __cmpsf2
+                0x000007ba                __ltsf2
+ .text.avr-libc.fplib
+                0x000007c2       0x7a /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(floatsisf.o)
+                0x000007c2                __floatunsisf
+                0x000007c6                __floatsisf
+ .text.avr-libc.fplib
+                0x0000083c       0x48 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_cmp.o)
+                0x0000083c                __fp_cmp
+ .text.avr-libc.fplib
+                0x00000884        0xc /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_inf.o)
+                0x00000884                __fp_inf
+ .text.avr-libc.fplib
+                0x00000890        0x6 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_nan.o)
+                0x00000890                __fp_nan
+ .text.avr-libc.fplib
+                0x00000896        0xe /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_pscA.o)
+                0x00000896                __fp_pscA
+ .text.avr-libc.fplib
+                0x000008a4        0xe /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_pscB.o)
+                0x000008a4                __fp_pscB
+ .text.avr-libc.fplib
+                0x000008b2       0x22 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_round.o)
+                0x000008b2                __fp_round
+ .text.avr-libc.fplib
+                0x000008d4       0x44 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_split3.o)
+                0x000008d4                __fp_split3
+                0x000008e4                __fp_splitA
+ .text.avr-libc.fplib
+                0x00000918        0xe /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_zero.o)
+                0x00000918                __fp_zero
+                0x0000091a                __fp_szero
+ .text.avr-libc.fplib
+                0x00000926        0x8 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(gesf2.o)
+                0x00000926                __gtsf2
+                0x00000926                __gesf2
+ .text.refresh  0x0000092e       0x22 ../teensy_graphics/libteensy_graphics.a(graphics.o)
+                0x0000092e                refresh
+ .text.clear    0x00000950       0x10 ../teensy_graphics/libteensy_graphics.a(graphics.o)
+                0x00000950                clear
+ .text.set_pixel
+                0x00000960       0x46 ../teensy_graphics/libteensy_graphics.a(graphics.o)
+                0x00000960                set_pixel
+ .text.draw_line
+                0x000009a6      0x3fc ../teensy_graphics/libteensy_graphics.a(graphics.o)
+                0x000009a6                draw_line
+ .text.draw_character
+                0x00000da2       0xa8 ../teensy_graphics/libteensy_graphics.a(graphics.o)
+                0x00000da2                draw_character
+ .text.draw_string
+                0x00000e4a       0x28 ../teensy_graphics/libteensy_graphics.a(graphics.o)
+                0x00000e4a                draw_string
+ .text.LCDWrite
+                0x00000e72       0x3c ../teensy_graphics/libteensy_graphics.a(lcd.o)
+                0x00000e72                LCDWrite
+ .text.LCDInitialise
+                0x00000eae       0x4e ../teensy_graphics/libteensy_graphics.a(lcd.o)
+                0x00000eae                LCDInitialise
+ .text.LCDPosition
+                0x00000efc       0x14 ../teensy_graphics/libteensy_graphics.a(lcd.o)
+                0x00000efc                LCDPosition
+ .text.init_sprite
+                0x00000f10       0x60 ../teensy_graphics/libteensy_graphics.a(sprite.o)
+                0x00000f10                init_sprite
+ .text.draw_sprite
+                0x00000f70      0x1aa ../teensy_graphics/libteensy_graphics.a(sprite.o)
+                0x00000f70                draw_sprite
+ .text.avr-libc.fplib
+                0x0000111a        0x4 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(divsf3.o)
+                0x0000111a                __divsf3
+ .text.avr-libc.fplib
+                0x0000111e       0xcc /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(divsf3x.o)
+                0x00001134                __divsf3x
+                0x00001138                __divsf3_pse
+ .text.avr-libc.fplib
+                0x000011ea       0x58 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fixunssfsi.o)
+                0x000011ea                __fixunssfsi
+ .text.avr-libc.fplib
+                0x00001242        0x4 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(mulsf3.o)
+                0x00001242                __mulsf3
+ .text.avr-libc.fplib
+                0x00001246       0xc2 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(mulsf3x.o)
+                0x0000125a                __mulsf3x
+                0x0000125e                __mulsf3_pse
+                0x00001308                . = ALIGN (0x2)
+ *(.fini9)
+ .fini9         0x00001308        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_exit.o)
+                0x00001308                exit
+                0x00001308                _exit
+ *(.fini9)
+ *(.fini8)
+ *(.fini8)
+ *(.fini7)
+ *(.fini7)
+ *(.fini6)
+ *(.fini6)
+ *(.fini5)
+ *(.fini5)
+ *(.fini4)
+ *(.fini4)
+ *(.fini3)
+ *(.fini3)
+ *(.fini2)
+ *(.fini2)
+ *(.fini1)
+ *(.fini1)
+ *(.fini0)
+ .fini0         0x00001308        0x4 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_exit.o)
+ *(.fini0)
+                0x0000130c                _etext = .
+
+.data           0x00800100       0x46 load address 0x0000130c
+                0x00800100                PROVIDE (__data_start, .)
+ *(.data)
+ .data          0x00800100        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+ .data          0x00800100        0x0 main.o
+ .data          0x00800100        0x0 start_screen.o
+ .data          0x00800100        0x0 screen.o
+ .data          0x00800100        0x0 lives.o
+ .data          0x00800100        0x0 score.o
+ .data          0x00800100        0x0 hero.o
+ .data          0x00800100        0x0 zombies.o
+ .data          0x00800100        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3.o)
+ .data          0x00800100        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3x.o)
+ .data          0x00800100        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(cmpsf2.o)
+ .data          0x00800100        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(floatsisf.o)
+ .data          0x00800100        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_cmp.o)
+ .data          0x00800100        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_inf.o)
+ .data          0x00800100        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_nan.o)
+ .data          0x00800100        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_pscA.o)
+ .data          0x00800100        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_pscB.o)
+ .data          0x00800100        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_round.o)
+ .data          0x00800100        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_split3.o)
+ .data          0x00800100        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_zero.o)
+ .data          0x00800100        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(gesf2.o)
+ .data          0x00800100        0x0 ../teensy_graphics/libteensy_graphics.a(graphics.o)
+ .data          0x00800100        0x0 ../teensy_graphics/libteensy_graphics.a(lcd.o)
+ .data          0x00800100        0x0 ../teensy_graphics/libteensy_graphics.a(sprite.o)
+ .data          0x00800100        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_exit.o)
+ .data          0x00800100        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_copy_data.o)
+ .data          0x00800100        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_clear_bss.o)
+ .data          0x00800100        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(divsf3.o)
+ .data          0x00800100        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(divsf3x.o)
+ .data          0x00800100        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fixunssfsi.o)
+ .data          0x00800100        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(mulsf3.o)
+ .data          0x00800100        0x0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(mulsf3x.o)
+ *(.data*)
+ *(.rodata)
+ *(.rodata*)
+ .rodata.str1.1
+                0x00800100       0x34 start_screen.o
+ .rodata.str1.1
+                0x00800134        0x7 lives.o
+                                  0x9 (size before relaxing)
+ .rodata.str1.1
+                0x0080013b        0xb score.o
+ *(.gnu.linkonce.d*)
+                0x00800146                . = ALIGN (0x2)
+                0x00800146                _edata = .
+                0x00800146                PROVIDE (__data_end, .)
+
+.bss            0x00800146      0x1f8
+                0x00800146                PROVIDE (__bss_start, .)
+ *(.bss)
+ *(.bss*)
+ *(COMMON)
+ COMMON         0x00800146      0x1f8 ../teensy_graphics/libteensy_graphics.a(graphics.o)
+                0x00800146                screenBuffer
+                0x0080033e                PROVIDE (__bss_end, .)
+                0x0000130c                __data_load_start = LOADADDR (.data)
+                0x00001352                __data_load_end = (__data_load_start + SIZEOF (.data))
+
+.noinit         0x0080033e        0x0
+                0x0080033e                PROVIDE (__noinit_start, .)
+ *(.noinit*)
+                0x0080033e                PROVIDE (__noinit_end, .)
+                0x0080033e                _end = .
+                0x0080033e                PROVIDE (__heap_start, .)
+
+.eeprom         0x00810000        0x0
+ *(.eeprom*)
+                0x00810000                __eeprom_end = .
+
+.fuse
+ *(.fuse)
+ *(.lfuse)
+ *(.hfuse)
+ *(.efuse)
+
+.lock
+ *(.lock*)
+
+.signature
+ *(.signature*)
+
+.user_signatures
+ *(.user_signatures*)
+
+.stab           0x00000000     0x23dc
+ *(.stab)
+ .stab          0x00000000      0x6cc /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+ .stab          0x000006cc       0x78 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3.o)
+                                 0x84 (size before relaxing)
+ .stab          0x00000744      0x4bc /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3x.o)
+                                0x4c8 (size before relaxing)
+ .stab          0x00000c00       0x90 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(cmpsf2.o)
+                                 0x9c (size before relaxing)
+ .stab          0x00000c90      0x318 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(floatsisf.o)
+                                0x324 (size before relaxing)
+ .stab          0x00000fa8      0x1e0 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_cmp.o)
+                                0x1ec (size before relaxing)
+ .stab          0x00001188       0x78 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_inf.o)
+                                 0x84 (size before relaxing)
+ .stab          0x00001200       0x54 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_nan.o)
+                                 0x60 (size before relaxing)
+ .stab          0x00001254       0x84 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_pscA.o)
+                                 0x90 (size before relaxing)
+ .stab          0x000012d8       0x84 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_pscB.o)
+                                 0x90 (size before relaxing)
+ .stab          0x0000135c       0xfc /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_round.o)
+                                0x108 (size before relaxing)
+ .stab          0x00001458      0x1d4 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_split3.o)
+                                0x1e0 (size before relaxing)
+ .stab          0x0000162c       0x90 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_zero.o)
+                                 0x9c (size before relaxing)
+ .stab          0x000016bc       0x6c /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(gesf2.o)
+                                 0x78 (size before relaxing)
+ .stab          0x00001728       0x48 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(divsf3.o)
+                                 0x54 (size before relaxing)
+ .stab          0x00001770      0x510 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(divsf3x.o)
+                                0x51c (size before relaxing)
+ .stab          0x00001c80      0x240 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fixunssfsi.o)
+                                0x24c (size before relaxing)
+ .stab          0x00001ec0       0x48 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(mulsf3.o)
+                                 0x54 (size before relaxing)
+ .stab          0x00001f08      0x4d4 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(mulsf3x.o)
+                                0x4e0 (size before relaxing)
+
+.stabstr        0x00000000      0x6e6
+ *(.stabstr)
+ .stabstr       0x00000000      0x6e6 /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment        0x00000000       0x11
+ *(.comment)
+ .comment       0x00000000       0x11 main.o
+                                 0x12 (size before relaxing)
+ .comment       0x00000000       0x12 start_screen.o
+ .comment       0x00000000       0x12 screen.o
+ .comment       0x00000000       0x12 lives.o
+ .comment       0x00000000       0x12 score.o
+ .comment       0x00000000       0x12 hero.o
+ .comment       0x00000000       0x12 zombies.o
+ .comment       0x00000000       0x12 ../teensy_graphics/libteensy_graphics.a(graphics.o)
+ .comment       0x00000000       0x12 ../teensy_graphics/libteensy_graphics.a(lcd.o)
+ .comment       0x00000000       0x12 ../teensy_graphics/libteensy_graphics.a(sprite.o)
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges  0x00000000      0x220
+ *(.debug_aranges)
+ .debug_aranges
+                0x00000000       0x28 main.o
+ .debug_aranges
+                0x00000028       0x28 start_screen.o
+ .debug_aranges
+                0x00000050       0x20 screen.o
+ .debug_aranges
+                0x00000070       0x20 lives.o
+ .debug_aranges
+                0x00000090       0x20 score.o
+ .debug_aranges
+                0x000000b0       0x28 hero.o
+ .debug_aranges
+                0x000000d8       0x30 zombies.o
+ .debug_aranges
+                0x00000108       0x48 ../teensy_graphics/libteensy_graphics.a(graphics.o)
+ .debug_aranges
+                0x00000150       0x48 ../teensy_graphics/libteensy_graphics.a(lcd.o)
+ .debug_aranges
+                0x00000198       0x28 ../teensy_graphics/libteensy_graphics.a(sprite.o)
+ .debug_aranges
+                0x000001c0       0x20 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_exit.o)
+ .debug_aranges
+                0x000001e0       0x20 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_copy_data.o)
+ .debug_aranges
+                0x00000200       0x20 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_clear_bss.o)
+
+.debug_pubnames
+ *(.debug_pubnames)
+
+.debug_info     0x00000000     0x1d78
+ *(.debug_info)
+ .debug_info    0x00000000      0x194 main.o
+ .debug_info    0x00000194      0x451 start_screen.o
+ .debug_info    0x000005e5      0x1b1 screen.o
+ .debug_info    0x00000796       0xd7 lives.o
+ .debug_info    0x0000086d       0xd9 score.o
+ .debug_info    0x00000946      0x3dc hero.o
+ .debug_info    0x00000d22      0x351 zombies.o
+ .debug_info    0x00001073      0x4de ../teensy_graphics/libteensy_graphics.a(graphics.o)
+ .debug_info    0x00001551      0x377 ../teensy_graphics/libteensy_graphics.a(lcd.o)
+ .debug_info    0x000018c8      0x276 ../teensy_graphics/libteensy_graphics.a(sprite.o)
+ .debug_info    0x00001b3e       0xbe /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_exit.o)
+ .debug_info    0x00001bfc       0xbe /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_copy_data.o)
+ .debug_info    0x00001cba       0xbe /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_clear_bss.o)
+ *(.gnu.linkonce.wi.*)
+
+.debug_abbrev   0x00000000      0xc08
+ *(.debug_abbrev)
+ .debug_abbrev  0x00000000       0xde main.o
+ .debug_abbrev  0x000000de      0x154 start_screen.o
+ .debug_abbrev  0x00000232       0x96 screen.o
+ .debug_abbrev  0x000002c8       0x9a lives.o
+ .debug_abbrev  0x00000362       0x9a score.o
+ .debug_abbrev  0x000003fc      0x1ed hero.o
+ .debug_abbrev  0x000005e9      0x15d zombies.o
+ .debug_abbrev  0x00000746      0x21e ../teensy_graphics/libteensy_graphics.a(graphics.o)
+ .debug_abbrev  0x00000964      0x13e ../teensy_graphics/libteensy_graphics.a(lcd.o)
+ .debug_abbrev  0x00000aa2      0x12a ../teensy_graphics/libteensy_graphics.a(sprite.o)
+ .debug_abbrev  0x00000bcc       0x14 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_exit.o)
+ .debug_abbrev  0x00000be0       0x14 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_copy_data.o)
+ .debug_abbrev  0x00000bf4       0x14 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_clear_bss.o)
+
+.debug_line     0x00000000      0xa39
+ *(.debug_line)
+ .debug_line    0x00000000      0x11e main.o
+ .debug_line    0x0000011e      0x118 start_screen.o
+ .debug_line    0x00000236       0x3b screen.o
+ .debug_line    0x00000271       0x36 lives.o
+ .debug_line    0x000002a7       0x36 score.o
+ .debug_line    0x000002dd      0x1a8 hero.o
+ .debug_line    0x00000485       0xca zombies.o
+ .debug_line    0x0000054f      0x1f6 ../teensy_graphics/libteensy_graphics.a(graphics.o)
+ .debug_line    0x00000745      0x124 ../teensy_graphics/libteensy_graphics.a(lcd.o)
+ .debug_line    0x00000869       0xb9 ../teensy_graphics/libteensy_graphics.a(sprite.o)
+ .debug_line    0x00000922       0x58 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_exit.o)
+ .debug_line    0x0000097a       0x61 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_copy_data.o)
+ .debug_line    0x000009db       0x5e /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_clear_bss.o)
+
+.debug_frame    0x00000000      0x500
+ *(.debug_frame)
+ .debug_frame   0x00000000       0x34 main.o
+ .debug_frame   0x00000034       0x34 start_screen.o
+ .debug_frame   0x00000068       0x24 screen.o
+ .debug_frame   0x0000008c       0x24 lives.o
+ .debug_frame   0x000000b0       0x24 score.o
+ .debug_frame   0x000000d4       0x84 hero.o
+ .debug_frame   0x00000158       0xc0 zombies.o
+ .debug_frame   0x00000218      0x15c ../teensy_graphics/libteensy_graphics.a(graphics.o)
+ .debug_frame   0x00000374       0xb4 ../teensy_graphics/libteensy_graphics.a(lcd.o)
+ .debug_frame   0x00000428       0xd8 ../teensy_graphics/libteensy_graphics.a(sprite.o)
+
+.debug_str      0x00000000      0x42b
+ *(.debug_str)
+ .debug_str     0x00000000      0x14c main.o
+                                0x180 (size before relaxing)
+ .debug_str     0x0000014c       0x8c start_screen.o
+                                0x192 (size before relaxing)
+ .debug_str     0x000001d8        0xa screen.o
+                                 0x9c (size before relaxing)
+ .debug_str     0x000001e2        0xe lives.o
+                                 0x9c (size before relaxing)
+ .debug_str     0x000001f0        0xe score.o
+                                 0x9c (size before relaxing)
+ .debug_str     0x000001fe       0x6a hero.o
+                                0x225 (size before relaxing)
+ .debug_str     0x00000268       0x59 zombies.o
+                                0x1b3 (size before relaxing)
+ .debug_str     0x000002c1      0x10d ../teensy_graphics/libteensy_graphics.a(graphics.o)
+                                0x1d9 (size before relaxing)
+ .debug_str     0x000003ce       0x3a ../teensy_graphics/libteensy_graphics.a(lcd.o)
+                                0x17c (size before relaxing)
+ .debug_str     0x00000408       0x23 ../teensy_graphics/libteensy_graphics.a(sprite.o)
+                                0x16a (size before relaxing)
+
+.debug_loc      0x00000000     0x1272
+ *(.debug_loc)
+ .debug_loc     0x00000000      0x148 hero.o
+ .debug_loc     0x00000148      0x260 zombies.o
+ .debug_loc     0x000003a8      0x872 ../teensy_graphics/libteensy_graphics.a(graphics.o)
+ .debug_loc     0x00000c1a      0x238 ../teensy_graphics/libteensy_graphics.a(lcd.o)
+ .debug_loc     0x00000e52      0x420 ../teensy_graphics/libteensy_graphics.a(sprite.o)
+
+.debug_macinfo
+ *(.debug_macinfo)
+
+.debug_pubtypes
+ *(.debug_pubtypes)
+
+.debug_ranges   0x00000000      0x150
+ *(.debug_ranges)
+ .debug_ranges  0x00000000       0x18 main.o
+ .debug_ranges  0x00000018       0x18 start_screen.o
+ .debug_ranges  0x00000030       0x10 screen.o
+ .debug_ranges  0x00000040       0x10 lives.o
+ .debug_ranges  0x00000050       0x10 score.o
+ .debug_ranges  0x00000060       0x18 hero.o
+ .debug_ranges  0x00000078       0x20 zombies.o
+ .debug_ranges  0x00000098       0x50 ../teensy_graphics/libteensy_graphics.a(graphics.o)
+ .debug_ranges  0x000000e8       0x38 ../teensy_graphics/libteensy_graphics.a(lcd.o)
+ .debug_ranges  0x00000120       0x30 ../teensy_graphics/libteensy_graphics.a(sprite.o)
+
+.debug_macro
+ *(.debug_macro)
+OUTPUT(main.elf elf32-avr)
+LOAD linker stubs
+
+Cross Reference Table
+
+Symbol                                            File
+LCDCharacter                                      ../teensy_graphics/libteensy_graphics.a(lcd.o)
+LCDClear                                          ../teensy_graphics/libteensy_graphics.a(lcd.o)
+LCDInitialise                                     ../teensy_graphics/libteensy_graphics.a(lcd.o)
+                                                  main.o
+LCDPosition                                       ../teensy_graphics/libteensy_graphics.a(lcd.o)
+                                                  ../teensy_graphics/libteensy_graphics.a(graphics.o)
+LCDString                                         ../teensy_graphics/libteensy_graphics.a(lcd.o)
+LCDWrite                                          ../teensy_graphics/libteensy_graphics.a(lcd.o)
+                                                  ../teensy_graphics/libteensy_graphics.a(graphics.o)
+__addsf3                                          /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3.o)
+                                                  ../teensy_graphics/libteensy_graphics.a(sprite.o)
+                                                  ../teensy_graphics/libteensy_graphics.a(graphics.o)
+                                                  hero.o
+__addsf3x                                         /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3x.o)
+                                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3.o)
+__bad_interrupt                                   /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__bss_end                                         /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_clear_bss.o)
+__bss_start                                       /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_clear_bss.o)
+__cmpsf2                                          /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(cmpsf2.o)
+__data_end                                        /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_copy_data.o)
+__data_load_start                                 /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_copy_data.o)
+__data_start                                      /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_copy_data.o)
+__divsf3                                          /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(divsf3.o)
+                                                  ../teensy_graphics/libteensy_graphics.a(graphics.o)
+__divsf3_pse                                      /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(divsf3x.o)
+__divsf3x                                         /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(divsf3x.o)
+                                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(divsf3.o)
+__do_clear_bss                                    /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_clear_bss.o)
+                                                  ../teensy_graphics/libteensy_graphics.a(graphics.o)
+__do_copy_data                                    /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_copy_data.o)
+                                                  score.o
+                                                  lives.o
+                                                  start_screen.o
+__eqsf2                                           /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(cmpsf2.o)
+__fixunssfsi                                      /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fixunssfsi.o)
+                                                  ../teensy_graphics/libteensy_graphics.a(sprite.o)
+__floatsisf                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(floatsisf.o)
+                                                  ../teensy_graphics/libteensy_graphics.a(sprite.o)
+                                                  ../teensy_graphics/libteensy_graphics.a(graphics.o)
+                                                  hero.o
+__floatunsisf                                     /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(floatsisf.o)
+                                                  ../teensy_graphics/libteensy_graphics.a(sprite.o)
+                                                  ../teensy_graphics/libteensy_graphics.a(graphics.o)
+__fp_cmp                                          /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_cmp.o)
+                                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(gesf2.o)
+                                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(cmpsf2.o)
+__fp_inf                                          /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_inf.o)
+                                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(mulsf3x.o)
+                                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(divsf3x.o)
+                                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3x.o)
+__fp_nan                                          /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_nan.o)
+                                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(mulsf3x.o)
+                                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(divsf3x.o)
+                                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3x.o)
+__fp_pscA                                         /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_pscA.o)
+                                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(mulsf3x.o)
+                                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(divsf3x.o)
+                                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3x.o)
+__fp_pscB                                         /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_pscB.o)
+                                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(mulsf3x.o)
+                                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(divsf3x.o)
+                                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3x.o)
+__fp_round                                        /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_round.o)
+                                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(mulsf3.o)
+                                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(divsf3.o)
+                                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3.o)
+__fp_split3                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_split3.o)
+                                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(mulsf3x.o)
+                                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(divsf3x.o)
+                                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3x.o)
+__fp_splitA                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_split3.o)
+                                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fixunssfsi.o)
+__fp_szero                                        /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_zero.o)
+                                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(mulsf3x.o)
+                                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(divsf3x.o)
+__fp_zero                                         /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fp_zero.o)
+                                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(fixunssfsi.o)
+                                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3x.o)
+__gesf2                                           /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(gesf2.o)
+                                                  ../teensy_graphics/libteensy_graphics.a(sprite.o)
+                                                  ../teensy_graphics/libteensy_graphics.a(graphics.o)
+                                                  hero.o
+__gtsf2                                           /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(gesf2.o)
+                                                  ../teensy_graphics/libteensy_graphics.a(graphics.o)
+__heap_end                                        /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__init                                            /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__lesf2                                           /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(cmpsf2.o)
+                                                  ../teensy_graphics/libteensy_graphics.a(graphics.o)
+__ltsf2                                           /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(cmpsf2.o)
+                                                  ../teensy_graphics/libteensy_graphics.a(sprite.o)
+                                                  ../teensy_graphics/libteensy_graphics.a(graphics.o)
+                                                  hero.o
+__mulsf3                                          /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(mulsf3.o)
+                                                  ../teensy_graphics/libteensy_graphics.a(graphics.o)
+__mulsf3_pse                                      /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(mulsf3x.o)
+__mulsf3x                                         /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(mulsf3x.o)
+                                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(mulsf3.o)
+__nesf2                                           /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(cmpsf2.o)
+__stack                                           /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__subsf3                                          /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/libm.a(addsf3.o)
+                                                  ../teensy_graphics/libteensy_graphics.a(graphics.o)
+__vector_1                                        /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_10                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_11                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_12                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_13                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_14                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_15                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_16                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_17                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_18                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_19                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_2                                        /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_20                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_21                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_22                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_23                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_24                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_25                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_26                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_27                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_28                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_29                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_3                                        /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_30                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_31                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_32                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_33                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_34                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_35                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_36                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_37                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_38                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_39                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_4                                        /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_40                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_41                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_42                                       /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_5                                        /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_6                                        /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_7                                        /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_8                                        /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_9                                        /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vector_default                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+__vectors                                         /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+_exit                                             /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_exit.o)
+clear                                             ../teensy_graphics/libteensy_graphics.a(graphics.o)
+                                                  hero.o
+                                                  screen.o
+                                                  start_screen.o
+                                                  main.o
+draw_character                                    ../teensy_graphics/libteensy_graphics.a(graphics.o)
+draw_line                                         ../teensy_graphics/libteensy_graphics.a(graphics.o)
+                                                  screen.o
+draw_sprite                                       ../teensy_graphics/libteensy_graphics.a(sprite.o)
+                                                  zombies.o
+                                                  hero.o
+draw_string                                       ../teensy_graphics/libteensy_graphics.a(graphics.o)
+                                                  score.o
+                                                  lives.o
+                                                  start_screen.o
+draw_zombies                                      zombies.o
+exit                                              /usr/local/bin/../lib/gcc/avr/4.7.2/avr5/libgcc.a(_exit.o)
+                                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+game_countdown                                    start_screen.o
+init_sprite                                       ../teensy_graphics/libteensy_graphics.a(sprite.o)
+                                                  zombies.o
+                                                  hero.o
+lives_setup                                       lives.o
+                                                  hero.o
+                                                  main.o
+main                                              main.o
+                                                  /usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/lib/avr5/crtm32u4.o
+move_hero                                         hero.o
+refresh                                           ../teensy_graphics/libteensy_graphics.a(graphics.o)
+                                                  zombies.o
+                                                  hero.o
+                                                  start_screen.o
+                                                  main.o
+score_setup                                       score.o
+                                                  hero.o
+                                                  main.o
+screenBuffer                                      ../teensy_graphics/libteensy_graphics.a(graphics.o)
+screen_lines                                      screen.o
+                                                  hero.o
+                                                  main.o
+set_pixel                                         ../teensy_graphics/libteensy_graphics.a(graphics.o)
+                                                  ../teensy_graphics/libteensy_graphics.a(sprite.o)
+setup_device                                      main.o
+setup_start_screen                                start_screen.o
+                                                  main.o
+setup_zombies                                     zombies.o
+start_hero                                        hero.o
+                                                  main.o
+zombies_start                                     zombies.o
+                                                  hero.o
+                                                  main.o
