@@ -9,5 +9,6 @@
 #define __SCORE__
 
 void score_setup( void );
+void update_score_time( void );
 
 #endif /* SCORE */

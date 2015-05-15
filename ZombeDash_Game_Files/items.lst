@@ -1,0 +1,619 @@
+   1               		.file	"items.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.text.sword_setup,"ax",@progbits
+  11               	.global	sword_setup
+  13               	sword_setup:
+  14               	.LFB1:
+  15               		.file 1 "items.c"
+   1:items.c       **** /*
+   2:items.c       ****  * items.c
+   3:items.c       ****  *
+   4:items.c       ****  *  Created on: 15 May 2015
+   5:items.c       ****  *      Author: Jai Spicer
+   6:items.c       ****  */
+   7:items.c       **** #include "graphics.h"
+   8:items.c       **** #include "sprite.h"
+   9:items.c       **** #include "friendly_ports.h"
+  10:items.c       **** 
+  11:items.c       **** #include "score.h"
+  12:items.c       **** 
+  13:items.c       **** void sword_setup() {
+  16               		.loc 1 13 0
+  17               		.cfi_startproc
+  18 0000 EF92      		push r14
+  19               	.LCFI0:
+  20               		.cfi_def_cfa_offset 3
+  21               		.cfi_offset 14, -2
+  22 0002 FF92      		push r15
+  23               	.LCFI1:
+  24               		.cfi_def_cfa_offset 4
+  25               		.cfi_offset 15, -3
+  26 0004 0F93      		push r16
+  27               	.LCFI2:
+  28               		.cfi_def_cfa_offset 5
+  29               		.cfi_offset 16, -4
+  30 0006 CF93      		push r28
+  31               	.LCFI3:
+  32               		.cfi_def_cfa_offset 6
+  33               		.cfi_offset 28, -5
+  34 0008 DF93      		push r29
+  35               	.LCFI4:
+  36               		.cfi_def_cfa_offset 7
+  37               		.cfi_offset 29, -6
+  38 000a CDB7      		in r28,__SP_L__
+  39 000c DEB7      		in r29,__SP_H__
+  40               	.LCFI5:
+  41               		.cfi_def_cfa_register 28
+  42 000e 6997      		sbiw r28,25
+  43               	.LCFI6:
+  44               		.cfi_def_cfa_offset 32
+  45 0010 0FB6      		in __tmp_reg__,__SREG__
+  46 0012 F894      		cli
+  47 0014 DEBF      		out __SP_H__,r29
+  48 0016 0FBE      		out __SREG__,__tmp_reg__
+  49 0018 CDBF      		out __SP_L__,r28
+  50               	/* prologue: function */
+  51               	/* frame size = 25 */
+  52               	/* stack size = 30 */
+  53               	.L__stack_usage = 30
+  14:items.c       **** 	byte bitmap_sword[] = {
+  54               		.loc 1 14 0
+  55 001a 80E1      		ldi r24,lo8(16)
+  56 001c 8E8B      		std Y+22,r24
+  57 001e 80EA      		ldi r24,lo8(-96)
+  58 0020 8F8B      		std Y+23,r24
+  59 0022 90E4      		ldi r25,lo8(64)
+  60 0024 988F      		std Y+24,r25
+  61 0026 898F      		std Y+25,r24
+  62               	.LVL0:
+  15:items.c       **** 			BYTE( 00010000 ),
+  16:items.c       **** 			BYTE( 10100000 ),
+  17:items.c       **** 			BYTE( 01000000 ),
+  18:items.c       **** 			BYTE( 10100000 ),
+  19:items.c       **** 	};
+  20:items.c       **** 
+  21:items.c       **** 	const int sword_width = 4;
+  22:items.c       **** 	const int sword_height = 4;
+  23:items.c       **** 
+  24:items.c       **** 	Sprite sword;
+  25:items.c       **** 
+  26:items.c       **** 	init_sprite( &sword, 70,28,sword_width,sword_height, bitmap_sword );
+  63               		.loc 1 26 0
+  64 0028 86E1      		ldi r24,lo8(22)
+  65 002a E82E      		mov r14,r24
+  66 002c F12C      		mov r15,__zero_reg__
+  67 002e EC0E      		add r14,r28
+  68 0030 FD1E      		adc r15,r29
+  69 0032 04E0      		ldi r16,lo8(4)
+  70 0034 24E0      		ldi r18,lo8(4)
+  71 0036 4CE1      		ldi r20,lo8(28)
+  72 0038 66E4      		ldi r22,lo8(70)
+  73 003a CE01      		movw r24,r28
+  74 003c 0196      		adiw r24,1
+  75 003e 0E94 0000 		call init_sprite
+  76               	.LVL1:
+  27:items.c       **** 
+  28:items.c       **** 	draw_sprite( &sword );
+  77               		.loc 1 28 0
+  78 0042 CE01      		movw r24,r28
+  79 0044 0196      		adiw r24,1
+  80 0046 0E94 0000 		call draw_sprite
+  81               	.LVL2:
+  82               	/* epilogue start */
+  29:items.c       **** }
+  83               		.loc 1 29 0
+  84 004a 6996      		adiw r28,25
+  85 004c 0FB6      		in __tmp_reg__,__SREG__
+  86 004e F894      		cli
+  87 0050 DEBF      		out __SP_H__,r29
+  88 0052 0FBE      		out __SREG__,__tmp_reg__
+  89 0054 CDBF      		out __SP_L__,r28
+  90 0056 DF91      		pop r29
+  91 0058 CF91      		pop r28
+  92 005a 0F91      		pop r16
+  93 005c FF90      		pop r15
+  94 005e EF90      		pop r14
+  95 0060 0895      		ret
+  96               		.cfi_endproc
+  97               	.LFE1:
+  99               		.section	.text.swor_pickup_bonus,"ax",@progbits
+ 100               	.global	swor_pickup_bonus
+ 102               	swor_pickup_bonus:
+ 103               	.LFB2:
+  30:items.c       **** 
+  31:items.c       **** void swor_pickup_bonus() {
+ 104               		.loc 1 31 0
+ 105               		.cfi_startproc
+ 106               	/* prologue: function */
+ 107               	/* frame size = 0 */
+ 108               	/* stack size = 0 */
+ 109               	.L__stack_usage = 0
+  32:items.c       **** 	// Update the score each update_score_time is + 1 to score
+  33:items.c       **** 	update_score_time();
+ 110               		.loc 1 33 0
+ 111 0000 0E94 0000 		call update_score_time
+ 112               	.LVL3:
+  34:items.c       **** 	update_score_time();
+ 113               		.loc 1 34 0
+ 114 0004 0E94 0000 		call update_score_time
+ 115               	.LVL4:
+  35:items.c       **** 	update_score_time();
+ 116               		.loc 1 35 0
+ 117 0008 0C94 0000 		jmp update_score_time
+ 118               	.LVL5:
+ 119               		.cfi_endproc
+ 120               	.LFE2:
+ 122               		.section	.rodata
+ 123               	.LC1:
+ 124 0000 03        		.byte	3
+ 125 0001 03        		.byte	3
+ 126 0002 CC        		.byte	-52
+ 127 0003 CC        		.byte	-52
+ 128 0004 30        		.byte	48
+ 129 0005 30        		.byte	48
+ 130 0006 CC        		.byte	-52
+ 131 0007 CC        		.byte	-52
+ 132               		.section	.text.sword_pickup,"ax",@progbits
+ 133               	.global	sword_pickup
+ 135               	sword_pickup:
+ 136               	.LFB3:
+  36:items.c       **** }
+  37:items.c       **** 
+  38:items.c       **** void sword_pickup() {
+ 137               		.loc 1 38 0
+ 138               		.cfi_startproc
+ 139 0000 EF92      		push r14
+ 140               	.LCFI7:
+ 141               		.cfi_def_cfa_offset 3
+ 142               		.cfi_offset 14, -2
+ 143 0002 FF92      		push r15
+ 144               	.LCFI8:
+ 145               		.cfi_def_cfa_offset 4
+ 146               		.cfi_offset 15, -3
+ 147 0004 0F93      		push r16
+ 148               	.LCFI9:
+ 149               		.cfi_def_cfa_offset 5
+ 150               		.cfi_offset 16, -4
+ 151 0006 CF93      		push r28
+ 152               	.LCFI10:
+ 153               		.cfi_def_cfa_offset 6
+ 154               		.cfi_offset 28, -5
+ 155 0008 DF93      		push r29
+ 156               	.LCFI11:
+ 157               		.cfi_def_cfa_offset 7
+ 158               		.cfi_offset 29, -6
+ 159 000a CDB7      		in r28,__SP_L__
+ 160 000c DEB7      		in r29,__SP_H__
+ 161               	.LCFI12:
+ 162               		.cfi_def_cfa_register 28
+ 163 000e 6D97      		sbiw r28,29
+ 164               	.LCFI13:
+ 165               		.cfi_def_cfa_offset 36
+ 166 0010 0FB6      		in __tmp_reg__,__SREG__
+ 167 0012 F894      		cli
+ 168 0014 DEBF      		out __SP_H__,r29
+ 169 0016 0FBE      		out __SREG__,__tmp_reg__
+ 170 0018 CDBF      		out __SP_L__,r28
+ 171               	/* prologue: function */
+ 172               	/* frame size = 29 */
+ 173               	/* stack size = 34 */
+ 174               	.L__stack_usage = 34
+  39:items.c       **** 	// Draw the sword into the infromation bar
+  40:items.c       **** 	byte bitmap_sword_tool[] = {
+ 175               		.loc 1 40 0
+ 176 001a 88E0      		ldi r24,lo8(8)
+ 177 001c E0E0      		ldi r30,lo8(.LC1)
+ 178 001e F0E0      		ldi r31,hi8(.LC1)
+ 179 0020 DE01      		movw r26,r28
+ 180 0022 5696      		adiw r26,22
+ 181               		0:
+ 182 0024 0190      		ld r0,Z+
+ 183 0026 0D92      		st X+,r0
+ 184 0028 8A95      		dec r24
+ 185 002a 01F4      		brne 0b
+ 186               	.LVL6:
+  41:items.c       **** 			BYTE( 00000011 ),
+  42:items.c       **** 			BYTE( 00000011 ),
+  43:items.c       **** 			BYTE( 11001100 ),
+  44:items.c       **** 			BYTE( 11001100 ),
+  45:items.c       **** 			BYTE( 00110000 ),
+  46:items.c       **** 			BYTE( 00110000 ),
+  47:items.c       **** 			BYTE( 11001100 ),
+  48:items.c       **** 			BYTE( 11001100 ),
+  49:items.c       **** 	};
+  50:items.c       **** 
+  51:items.c       **** 	const int sword_tool_width = 8;
+  52:items.c       **** 	const int sword_tool_height = 8;
+  53:items.c       **** 
+  54:items.c       **** 	Sprite sword_tool;
+  55:items.c       **** 
+  56:items.c       **** 	init_sprite( &sword_tool, 49, 2, sword_tool_width, sword_tool_height, bitmap_sword_tool);
+ 187               		.loc 1 56 0
+ 188 002c 96E1      		ldi r25,lo8(22)
+ 189 002e E92E      		mov r14,r25
+ 190 0030 F12C      		mov r15,__zero_reg__
+ 191 0032 EC0E      		add r14,r28
+ 192 0034 FD1E      		adc r15,r29
+ 193 0036 08E0      		ldi r16,lo8(8)
+ 194 0038 28E0      		ldi r18,lo8(8)
+ 195 003a 42E0      		ldi r20,lo8(2)
+ 196 003c 61E3      		ldi r22,lo8(49)
+ 197 003e CE01      		movw r24,r28
+ 198 0040 0196      		adiw r24,1
+ 199 0042 0E94 0000 		call init_sprite
+ 200               	.LVL7:
+  57:items.c       **** 
+  58:items.c       **** 	draw_sprite( &sword_tool );
+ 201               		.loc 1 58 0
+ 202 0046 CE01      		movw r24,r28
+ 203 0048 0196      		adiw r24,1
+ 204 004a 0E94 0000 		call draw_sprite
+ 205               	.LVL8:
+ 206               	/* epilogue start */
+  59:items.c       **** 
+  60:items.c       **** }
+ 207               		.loc 1 60 0
+ 208 004e 6D96      		adiw r28,29
+ 209 0050 0FB6      		in __tmp_reg__,__SREG__
+ 210 0052 F894      		cli
+ 211 0054 DEBF      		out __SP_H__,r29
+ 212 0056 0FBE      		out __SREG__,__tmp_reg__
+ 213 0058 CDBF      		out __SP_L__,r28
+ 214 005a DF91      		pop r29
+ 215 005c CF91      		pop r28
+ 216 005e 0F91      		pop r16
+ 217 0060 FF90      		pop r15
+ 218 0062 EF90      		pop r14
+ 219 0064 0895      		ret
+ 220               		.cfi_endproc
+ 221               	.LFE3:
+ 223               		.section	.text.sword_use,"ax",@progbits
+ 224               	.global	sword_use
+ 226               	sword_use:
+ 227               	.LFB4:
+  61:items.c       **** 
+  62:items.c       **** void sword_use() {
+ 228               		.loc 1 62 0
+ 229               		.cfi_startproc
+ 230               	/* prologue: function */
+ 231               	/* frame size = 0 */
+ 232               	/* stack size = 0 */
+ 233               	.L__stack_usage = 0
+  63:items.c       **** 	update_score_time();
+ 234               		.loc 1 63 0
+ 235 0000 0C94 0000 		jmp update_score_time
+ 236               	.LVL9:
+ 237               		.cfi_endproc
+ 238               	.LFE4:
+ 240               		.section	.text.grenades_setup,"ax",@progbits
+ 241               	.global	grenades_setup
+ 243               	grenades_setup:
+ 244               	.LFB5:
+  64:items.c       **** }
+  65:items.c       **** 
+  66:items.c       **** 
+  67:items.c       **** int grenades = 3;
+  68:items.c       **** char g[15];
+  69:items.c       **** 
+  70:items.c       **** void grenades_setup() {
+ 245               		.loc 1 70 0
+ 246               		.cfi_startproc
+ 247 0000 EF92      		push r14
+ 248               	.LCFI14:
+ 249               		.cfi_def_cfa_offset 3
+ 250               		.cfi_offset 14, -2
+ 251 0002 FF92      		push r15
+ 252               	.LCFI15:
+ 253               		.cfi_def_cfa_offset 4
+ 254               		.cfi_offset 15, -3
+ 255 0004 0F93      		push r16
+ 256               	.LCFI16:
+ 257               		.cfi_def_cfa_offset 5
+ 258               		.cfi_offset 16, -4
+ 259 0006 CF93      		push r28
+ 260               	.LCFI17:
+ 261               		.cfi_def_cfa_offset 6
+ 262               		.cfi_offset 28, -5
+ 263 0008 DF93      		push r29
+ 264               	.LCFI18:
+ 265               		.cfi_def_cfa_offset 7
+ 266               		.cfi_offset 29, -6
+ 267 000a CDB7      		in r28,__SP_L__
+ 268 000c DEB7      		in r29,__SP_H__
+ 269               	.LCFI19:
+ 270               		.cfi_def_cfa_register 28
+ 271 000e 6997      		sbiw r28,25
+ 272               	.LCFI20:
+ 273               		.cfi_def_cfa_offset 32
+ 274 0010 0FB6      		in __tmp_reg__,__SREG__
+ 275 0012 F894      		cli
+ 276 0014 DEBF      		out __SP_H__,r29
+ 277 0016 0FBE      		out __SREG__,__tmp_reg__
+ 278 0018 CDBF      		out __SP_L__,r28
+ 279               	/* prologue: function */
+ 280               	/* frame size = 25 */
+ 281               	/* stack size = 30 */
+ 282               	.L__stack_usage = 30
+  71:items.c       **** 	byte bitmap_grenades[] = {
+ 283               		.loc 1 71 0
+ 284 001a 80E6      		ldi r24,lo8(96)
+ 285 001c 8E8B      		std Y+22,r24
+ 286 001e 80EF      		ldi r24,lo8(-16)
+ 287 0020 8F8B      		std Y+23,r24
+ 288 0022 90E9      		ldi r25,lo8(-112)
+ 289 0024 988F      		std Y+24,r25
+ 290 0026 898F      		std Y+25,r24
+ 291               	.LVL10:
+  72:items.c       **** 			BYTE( 01100000 ),
+  73:items.c       **** 			BYTE( 11110000 ),
+  74:items.c       **** 			BYTE( 10010000 ),
+  75:items.c       **** 			BYTE( 11110000 ),
+  76:items.c       **** 	};
+  77:items.c       **** 
+  78:items.c       **** 	const int grenades_width = 4;
+  79:items.c       **** 	const int grenades_height = 4;
+  80:items.c       **** 
+  81:items.c       **** 	Sprite grenades;
+  82:items.c       **** 
+  83:items.c       **** 	init_sprite( &grenades, 70,38,grenades_width,grenades_height, bitmap_grenades );
+ 292               		.loc 1 83 0
+ 293 0028 26E1      		ldi r18,lo8(22)
+ 294 002a E22E      		mov r14,r18
+ 295 002c F12C      		mov r15,__zero_reg__
+ 296 002e EC0E      		add r14,r28
+ 297 0030 FD1E      		adc r15,r29
+ 298 0032 04E0      		ldi r16,lo8(4)
+ 299 0034 24E0      		ldi r18,lo8(4)
+ 300 0036 46E2      		ldi r20,lo8(38)
+ 301 0038 66E4      		ldi r22,lo8(70)
+ 302 003a CE01      		movw r24,r28
+ 303 003c 0196      		adiw r24,1
+ 304 003e 0E94 0000 		call init_sprite
+ 305               	.LVL11:
+  84:items.c       **** 
+  85:items.c       **** 	draw_sprite( &grenades );
+ 306               		.loc 1 85 0
+ 307 0042 CE01      		movw r24,r28
+ 308 0044 0196      		adiw r24,1
+ 309 0046 0E94 0000 		call draw_sprite
+ 310               	.LVL12:
+ 311               	/* epilogue start */
+  86:items.c       **** }
+ 312               		.loc 1 86 0
+ 313 004a 6996      		adiw r28,25
+ 314 004c 0FB6      		in __tmp_reg__,__SREG__
+ 315 004e F894      		cli
+ 316 0050 DEBF      		out __SP_H__,r29
+ 317 0052 0FBE      		out __SREG__,__tmp_reg__
+ 318 0054 CDBF      		out __SP_L__,r28
+ 319 0056 DF91      		pop r29
+ 320 0058 CF91      		pop r28
+ 321 005a 0F91      		pop r16
+ 322 005c FF90      		pop r15
+ 323 005e EF90      		pop r14
+ 324 0060 0895      		ret
+ 325               		.cfi_endproc
+ 326               	.LFE5:
+ 328               		.section	.rodata.str1.1,"aMS",@progbits,1
+ 329               	.LC2:
+ 330 0000 2564 00   		.string	"%d"
+ 331               		.section	.rodata
+ 332               	.LC0:
+ 333 0008 3C        		.byte	60
+ 334 0009 3C        		.byte	60
+ 335 000a FF        		.byte	-1
+ 336 000b FF        		.byte	-1
+ 337 000c C3        		.byte	-61
+ 338 000d C3        		.byte	-61
+ 339 000e FF        		.byte	-1
+ 340 000f FF        		.byte	-1
+ 341               		.section	.text.grenades_pickup,"ax",@progbits
+ 342               	.global	grenades_pickup
+ 344               	grenades_pickup:
+ 345               	.LFB6:
+  87:items.c       **** 
+  88:items.c       **** void grenades_pickup() {
+ 346               		.loc 1 88 0
+ 347               		.cfi_startproc
+ 348 0000 EF92      		push r14
+ 349               	.LCFI21:
+ 350               		.cfi_def_cfa_offset 3
+ 351               		.cfi_offset 14, -2
+ 352 0002 FF92      		push r15
+ 353               	.LCFI22:
+ 354               		.cfi_def_cfa_offset 4
+ 355               		.cfi_offset 15, -3
+ 356 0004 0F93      		push r16
+ 357               	.LCFI23:
+ 358               		.cfi_def_cfa_offset 5
+ 359               		.cfi_offset 16, -4
+ 360 0006 CF93      		push r28
+ 361               	.LCFI24:
+ 362               		.cfi_def_cfa_offset 6
+ 363               		.cfi_offset 28, -5
+ 364 0008 DF93      		push r29
+ 365               	.LCFI25:
+ 366               		.cfi_def_cfa_offset 7
+ 367               		.cfi_offset 29, -6
+ 368 000a CDB7      		in r28,__SP_L__
+ 369 000c DEB7      		in r29,__SP_H__
+ 370               	.LCFI26:
+ 371               		.cfi_def_cfa_register 28
+ 372 000e 6D97      		sbiw r28,29
+ 373               	.LCFI27:
+ 374               		.cfi_def_cfa_offset 36
+ 375 0010 0FB6      		in __tmp_reg__,__SREG__
+ 376 0012 F894      		cli
+ 377 0014 DEBF      		out __SP_H__,r29
+ 378 0016 0FBE      		out __SREG__,__tmp_reg__
+ 379 0018 CDBF      		out __SP_L__,r28
+ 380               	/* prologue: function */
+ 381               	/* frame size = 29 */
+ 382               	/* stack size = 34 */
+ 383               	.L__stack_usage = 34
+  89:items.c       **** 	// Draw the grenades into the infromation bar
+  90:items.c       **** 	byte bitmap_grenades_tool[] = {
+ 384               		.loc 1 90 0
+ 385 001a 88E0      		ldi r24,lo8(8)
+ 386 001c E0E0      		ldi r30,lo8(.LC0)
+ 387 001e F0E0      		ldi r31,hi8(.LC0)
+ 388 0020 DE01      		movw r26,r28
+ 389 0022 5696      		adiw r26,22
+ 390               		0:
+ 391 0024 0190      		ld r0,Z+
+ 392 0026 0D92      		st X+,r0
+ 393 0028 8A95      		dec r24
+ 394 002a 01F4      		brne 0b
+ 395               	.LVL13:
+  91:items.c       **** 			BYTE( 00111100 ),
+  92:items.c       **** 			BYTE( 00111100 ),
+  93:items.c       **** 			BYTE( 11111111 ),
+  94:items.c       **** 			BYTE( 11111111 ),
+  95:items.c       **** 			BYTE( 11000011 ),
+  96:items.c       **** 			BYTE( 11000011 ),
+  97:items.c       **** 			BYTE( 11111111 ),
+  98:items.c       **** 			BYTE( 11111111 ),
+  99:items.c       **** 	};
+ 100:items.c       **** 
+ 101:items.c       **** 	const int grenades_tool_width = 8;
+ 102:items.c       **** 	const int grenades_tool_height = 8;
+ 103:items.c       **** 
+ 104:items.c       **** 	Sprite grenades_tool;
+ 105:items.c       **** 
+ 106:items.c       **** 	init_sprite( &grenades_tool, 59, 2, grenades_tool_width, grenades_tool_height, bitmap_grenades_too
+ 396               		.loc 1 106 0
+ 397 002c 36E1      		ldi r19,lo8(22)
+ 398 002e E32E      		mov r14,r19
+ 399 0030 F12C      		mov r15,__zero_reg__
+ 400 0032 EC0E      		add r14,r28
+ 401 0034 FD1E      		adc r15,r29
+ 402 0036 08E0      		ldi r16,lo8(8)
+ 403 0038 28E0      		ldi r18,lo8(8)
+ 404 003a 42E0      		ldi r20,lo8(2)
+ 405 003c 6BE3      		ldi r22,lo8(59)
+ 406 003e CE01      		movw r24,r28
+ 407 0040 0196      		adiw r24,1
+ 408 0042 0E94 0000 		call init_sprite
+ 409               	.LVL14:
+ 107:items.c       **** 	draw_sprite( &grenades_tool );
+ 410               		.loc 1 107 0
+ 411 0046 CE01      		movw r24,r28
+ 412 0048 0196      		adiw r24,1
+ 413 004a 0E94 0000 		call draw_sprite
+ 414               	.LVL15:
+ 108:items.c       **** 
+ 109:items.c       **** 	sprintf(g, "%d", grenades);
+ 415               		.loc 1 109 0
+ 416 004e 8091 0000 		lds r24,grenades+1
+ 417 0052 8F93      		push r24
+ 418 0054 8091 0000 		lds r24,grenades
+ 419 0058 8F93      		push r24
+ 420 005a 80E0      		ldi r24,lo8(.LC2)
+ 421 005c 90E0      		ldi r25,hi8(.LC2)
+ 422 005e 9F93      		push r25
+ 423 0060 8F93      		push r24
+ 424 0062 80E0      		ldi r24,lo8(g)
+ 425 0064 90E0      		ldi r25,hi8(g)
+ 426 0066 9F93      		push r25
+ 427 0068 8F93      		push r24
+ 428 006a 0E94 0000 		call sprintf
+ 429               	.LVL16:
+ 110:items.c       **** 	draw_string(g, 68, 3);
+ 430               		.loc 1 110 0
+ 431 006e 43E0      		ldi r20,lo8(3)
+ 432 0070 64E4      		ldi r22,lo8(68)
+ 433 0072 80E0      		ldi r24,lo8(g)
+ 434 0074 90E0      		ldi r25,hi8(g)
+ 435 0076 0E94 0000 		call draw_string
+ 436               	.LVL17:
+ 437 007a 0F90      		pop __tmp_reg__
+ 438 007c 0F90      		pop __tmp_reg__
+ 439 007e 0F90      		pop __tmp_reg__
+ 440 0080 0F90      		pop __tmp_reg__
+ 441 0082 0F90      		pop __tmp_reg__
+ 442 0084 0F90      		pop __tmp_reg__
+ 443               	/* epilogue start */
+ 111:items.c       **** 
+ 112:items.c       **** }
+ 444               		.loc 1 112 0
+ 445 0086 6D96      		adiw r28,29
+ 446 0088 0FB6      		in __tmp_reg__,__SREG__
+ 447 008a F894      		cli
+ 448 008c DEBF      		out __SP_H__,r29
+ 449 008e 0FBE      		out __SREG__,__tmp_reg__
+ 450 0090 CDBF      		out __SP_L__,r28
+ 451 0092 DF91      		pop r29
+ 452 0094 CF91      		pop r28
+ 453 0096 0F91      		pop r16
+ 454 0098 FF90      		pop r15
+ 455 009a EF90      		pop r14
+ 456 009c 0895      		ret
+ 457               		.cfi_endproc
+ 458               	.LFE6:
+ 460               		.section	.text.grenades_use,"ax",@progbits
+ 461               	.global	grenades_use
+ 463               	grenades_use:
+ 464               	.LFB7:
+ 113:items.c       **** 
+ 114:items.c       **** void grenades_use() {
+ 465               		.loc 1 114 0
+ 466               		.cfi_startproc
+ 467               	/* prologue: function */
+ 468               	/* frame size = 0 */
+ 469               	/* stack size = 0 */
+ 470               	.L__stack_usage = 0
+ 115:items.c       **** 	grenades = grenades - 1;
+ 471               		.loc 1 115 0
+ 472 0000 8091 0000 		lds r24,grenades
+ 473 0004 9091 0000 		lds r25,grenades+1
+ 474 0008 0197      		sbiw r24,1
+ 475 000a 9093 0000 		sts grenades+1,r25
+ 476 000e 8093 0000 		sts grenades,r24
+ 477 0012 0895      		ret
+ 478               		.cfi_endproc
+ 479               	.LFE7:
+ 481               		.comm	g,15,1
+ 482               	.global	grenades
+ 483               		.data
+ 486               	grenades:
+ 487 0000 0300      		.word	3
+ 488               		.text
+ 489               	.Letext0:
+ 490               		.file 2 "../teensy_graphics/sprite.h"
+ 491               		.file 3 "../teensy_graphics/byte.h"
+ 492               		.file 4 "<built-in>"
+ 493               		.file 5 "../teensy_graphics/ascii_font.h"
+ 494               		.file 6 "score.h"
+ 495               		.file 7 "../teensy_graphics/graphics.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 items.c
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccQrjhiX.s:2      *ABS*:0000003e __SP_H__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccQrjhiX.s:3      *ABS*:0000003d __SP_L__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccQrjhiX.s:4      *ABS*:0000003f __SREG__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccQrjhiX.s:5      *ABS*:00000000 __tmp_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccQrjhiX.s:6      *ABS*:00000001 __zero_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccQrjhiX.s:13     .text.sword_setup:00000000 sword_setup
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccQrjhiX.s:102    .text.swor_pickup_bonus:00000000 swor_pickup_bonus
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccQrjhiX.s:135    .text.sword_pickup:00000000 sword_pickup
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccQrjhiX.s:226    .text.sword_use:00000000 sword_use
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccQrjhiX.s:243    .text.grenades_setup:00000000 grenades_setup
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccQrjhiX.s:344    .text.grenades_pickup:00000000 grenades_pickup
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccQrjhiX.s:486    .data:00000000 grenades
+                            *COM*:0000000f g
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccQrjhiX.s:463    .text.grenades_use:00000000 grenades_use
+
+UNDEFINED SYMBOLS
+init_sprite
+draw_sprite
+update_score_time
+sprintf
+draw_string
+__do_copy_data
+__do_clear_bss

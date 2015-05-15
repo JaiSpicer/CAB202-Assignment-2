@@ -9,10 +9,9 @@
    9               		.cfi_sections	.debug_frame
   10               		.section	.rodata.str1.1,"aMS",@progbits,1
   11               	.LC0:
-  12 0000 5363 6F72 		.string	"Score:"
-  12      653A 00
+  12 0000 533A 00   		.string	"S:"
   13               	.LC1:
-  14 0007 3030 3000 		.string	"000"
+  14 0003 2564 00   		.string	"%d"
   15               		.section	.text.score_setup,"ax",@progbits
   16               	.global	score_setup
   18               	score_setup:
@@ -27,48 +26,121 @@
    7:score.c       **** 
    8:score.c       **** #include "score.h"
    9:score.c       **** 
-  10:score.c       **** void score_setup() {
-  21               		.loc 1 10 0
+  10:score.c       **** int score = 0;
+  11:score.c       **** char s[15];
+  12:score.c       **** void score_setup() {
+  21               		.loc 1 12 0
   22               		.cfi_startproc
   23               	/* prologue: function */
   24               	/* frame size = 0 */
   25               	/* stack size = 0 */
   26               	.L__stack_usage = 0
-  27               	.LVL0:
-  11:score.c       **** 	int score = 0;
-  12:score.c       **** 	draw_string("Score:", 38,2);
-  28               		.loc 1 12 0
-  29 0000 42E0      		ldi r20,lo8(2)
-  30 0002 50E0      		ldi r21,0
-  31 0004 66E2      		ldi r22,lo8(38)
-  32 0006 70E0      		ldi r23,0
-  33 0008 80E0      		ldi r24,lo8(.LC0)
-  34 000a 90E0      		ldi r25,hi8(.LC0)
-  35 000c 0E94 0000 		call draw_string
-  36               	.LVL1:
-  13:score.c       **** 	draw_string("000", 67,2);
-  37               		.loc 1 13 0
-  38 0010 42E0      		ldi r20,lo8(2)
-  39 0012 50E0      		ldi r21,0
-  40 0014 63E4      		ldi r22,lo8(67)
-  41 0016 70E0      		ldi r23,0
-  42 0018 80E0      		ldi r24,lo8(.LC1)
-  43 001a 90E0      		ldi r25,hi8(.LC1)
-  44 001c 0C94 0000 		jmp draw_string
-  45               	.LVL2:
-  46               		.cfi_endproc
-  47               	.LFE0:
-  49               		.text
-  50               	.Letext0:
+  13:score.c       **** //	score = scoretotal;
+  14:score.c       **** 
+  15:score.c       **** 
+  16:score.c       **** 	draw_string("S:", 18,3);
+  27               		.loc 1 16 0
+  28 0000 43E0      		ldi r20,lo8(3)
+  29 0002 50E0      		ldi r21,0
+  30 0004 62E1      		ldi r22,lo8(18)
+  31 0006 70E0      		ldi r23,0
+  32 0008 80E0      		ldi r24,lo8(.LC0)
+  33 000a 90E0      		ldi r25,hi8(.LC0)
+  34 000c 0E94 0000 		call draw_string
+  35               	.LVL0:
+  17:score.c       **** 	sprintf(s, "%d", score);
+  36               		.loc 1 17 0
+  37 0010 8091 0000 		lds r24,score+1
+  38 0014 8F93      		push r24
+  39               	.LCFI0:
+  40               		.cfi_def_cfa_offset 3
+  41 0016 8091 0000 		lds r24,score
+  42 001a 8F93      		push r24
+  43               	.LCFI1:
+  44               		.cfi_def_cfa_offset 4
+  45 001c 80E0      		ldi r24,lo8(.LC1)
+  46 001e 90E0      		ldi r25,hi8(.LC1)
+  47 0020 9F93      		push r25
+  48               	.LCFI2:
+  49               		.cfi_def_cfa_offset 5
+  50 0022 8F93      		push r24
+  51               	.LCFI3:
+  52               		.cfi_def_cfa_offset 6
+  53 0024 80E0      		ldi r24,lo8(s)
+  54 0026 90E0      		ldi r25,hi8(s)
+  55 0028 9F93      		push r25
+  56               	.LCFI4:
+  57               		.cfi_def_cfa_offset 7
+  58 002a 8F93      		push r24
+  59               	.LCFI5:
+  60               		.cfi_def_cfa_offset 8
+  61 002c 0E94 0000 		call sprintf
+  62               	.LVL1:
+  18:score.c       **** 	draw_string(s, 27, 3);
+  63               		.loc 1 18 0
+  64 0030 0F90      		pop __tmp_reg__
+  65 0032 0F90      		pop __tmp_reg__
+  66 0034 0F90      		pop __tmp_reg__
+  67 0036 0F90      		pop __tmp_reg__
+  68 0038 0F90      		pop __tmp_reg__
+  69 003a 0F90      		pop __tmp_reg__
+  70               	.LCFI6:
+  71               		.cfi_def_cfa_offset 2
+  72 003c 43E0      		ldi r20,lo8(3)
+  73 003e 50E0      		ldi r21,0
+  74 0040 6BE1      		ldi r22,lo8(27)
+  75 0042 70E0      		ldi r23,0
+  76 0044 80E0      		ldi r24,lo8(s)
+  77 0046 90E0      		ldi r25,hi8(s)
+  78 0048 0C94 0000 		jmp draw_string
+  79               	.LVL2:
+  80               		.cfi_endproc
+  81               	.LFE0:
+  83               		.section	.text.update_score_time,"ax",@progbits
+  84               	.global	update_score_time
+  86               	update_score_time:
+  87               	.LFB1:
+  19:score.c       **** }
+  20:score.c       **** 
+  21:score.c       **** void update_score_time() {
+  88               		.loc 1 21 0
+  89               		.cfi_startproc
+  90               	/* prologue: function */
+  91               	/* frame size = 0 */
+  92               	/* stack size = 0 */
+  93               	.L__stack_usage = 0
+  22:score.c       **** 	score = score + 1;
+  94               		.loc 1 22 0
+  95 0000 8091 0000 		lds r24,score
+  96 0004 9091 0000 		lds r25,score+1
+  97 0008 0196      		adiw r24,1
+  98 000a 9093 0000 		sts score+1,r25
+  99 000e 8093 0000 		sts score,r24
+ 100 0012 0895      		ret
+ 101               		.cfi_endproc
+ 102               	.LFE1:
+ 104               		.comm	s,15,1
+ 105               	.global	score
+ 106               		.section .bss
+ 109               	score:
+ 110 0000 0000      		.zero	2
+ 111               		.text
+ 112               	.Letext0:
+ 113               		.file 2 "<built-in>"
 DEFINED SYMBOLS
                             *ABS*:00000000 score.c
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cceIqJXd.s:2      *ABS*:0000003e __SP_H__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cceIqJXd.s:3      *ABS*:0000003d __SP_L__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cceIqJXd.s:4      *ABS*:0000003f __SREG__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cceIqJXd.s:5      *ABS*:00000000 __tmp_reg__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cceIqJXd.s:6      *ABS*:00000001 __zero_reg__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cceIqJXd.s:18     .text.score_setup:00000000 score_setup
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccd46NRe.s:2      *ABS*:0000003e __SP_H__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccd46NRe.s:3      *ABS*:0000003d __SP_L__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccd46NRe.s:4      *ABS*:0000003f __SREG__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccd46NRe.s:5      *ABS*:00000000 __tmp_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccd46NRe.s:6      *ABS*:00000001 __zero_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccd46NRe.s:18     .text.score_setup:00000000 score_setup
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccd46NRe.s:109    .bss:00000000 score
+                            *COM*:0000000f s
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccd46NRe.s:86     .text.update_score_time:00000000 update_score_time
 
 UNDEFINED SYMBOLS
 draw_string
+sprintf
 __do_copy_data
+__do_clear_bss

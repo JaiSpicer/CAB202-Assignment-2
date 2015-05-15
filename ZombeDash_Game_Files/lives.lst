@@ -9,10 +9,9 @@
    9               		.cfi_sections	.debug_frame
   10               		.section	.rodata.str1.1,"aMS",@progbits,1
   11               	.LC0:
-  12 0000 4C69 7665 		.string	"Lives:"
-  12      733A 00
+  12 0000 4C3A 00   		.string	"L:"
   13               	.LC1:
-  14 0007 3300      		.string	"3"
+  14 0003 2564 00   		.string	"%d"
   15               		.section	.text.lives_setup,"ax",@progbits
   16               	.global	lives_setup
   18               	lives_setup:
@@ -25,50 +24,124 @@
    5:lives.c       ****  *      Author: Jai Spicer
    6:lives.c       ****  */
    7:lives.c       **** 
-   8:lives.c       **** #include "lives.h"
+   8:lives.c       **** 
    9:lives.c       **** 
-  10:lives.c       **** void lives_setup() {
-  21               		.loc 1 10 0
+  10:lives.c       **** // test
+  11:lives.c       **** 
+  12:lives.c       **** #include "lives.h"
+  13:lives.c       **** 
+  14:lives.c       **** int lives = 3; // Initialise lives for the start of game
+  15:lives.c       **** char l[15];
+  16:lives.c       **** void lives_setup() {
+  21               		.loc 1 16 0
   22               		.cfi_startproc
   23               	/* prologue: function */
   24               	/* frame size = 0 */
   25               	/* stack size = 0 */
   26               	.L__stack_usage = 0
-  27               	.LVL0:
-  11:lives.c       **** 	int lives = 3;
-  12:lives.c       **** 	draw_string("Lives:", 2,2);
-  28               		.loc 1 12 0
-  29 0000 42E0      		ldi r20,lo8(2)
-  30 0002 50E0      		ldi r21,0
-  31 0004 62E0      		ldi r22,lo8(2)
-  32 0006 70E0      		ldi r23,0
-  33 0008 80E0      		ldi r24,lo8(.LC0)
-  34 000a 90E0      		ldi r25,hi8(.LC0)
-  35 000c 0E94 0000 		call draw_string
-  36               	.LVL1:
-  13:lives.c       **** 	draw_string("3", 31,2);
-  37               		.loc 1 13 0
-  38 0010 42E0      		ldi r20,lo8(2)
-  39 0012 50E0      		ldi r21,0
-  40 0014 6FE1      		ldi r22,lo8(31)
-  41 0016 70E0      		ldi r23,0
-  42 0018 80E0      		ldi r24,lo8(.LC1)
-  43 001a 90E0      		ldi r25,hi8(.LC1)
-  44 001c 0C94 0000 		jmp draw_string
-  45               	.LVL2:
-  46               		.cfi_endproc
-  47               	.LFE0:
-  49               		.text
-  50               	.Letext0:
+  17:lives.c       **** 	draw_string("L:", 2,3);
+  27               		.loc 1 17 0
+  28 0000 43E0      		ldi r20,lo8(3)
+  29 0002 50E0      		ldi r21,0
+  30 0004 62E0      		ldi r22,lo8(2)
+  31 0006 70E0      		ldi r23,0
+  32 0008 80E0      		ldi r24,lo8(.LC0)
+  33 000a 90E0      		ldi r25,hi8(.LC0)
+  34 000c 0E94 0000 		call draw_string
+  35               	.LVL0:
+  18:lives.c       **** 	sprintf(l, "%d", lives);
+  36               		.loc 1 18 0
+  37 0010 8091 0000 		lds r24,lives+1
+  38 0014 8F93      		push r24
+  39               	.LCFI0:
+  40               		.cfi_def_cfa_offset 3
+  41 0016 8091 0000 		lds r24,lives
+  42 001a 8F93      		push r24
+  43               	.LCFI1:
+  44               		.cfi_def_cfa_offset 4
+  45 001c 80E0      		ldi r24,lo8(.LC1)
+  46 001e 90E0      		ldi r25,hi8(.LC1)
+  47 0020 9F93      		push r25
+  48               	.LCFI2:
+  49               		.cfi_def_cfa_offset 5
+  50 0022 8F93      		push r24
+  51               	.LCFI3:
+  52               		.cfi_def_cfa_offset 6
+  53 0024 80E0      		ldi r24,lo8(l)
+  54 0026 90E0      		ldi r25,hi8(l)
+  55 0028 9F93      		push r25
+  56               	.LCFI4:
+  57               		.cfi_def_cfa_offset 7
+  58 002a 8F93      		push r24
+  59               	.LCFI5:
+  60               		.cfi_def_cfa_offset 8
+  61 002c 0E94 0000 		call sprintf
+  62               	.LVL1:
+  19:lives.c       **** 	draw_string(l, 11, 3);
+  63               		.loc 1 19 0
+  64 0030 0F90      		pop __tmp_reg__
+  65 0032 0F90      		pop __tmp_reg__
+  66 0034 0F90      		pop __tmp_reg__
+  67 0036 0F90      		pop __tmp_reg__
+  68 0038 0F90      		pop __tmp_reg__
+  69 003a 0F90      		pop __tmp_reg__
+  70               	.LCFI6:
+  71               		.cfi_def_cfa_offset 2
+  72 003c 43E0      		ldi r20,lo8(3)
+  73 003e 50E0      		ldi r21,0
+  74 0040 6BE0      		ldi r22,lo8(11)
+  75 0042 70E0      		ldi r23,0
+  76 0044 80E0      		ldi r24,lo8(l)
+  77 0046 90E0      		ldi r25,hi8(l)
+  78 0048 0C94 0000 		jmp draw_string
+  79               	.LVL2:
+  80               		.cfi_endproc
+  81               	.LFE0:
+  83               		.section	.text.update_lives,"ax",@progbits
+  84               	.global	update_lives
+  86               	update_lives:
+  87               	.LFB1:
+  20:lives.c       **** }
+  21:lives.c       **** 
+  22:lives.c       **** void update_lives() {
+  88               		.loc 1 22 0
+  89               		.cfi_startproc
+  90               	/* prologue: function */
+  91               	/* frame size = 0 */
+  92               	/* stack size = 0 */
+  93               	.L__stack_usage = 0
+  23:lives.c       **** 	lives = lives - 1;
+  94               		.loc 1 23 0
+  95 0000 8091 0000 		lds r24,lives
+  96 0004 9091 0000 		lds r25,lives+1
+  97 0008 0197      		sbiw r24,1
+  98 000a 9093 0000 		sts lives+1,r25
+  99 000e 8093 0000 		sts lives,r24
+ 100 0012 0895      		ret
+ 101               		.cfi_endproc
+ 102               	.LFE1:
+ 104               		.comm	l,15,1
+ 105               	.global	lives
+ 106               		.data
+ 109               	lives:
+ 110 0000 0300      		.word	3
+ 111               		.text
+ 112               	.Letext0:
+ 113               		.file 2 "<built-in>"
 DEFINED SYMBOLS
                             *ABS*:00000000 lives.c
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccednEP7.s:2      *ABS*:0000003e __SP_H__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccednEP7.s:3      *ABS*:0000003d __SP_L__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccednEP7.s:4      *ABS*:0000003f __SREG__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccednEP7.s:5      *ABS*:00000000 __tmp_reg__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccednEP7.s:6      *ABS*:00000001 __zero_reg__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccednEP7.s:18     .text.lives_setup:00000000 lives_setup
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc0ulI8w.s:2      *ABS*:0000003e __SP_H__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc0ulI8w.s:3      *ABS*:0000003d __SP_L__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc0ulI8w.s:4      *ABS*:0000003f __SREG__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc0ulI8w.s:5      *ABS*:00000000 __tmp_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc0ulI8w.s:6      *ABS*:00000001 __zero_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc0ulI8w.s:18     .text.lives_setup:00000000 lives_setup
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc0ulI8w.s:109    .data:00000000 lives
+                            *COM*:0000000f l
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc0ulI8w.s:86     .text.update_lives:00000000 update_lives
 
 UNDEFINED SYMBOLS
 draw_string
+sprintf
 __do_copy_data
+__do_clear_bss

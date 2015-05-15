@@ -30,16 +30,29 @@ void game_countdown() {
 //	while ( timer > 0) {
 
 		draw_string( "3", 40, 22 );
+		turn_on(LED0);
+		turn_on(LED1);
+		turn_on(LED2);
 		refresh();
-		_delay_ms(1000);
+		_delay_ms(500);
+		turn_off(LED0);
+		turn_off(LED1);
+		turn_off(LED2);
 		clear();
 		draw_string( "2", 40, 22 );
+		turn_on(LED0);
+		turn_on(LED1);
 		refresh();
-		_delay_ms(1000);
+		_delay_ms(500);
+		turn_off(LED0);
+		turn_off(LED1);
 		clear();
 		draw_string( "1", 40, 22 );
+		turn_on(LED1);
 		refresh();
-		_delay_ms(1000);
+		_delay_ms(500);
+		turn_off(LED0);
+		turn_off(LED1);
 		clear();
 
 //	}

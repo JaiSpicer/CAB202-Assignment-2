@@ -5,6 +5,10 @@
  *      Author: Jai Spicer
  */
 
+#define F_CPU 8000000UL
+#define CPU_PRESCALE(n) (CLKPR = 0x80, CLKPR = (n))
+#define CPU_8MHz 0x01
+
 #include <util/delay.h>
 
 #include "graphics.h"
@@ -19,17 +23,26 @@
 #include "score.h"
 #include "hero.h"
 #include "zombies.h"
+#include "pit.h"
+#include "items.h"
+
+void setup_device(void);
 
 int main() {
-	LCDInitialise(LCD_DEFAULT_CONTRAST);
-	clear();
-//	setup_device();
+	setup_device();
+
 	setup_start_screen();
+
 	screen_lines();
 	lives_setup();
 	score_setup();
+
+//	start_pit();
+//	sword_setup();
+//	grenades_setup();
+
 	start_hero();
-	zombies_start();
+	start_zombies ();
 
 	refresh();
 	return 0;
@@ -37,7 +50,7 @@ int main() {
 }
 
 void setup_device() {
-	set_clock_speed( CPU_8MHz );
+	CPU_PRESCALE(CPU_8MHz);
 
 	DDRB = ( LED0 | LED1 ) & ~( SW0 | SW1 ); // Output to LEDs, input from switches.
 	DDRD = LED2; // Turn on the little yellow LED.
@@ -45,6 +58,9 @@ void setup_device() {
 	// Turn everything off to start with
 	PORTB = 0x00;
 	PORTD = 0x00;
+
+	LCDInitialise(LCD_DEFAULT_CONTRAST);
+	clear();
 
 
 }

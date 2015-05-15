@@ -7,10 +7,10 @@
    7               		.text
    8               	.Ltext0:
    9               		.cfi_sections	.debug_frame
-  10               		.section	.text.startup.main,"ax",@progbits
-  11               	.global	main
-  13               	main:
-  14               	.LFB7:
+  10               		.section	.text.setup_device,"ax",@progbits
+  11               	.global	setup_device
+  13               	setup_device:
+  14               	.LFB8:
   15               		.file 1 "main.c"
    1:main.c        **** /*
    2:main.c        ****  * main.c
@@ -19,137 +19,165 @@
    5:main.c        ****  *      Author: Jai Spicer
    6:main.c        ****  */
    7:main.c        **** 
-   8:main.c        **** #include <util/delay.h>
-   9:main.c        **** 
-  10:main.c        **** #include "graphics.h"
-  11:main.c        **** #include "friendly_ports.h"
-  12:main.c        **** #include "cpu_speed.h"
-  13:main.c        **** #include "byte.h"
-  14:main.c        **** #include "sprite.h"
-  15:main.c        **** 
-  16:main.c        **** #include "start_screen.h"
-  17:main.c        **** #include "screen.h"
-  18:main.c        **** #include "lives.h"
-  19:main.c        **** #include "score.h"
-  20:main.c        **** #include "hero.h"
-  21:main.c        **** #include "zombies.h"
-  22:main.c        **** 
-  23:main.c        **** int main() {
-  16               		.loc 1 23 0
+   8:main.c        **** #define F_CPU 8000000UL
+   9:main.c        **** #define CPU_PRESCALE(n) (CLKPR = 0x80, CLKPR = (n))
+  10:main.c        **** #define CPU_8MHz 0x01
+  11:main.c        **** 
+  12:main.c        **** #include <util/delay.h>
+  13:main.c        **** 
+  14:main.c        **** #include "graphics.h"
+  15:main.c        **** #include "friendly_ports.h"
+  16:main.c        **** #include "cpu_speed.h"
+  17:main.c        **** #include "byte.h"
+  18:main.c        **** #include "sprite.h"
+  19:main.c        **** 
+  20:main.c        **** #include "start_screen.h"
+  21:main.c        **** #include "screen.h"
+  22:main.c        **** #include "lives.h"
+  23:main.c        **** #include "score.h"
+  24:main.c        **** #include "hero.h"
+  25:main.c        **** #include "zombies.h"
+  26:main.c        **** #include "pit.h"
+  27:main.c        **** #include "items.h"
+  28:main.c        **** 
+  29:main.c        **** void setup_device(void);
+  30:main.c        **** 
+  31:main.c        **** int main() {
+  32:main.c        **** 	setup_device();
+  33:main.c        **** 
+  34:main.c        **** 	setup_start_screen();
+  35:main.c        **** 
+  36:main.c        **** 	screen_lines();
+  37:main.c        **** 	lives_setup();
+  38:main.c        **** 	score_setup();
+  39:main.c        **** 
+  40:main.c        **** //	start_pit();
+  41:main.c        **** //	sword_setup();
+  42:main.c        **** //	grenades_setup();
+  43:main.c        **** 
+  44:main.c        **** 	start_hero();
+  45:main.c        **** 	start_zombies ();
+  46:main.c        **** 
+  47:main.c        **** 	refresh();
+  48:main.c        **** 	return 0;
+  49:main.c        **** 
+  50:main.c        **** }
+  51:main.c        **** 
+  52:main.c        **** void setup_device() {
+  16               		.loc 1 52 0
   17               		.cfi_startproc
   18               	/* prologue: function */
   19               	/* frame size = 0 */
   20               	/* stack size = 0 */
   21               	.L__stack_usage = 0
-  24:main.c        **** 	LCDInitialise(LCD_DEFAULT_CONTRAST);
-  22               		.loc 1 24 0
-  23 0000 8FE3      		ldi r24,lo8(63)
-  24 0002 0E94 0000 		call LCDInitialise
-  25               	.LVL0:
-  25:main.c        **** 	clear();
-  26               		.loc 1 25 0
-  27 0006 0E94 0000 		call clear
-  28               	.LVL1:
-  26:main.c        **** //	setup_device();
-  27:main.c        **** 	setup_start_screen();
-  29               		.loc 1 27 0
-  30 000a 0E94 0000 		call setup_start_screen
-  31               	.LVL2:
-  28:main.c        **** 	screen_lines();
-  32               		.loc 1 28 0
-  33 000e 0E94 0000 		call screen_lines
-  34               	.LVL3:
-  29:main.c        **** 	lives_setup();
-  35               		.loc 1 29 0
-  36 0012 0E94 0000 		call lives_setup
-  37               	.LVL4:
-  30:main.c        **** 	score_setup();
-  38               		.loc 1 30 0
-  39 0016 0E94 0000 		call score_setup
-  40               	.LVL5:
-  31:main.c        **** 	start_hero();
-  41               		.loc 1 31 0
-  42 001a 0E94 0000 		call start_hero
-  43               	.LVL6:
-  32:main.c        **** 	zombies_start();
-  44               		.loc 1 32 0
-  45 001e 0E94 0000 		call zombies_start
-  46               	.LVL7:
-  33:main.c        **** 
-  34:main.c        **** 	refresh();
-  47               		.loc 1 34 0
-  48 0022 0E94 0000 		call refresh
-  49               	.LVL8:
-  35:main.c        **** 	return 0;
-  36:main.c        **** 
-  37:main.c        **** }
-  50               		.loc 1 37 0
-  51 0026 80E0      		ldi r24,0
-  52 0028 90E0      		ldi r25,0
-  53 002a 0895      		ret
-  54               		.cfi_endproc
-  55               	.LFE7:
-  57               		.section	.text.setup_device,"ax",@progbits
-  58               	.global	setup_device
-  60               	setup_device:
-  61               	.LFB8:
-  38:main.c        **** 
-  39:main.c        **** void setup_device() {
-  62               		.loc 1 39 0
-  63               		.cfi_startproc
-  64               	/* prologue: function */
-  65               	/* frame size = 0 */
-  66               	/* stack size = 0 */
-  67               	.L__stack_usage = 0
-  40:main.c        **** 	set_clock_speed( CPU_8MHz );
-  68               		.loc 1 40 0
-  69 0000 E1E6      		ldi r30,lo8(97)
-  70 0002 F0E0      		ldi r31,0
-  71 0004 80E8      		ldi r24,lo8(-128)
-  72 0006 8083      		st Z,r24
-  73 0008 81E0      		ldi r24,lo8(1)
-  74 000a 8083      		st Z,r24
-  41:main.c        **** 
-  42:main.c        **** 	DDRB = ( LED0 | LED1 ) & ~( SW0 | SW1 ); // Output to LEDs, input from switches.
-  75               		.loc 1 42 0
-  76 000c 8CE0      		ldi r24,lo8(12)
-  77 000e 84B9      		out 0x4,r24
-  43:main.c        **** 	DDRD = LED2; // Turn on the little yellow LED.
-  78               		.loc 1 43 0
-  79 0010 80E4      		ldi r24,lo8(64)
-  80 0012 8AB9      		out 0xa,r24
-  44:main.c        **** 
-  45:main.c        **** 	// Turn everything off to start with
-  46:main.c        **** 	PORTB = 0x00;
-  81               		.loc 1 46 0
-  82 0014 15B8      		out 0x5,__zero_reg__
-  47:main.c        **** 	PORTD = 0x00;
-  83               		.loc 1 47 0
-  84 0016 1BB8      		out 0xb,__zero_reg__
-  85 0018 0895      		ret
-  86               		.cfi_endproc
-  87               	.LFE8:
-  89               		.text
-  90               	.Letext0:
-  91               		.file 2 "../teensy_graphics/graphics.h"
-  92               		.file 3 "start_screen.h"
-  93               		.file 4 "screen.h"
-  94               		.file 5 "lives.h"
-  95               		.file 6 "score.h"
-  96               		.file 7 "hero.h"
-  97               		.file 8 "zombies.h"
-  98               		.file 9 "/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/stdint.h"
-  99               		.file 10 "../teensy_graphics/ascii_font.h"
- 100               		.file 11 "../teensy_graphics/lcd.h"
+  53:main.c        **** 	CPU_PRESCALE(CPU_8MHz);
+  22               		.loc 1 53 0
+  23 0000 E1E6      		ldi r30,lo8(97)
+  24 0002 F0E0      		ldi r31,0
+  25 0004 80E8      		ldi r24,lo8(-128)
+  26 0006 8083      		st Z,r24
+  27 0008 81E0      		ldi r24,lo8(1)
+  28 000a 8083      		st Z,r24
+  54:main.c        **** 
+  55:main.c        **** 	DDRB = ( LED0 | LED1 ) & ~( SW0 | SW1 ); // Output to LEDs, input from switches.
+  29               		.loc 1 55 0
+  30 000c 8CE0      		ldi r24,lo8(12)
+  31 000e 84B9      		out 0x4,r24
+  56:main.c        **** 	DDRD = LED2; // Turn on the little yellow LED.
+  32               		.loc 1 56 0
+  33 0010 80E4      		ldi r24,lo8(64)
+  34 0012 8AB9      		out 0xa,r24
+  57:main.c        **** 
+  58:main.c        **** 	// Turn everything off to start with
+  59:main.c        **** 	PORTB = 0x00;
+  35               		.loc 1 59 0
+  36 0014 15B8      		out 0x5,__zero_reg__
+  60:main.c        **** 	PORTD = 0x00;
+  37               		.loc 1 60 0
+  38 0016 1BB8      		out 0xb,__zero_reg__
+  61:main.c        **** 
+  62:main.c        **** 	LCDInitialise(LCD_DEFAULT_CONTRAST);
+  39               		.loc 1 62 0
+  40 0018 8FE3      		ldi r24,lo8(63)
+  41 001a 0E94 0000 		call LCDInitialise
+  42               	.LVL0:
+  63:main.c        **** 	clear();
+  43               		.loc 1 63 0
+  44 001e 0C94 0000 		jmp clear
+  45               	.LVL1:
+  46               		.cfi_endproc
+  47               	.LFE8:
+  49               		.section	.text.startup.main,"ax",@progbits
+  50               	.global	main
+  52               	main:
+  53               	.LFB7:
+  31:main.c        **** int main() {
+  54               		.loc 1 31 0
+  55               		.cfi_startproc
+  56               	/* prologue: function */
+  57               	/* frame size = 0 */
+  58               	/* stack size = 0 */
+  59               	.L__stack_usage = 0
+  32:main.c        **** 	setup_device();
+  60               		.loc 1 32 0
+  61 0000 0E94 0000 		call setup_device
+  62               	.LVL2:
+  34:main.c        **** 	setup_start_screen();
+  63               		.loc 1 34 0
+  64 0004 0E94 0000 		call setup_start_screen
+  65               	.LVL3:
+  36:main.c        **** 	screen_lines();
+  66               		.loc 1 36 0
+  67 0008 0E94 0000 		call screen_lines
+  68               	.LVL4:
+  37:main.c        **** 	lives_setup();
+  69               		.loc 1 37 0
+  70 000c 0E94 0000 		call lives_setup
+  71               	.LVL5:
+  38:main.c        **** 	score_setup();
+  72               		.loc 1 38 0
+  73 0010 0E94 0000 		call score_setup
+  74               	.LVL6:
+  44:main.c        **** 	start_hero();
+  75               		.loc 1 44 0
+  76 0014 0E94 0000 		call start_hero
+  77               	.LVL7:
+  45:main.c        **** 	start_zombies ();
+  78               		.loc 1 45 0
+  79 0018 0E94 0000 		call start_zombies
+  80               	.LVL8:
+  47:main.c        **** 	refresh();
+  81               		.loc 1 47 0
+  82 001c 0E94 0000 		call refresh
+  83               	.LVL9:
+  50:main.c        **** }
+  84               		.loc 1 50 0
+  85 0020 80E0      		ldi r24,0
+  86 0022 90E0      		ldi r25,0
+  87 0024 0895      		ret
+  88               		.cfi_endproc
+  89               	.LFE7:
+  91               		.text
+  92               	.Letext0:
+  93               		.file 2 "../teensy_graphics/graphics.h"
+  94               		.file 3 "start_screen.h"
+  95               		.file 4 "screen.h"
+  96               		.file 5 "lives.h"
+  97               		.file 6 "score.h"
+  98               		.file 7 "hero.h"
+  99               		.file 8 "zombies.h"
+ 100               		.file 9 "/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/stdint.h"
+ 101               		.file 10 "../teensy_graphics/ascii_font.h"
+ 102               		.file 11 "../teensy_graphics/lcd.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cceOzHTu.s:2      *ABS*:0000003e __SP_H__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cceOzHTu.s:3      *ABS*:0000003d __SP_L__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cceOzHTu.s:4      *ABS*:0000003f __SREG__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cceOzHTu.s:5      *ABS*:00000000 __tmp_reg__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cceOzHTu.s:6      *ABS*:00000001 __zero_reg__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cceOzHTu.s:13     .text.startup.main:00000000 main
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cceOzHTu.s:60     .text.setup_device:00000000 setup_device
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cctr6PeZ.s:2      *ABS*:0000003e __SP_H__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cctr6PeZ.s:3      *ABS*:0000003d __SP_L__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cctr6PeZ.s:4      *ABS*:0000003f __SREG__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cctr6PeZ.s:5      *ABS*:00000000 __tmp_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cctr6PeZ.s:6      *ABS*:00000001 __zero_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cctr6PeZ.s:13     .text.setup_device:00000000 setup_device
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cctr6PeZ.s:52     .text.startup.main:00000000 main
 
 UNDEFINED SYMBOLS
 LCDInitialise
@@ -159,5 +187,5 @@ screen_lines
 lives_setup
 score_setup
 start_hero
-zombies_start
+start_zombies
 refresh

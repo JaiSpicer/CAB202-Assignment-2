@@ -16,15 +16,20 @@
 #include "score.h"
 #include "hero.h"
 #include "zombies.h"
+#include "pit.h"
+#include "items.h"
+
+int px = 1;
+int py = 0;
 
 void start_hero() {
 	byte bitmap_hero[] = {
-			BYTE( 1110000 ),
-			BYTE( 0100000 ),
-			BYTE( 1110000 )
+			BYTE( 11100000 ),
+			BYTE( 01000000 ),
+			BYTE( 11100000 )
 	};
 
-	const int hero_width = 4;
+	const int hero_width = 3; // Maybe 4
 	const int hero_height = 3;
 
 	Sprite hero;
@@ -34,84 +39,101 @@ void start_hero() {
 	hero.dy = 0;
 
 	draw_sprite( &hero );
-
+	int zombie_update = 0;
+	int score_update = 0;
 	while (1) {
 		clear();
 		screen_lines();
     	lives_setup();
-		score_setup();
-		zombies_start();
+    	score_setup();
+
+//    	start_pit();
+//    	sword_setup();
+//    	grenades_setup();
+
 		move_hero( &hero );
 		draw_sprite (&hero );
+		if ( zombie_update == 10 ) {
+			new_zombies_pos();
+//			start_zombies();
+			zombie_update = 0;
+		}
+		if ( score_update == 50 ) {
+			update_score_time();
+			score_update = 0;
+		}
 		refresh();
+		zombie_update++;
+		score_update++;
 		_delay_ms( 100 );
 	}
 
 }
 
 void move_hero( Sprite * hero ) {
-	int px = 1;
-	int py = 0;
+
+	if ( ( hero->dx == 1) && ( pressed ( SW1 ) ) ) { // Right Button, turn right, down
+		_delay_ms(100);
+		hero->dx = 0;
+		hero->dy = 1;
+		px = 0;
+		py = 1;
+	}
+	if ( (hero->dx == -1) && ( pressed ( SW1 ) )) { // Right Button, turn right, up
+		_delay_ms(100);
+		hero->dx = 0;
+		hero->dy = -1;
+		px = 0;
+		py = -1;
+	}
+	if ( ( hero->dy == 1 ) && ( pressed ( SW1 ) )) { // Right Button, turn right, left
+		_delay_ms(100);
+		hero->dx = -1;
+		hero->dy = 0;
+		px = -1;
+		py = 0;
+	}
+	if ( ( hero->dy == -1 ) && ( pressed ( SW1 ) )) { // Right Button, turn right , right
+		_delay_ms(100);
+		hero->dx = 1;
+		hero->dy = 0;
+		px = 1;
+		py = 0;
+	}
+	if ( ( hero->dx == 1 ) && ( pressed ( SW0 ) )) { // Left Button, turn left, up
+		_delay_ms(100);
+		hero->dx = 0;
+		hero->dy = -1;
+		px = 0;
+		py = -1;
+	}
+	if ( ( hero->dx == -1 ) && ( pressed ( SW0 ) )) { // Left Button, turn left, down
+		_delay_ms(100);
+		hero->dx = 0;
+		hero->dy = 1;
+		px = 0;
+		py = 1;
+	}
+	if ( ( hero->dy == 1 ) && ( pressed ( SW0 ) )) { // Left Button, turn left, right
+		_delay_ms(100);
+		hero->dx = 1;
+		hero->dy = 0;
+		px = 1;
+		py = 0;
+	}
+	if ( ( hero->dy == -1 ) && ( pressed ( SW0 ) )) { // Left Button, turn left, left
+		_delay_ms(100);
+		hero->dx = -1;
+		hero->dy = 0;
+		px = -1;
+		py = 0;
+	}
 
 	hero->x += hero->dx;
 	hero->y += hero->dy;
 
-	if ( pressed ( SW1 ) ) {
-		if ( ( px = 1) ) {
-			hero->dx = 0;
-			hero->dy = 1;
-			px = 0;
-			py = 1;
-		}
-		else if ( (px = -1) ) {
-			hero->dx = 0;
-			hero->dy = -1;
-			px = 0;
-			py = -1;
-		}
-		else if ( ( py = 1 ) ) {
-			hero->dx = -1;
-			hero->dy = 0;
-			px = -1;
-			py = 0;
-		}
-		else if ( ( py = -1 ) ) {
-			hero->dx = 1;
-			hero->dy = 0;
-			px = 1;
-			py = 0;
-		}
-	}
-
-	if ( pressed ( SW0 ) ) {
-		if ( ( px = 1 ) ) {
-			hero->dx = 0;
-			hero->dy = -1;
-			px = 0;
-			py = -1;
-		}
-		else if ( ( px = -1 ) ) {
-			hero->dx = 0;
-			hero->dy = 1;
-			px = 0;
-			py = 1;
-		}
-		else if ( ( py = 1 ) ) {
-			hero->dx = 1;
-			hero->dy = 0;
-			px = 1;
-			py = 0;
-		}
-		else if ( ( py = -1 ) ) {
-			hero->dx = -1;
-			hero->dy = 0;
-			px = -1;
-			py = 0;
-		}
-	}
-
-	if ( hero->x >= (LCD_X - 1) - hero->width || hero->x < 1 ) {
-		hero->dx = 0;
+	if ( hero->x >= (LCD_X - 1) - hero->width || hero->x < 2 ) {
+		hero->dx = 0; // each ege
 	}
 
 	if ( hero->y >= (LCD_Y - 1) - hero->height || hero->y < 14 ) {

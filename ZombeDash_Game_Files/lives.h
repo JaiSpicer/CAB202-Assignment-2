@@ -9,5 +9,6 @@
 #define __LIVES__
 
 void lives_setup( void );
+void update_score_time( void );
 
 #endif /* LIVES */

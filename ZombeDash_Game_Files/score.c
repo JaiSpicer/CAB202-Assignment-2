@@ -7,8 +7,17 @@
 
 #include "score.h"
 
+int score = 0;
+char s[15];
 void score_setup() {
-	int score = 0;
-	draw_string("Score:", 38,2);
-	draw_string("000", 67,2);
+//	score = scoretotal;
+
+
+	draw_string("S:", 18,3);
+	sprintf(s, "%d", score);
+	draw_string(s, 27, 3);
+}
+
+void update_score_time() {
+	score = score + 1;
 }

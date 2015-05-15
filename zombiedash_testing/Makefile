@@ -42,11 +42,11 @@
 
 # Target file name (without extension).
 # You will need to replace "name_of_file" with your file name without the .c extension
-TARGET = main
+TARGET = zombie_main
 
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC =	$(TARGET).c start_screen.c screen.c lives.c score.c hero.c zombies.c pit.c items.c
+SRC =	$(TARGET).c
 # 	usb_debug_only.c \
 # 	print.c
 
