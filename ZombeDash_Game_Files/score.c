@@ -2,7 +2,7 @@
  * score.c
  *
  *  Created on: 9 May 2015
- *      Author: Reflectin88
+ *      Author: Jai Spicer
  */
 
 #include "score.h"
