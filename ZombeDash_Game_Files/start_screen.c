@@ -34,7 +34,7 @@ void game_countdown() {
 		turn_on(LED1);
 		turn_on(LED2);
 		refresh();
-		_delay_ms(500);
+		_delay_ms(1000);
 		turn_off(LED0);
 		turn_off(LED1);
 		turn_off(LED2);
@@ -43,14 +43,14 @@ void game_countdown() {
 		turn_on(LED0);
 		turn_on(LED1);
 		refresh();
-		_delay_ms(500);
+		_delay_ms(1000);
 		turn_off(LED0);
 		turn_off(LED1);
 		clear();
 		draw_string( "1", 40, 22 );
 		turn_on(LED1);
 		refresh();
-		_delay_ms(500);
+		_delay_ms(1000);
 		turn_off(LED0);
 		turn_off(LED1);
 		clear();

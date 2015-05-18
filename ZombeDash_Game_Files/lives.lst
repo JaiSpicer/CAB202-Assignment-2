@@ -130,15 +130,15 @@
  113               		.file 2 "<built-in>"
 DEFINED SYMBOLS
                             *ABS*:00000000 lives.c
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc0ulI8w.s:2      *ABS*:0000003e __SP_H__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc0ulI8w.s:3      *ABS*:0000003d __SP_L__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc0ulI8w.s:4      *ABS*:0000003f __SREG__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc0ulI8w.s:5      *ABS*:00000000 __tmp_reg__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc0ulI8w.s:6      *ABS*:00000001 __zero_reg__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc0ulI8w.s:18     .text.lives_setup:00000000 lives_setup
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc0ulI8w.s:109    .data:00000000 lives
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccKjtyk4.s:2      *ABS*:0000003e __SP_H__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccKjtyk4.s:3      *ABS*:0000003d __SP_L__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccKjtyk4.s:4      *ABS*:0000003f __SREG__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccKjtyk4.s:5      *ABS*:00000000 __tmp_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccKjtyk4.s:6      *ABS*:00000001 __zero_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccKjtyk4.s:18     .text.lives_setup:00000000 lives_setup
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccKjtyk4.s:109    .data:00000000 lives
                             *COM*:0000000f l
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc0ulI8w.s:86     .text.update_lives:00000000 update_lives
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccKjtyk4.s:86     .text.update_lives:00000000 update_lives
 
 UNDEFINED SYMBOLS
 draw_string

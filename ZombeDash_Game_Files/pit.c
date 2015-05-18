@@ -11,6 +11,9 @@
 
 #include "pit.h"
 
+Sprite pit;
+Sprite * pit_prt = &pit;
+
 void start_pit() {
 	byte bitmap_pit[] = {
 			BYTE( 11111100 ),
@@ -24,12 +27,10 @@ void start_pit() {
 	const int pit_width = 6; // Maybe 4
 	const int pit_height = 6;
 
-	Sprite pit;
 
 	init_sprite( &pit, 20,28,pit_width,pit_height, bitmap_pit );
 
 	draw_sprite( &pit );
-
-
 }
+
 

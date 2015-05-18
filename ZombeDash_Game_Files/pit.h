@@ -10,4 +10,7 @@
 
 void start_pit( void );
 
+Sprite pit;
+extern Sprite * pit_prt;
+
 #endif /* PIT */

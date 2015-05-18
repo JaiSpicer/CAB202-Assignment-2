@@ -7,16 +7,11 @@
    7               		.text
    8               	.Ltext0:
    9               		.cfi_sections	.debug_frame
-  10               	.global	__eqsf2
-  11               	.global	__addsf3
-  12               	.global	__floatsisf
-  13               	.global	__gesf2
-  14               	.global	__ltsf2
-  15               		.section	.text.move_hero,"ax",@progbits
-  16               	.global	move_hero
-  18               	move_hero:
-  19               	.LFB8:
-  20               		.file 1 "hero.c"
+  10               		.section	.text.start_hero,"ax",@progbits
+  11               	.global	start_hero
+  13               	start_hero:
+  14               	.LFB7:
+  15               		.file 1 "hero.c"
    1:hero.c        **** /*
    2:hero.c        ****  * hero.c
    3:hero.c        ****  *
@@ -29,137 +24,198 @@
   10:hero.c        **** #include "graphics.h"
   11:hero.c        **** #include "friendly_ports.h"
   12:hero.c        **** 
-  13:hero.c        **** #include "start_screen.h"
-  14:hero.c        **** #include "screen.h"
+  13:hero.c        **** #include "hero.h"
+  14:hero.c        **** #include "zombies.h"
   15:hero.c        **** #include "lives.h"
-  16:hero.c        **** #include "score.h"
-  17:hero.c        **** #include "hero.h"
-  18:hero.c        **** #include "zombies.h"
-  19:hero.c        **** #include "pit.h"
-  20:hero.c        **** #include "items.h"
-  21:hero.c        **** 
-  22:hero.c        **** int px = 1;
-  23:hero.c        **** int py = 0;
-  24:hero.c        **** 
-  25:hero.c        **** void start_hero() {
-  26:hero.c        **** 	byte bitmap_hero[] = {
-  27:hero.c        **** 			BYTE( 11100000 ),
-  28:hero.c        **** 			BYTE( 01000000 ),
-  29:hero.c        **** 			BYTE( 11100000 )
-  30:hero.c        **** 	};
+  16:hero.c        **** 
+  17:hero.c        **** int px = 1;
+  18:hero.c        **** int py = 0;
+  19:hero.c        **** 
+  20:hero.c        **** Sprite hero;
+  21:hero.c        **** Sprite * hero_prt = &hero;
+  22:hero.c        **** 
+  23:hero.c        **** byte bitmap_hero[] = {
+  24:hero.c        **** 			BYTE( 11100000 ),
+  25:hero.c        **** 			BYTE( 01000000 ),
+  26:hero.c        **** 			BYTE( 11100000 )
+  27:hero.c        **** 	};
+  28:hero.c        **** 
+  29:hero.c        **** void start_hero() {
+  16               		.loc 1 29 0
+  17               		.cfi_startproc
+  18 0000 EF92      		push r14
+  19               	.LCFI0:
+  20               		.cfi_def_cfa_offset 3
+  21               		.cfi_offset 14, -2
+  22 0002 FF92      		push r15
+  23               	.LCFI1:
+  24               		.cfi_def_cfa_offset 4
+  25               		.cfi_offset 15, -3
+  26 0004 0F93      		push r16
+  27               	.LCFI2:
+  28               		.cfi_def_cfa_offset 5
+  29               		.cfi_offset 16, -4
+  30               	/* prologue: function */
+  31               	/* frame size = 0 */
+  32               	/* stack size = 3 */
+  33               	.L__stack_usage = 3
+  34               	.LVL0:
+  30:hero.c        **** 
   31:hero.c        **** 
   32:hero.c        **** 	const int hero_width = 3; // Maybe 4
   33:hero.c        **** 	const int hero_height = 3;
   34:hero.c        **** 
-  35:hero.c        **** 	Sprite hero;
+  35:hero.c        **** //	Sprite hero;
   36:hero.c        **** 
   37:hero.c        **** 	init_sprite( &hero, 38,28,hero_width,hero_height, bitmap_hero );
-  38:hero.c        **** 	hero.dx = 1;
-  39:hero.c        **** 	hero.dy = 0;
+  35               		.loc 1 37 0
+  36 0006 80E0      		ldi r24,lo8(bitmap_hero)
+  37 0008 E82E      		mov r14,r24
+  38 000a 80E0      		ldi r24,hi8(bitmap_hero)
+  39 000c F82E      		mov r15,r24
+  40 000e 03E0      		ldi r16,lo8(3)
+  41 0010 23E0      		ldi r18,lo8(3)
+  42 0012 4CE1      		ldi r20,lo8(28)
+  43 0014 66E2      		ldi r22,lo8(38)
+  44 0016 80E0      		ldi r24,lo8(hero)
+  45 0018 90E0      		ldi r25,hi8(hero)
+  46 001a 0E94 0000 		call init_sprite
+  47               	.LVL1:
+  38:hero.c        **** 	hero.is_visible = 1;
+  48               		.loc 1 38 0
+  49 001e 81E0      		ldi r24,lo8(1)
+  50 0020 8093 0000 		sts hero+10,r24
+  39:hero.c        **** 	hero_prt->is_visible = 1;
+  51               		.loc 1 39 0
+  52 0024 E091 0000 		lds r30,hero_prt
+  53 0028 F091 0000 		lds r31,hero_prt+1
+  54 002c 8287      		std Z+10,r24
   40:hero.c        **** 
-  41:hero.c        **** 	draw_sprite( &hero );
-  42:hero.c        **** 	int zombie_update = 0;
-  43:hero.c        **** 	int score_update = 0;
-  44:hero.c        **** 	while (1) {
-  45:hero.c        **** 		clear();
-  46:hero.c        **** 		screen_lines();
-  47:hero.c        ****     	lives_setup();
-  48:hero.c        ****     	score_setup();
-  49:hero.c        **** 
-  50:hero.c        **** //    	start_pit();
-  51:hero.c        **** //    	sword_setup();
-  52:hero.c        **** //    	grenades_setup();
-  53:hero.c        **** 
-  54:hero.c        **** 		move_hero( &hero );
-  55:hero.c        **** 		draw_sprite (&hero );
-  56:hero.c        **** 		if ( zombie_update == 10 ) {
-  57:hero.c        **** 			new_zombies_pos();
-  58:hero.c        **** //			start_zombies();
-  59:hero.c        **** 			zombie_update = 0;
-  60:hero.c        **** 		}
-  61:hero.c        **** 		if ( score_update == 50 ) {
-  62:hero.c        **** 			update_score_time();
-  63:hero.c        **** 			score_update = 0;
-  64:hero.c        **** 		}
-  65:hero.c        **** 		refresh();
-  66:hero.c        **** 		zombie_update++;
-  67:hero.c        **** 		score_update++;
-  68:hero.c        **** 		_delay_ms( 100 );
-  69:hero.c        **** 	}
-  70:hero.c        **** 
-  71:hero.c        **** }
-  72:hero.c        **** 
-  73:hero.c        **** void move_hero( Sprite * hero ) {
-  21               		.loc 1 73 0
-  22               		.cfi_startproc
-  23               	.LVL0:
-  24 0000 AF92      		push r10
-  25               	.LCFI0:
-  26               		.cfi_def_cfa_offset 3
-  27               		.cfi_offset 10, -2
-  28 0002 BF92      		push r11
-  29               	.LCFI1:
-  30               		.cfi_def_cfa_offset 4
-  31               		.cfi_offset 11, -3
-  32 0004 CF92      		push r12
-  33               	.LCFI2:
-  34               		.cfi_def_cfa_offset 5
-  35               		.cfi_offset 12, -4
-  36 0006 DF92      		push r13
-  37               	.LCFI3:
-  38               		.cfi_def_cfa_offset 6
-  39               		.cfi_offset 13, -5
-  40 0008 EF92      		push r14
-  41               	.LCFI4:
-  42               		.cfi_def_cfa_offset 7
-  43               		.cfi_offset 14, -6
-  44 000a FF92      		push r15
-  45               	.LCFI5:
-  46               		.cfi_def_cfa_offset 8
-  47               		.cfi_offset 15, -7
-  48 000c 0F93      		push r16
-  49               	.LCFI6:
-  50               		.cfi_def_cfa_offset 9
-  51               		.cfi_offset 16, -8
-  52 000e 1F93      		push r17
-  53               	.LCFI7:
-  54               		.cfi_def_cfa_offset 10
-  55               		.cfi_offset 17, -9
-  56 0010 CF93      		push r28
-  57               	.LCFI8:
-  58               		.cfi_def_cfa_offset 11
-  59               		.cfi_offset 28, -10
-  60 0012 DF93      		push r29
-  61               	.LCFI9:
-  62               		.cfi_def_cfa_offset 12
-  63               		.cfi_offset 29, -11
-  64               	/* prologue: function */
-  65               	/* frame size = 0 */
-  66               	/* stack size = 10 */
-  67               	.L__stack_usage = 10
-  68 0014 EC01      		movw r28,r24
-  74:hero.c        **** 
-  75:hero.c        **** 	if ( ( hero->dx == 1) && ( pressed ( SW1 ) ) ) { // Right Button, turn right, down
-  69               		.loc 1 75 0
-  70 0016 20E0      		ldi r18,0
-  71 0018 30E0      		ldi r19,0
-  72 001a 40E8      		ldi r20,lo8(-128)
-  73 001c 5FE3      		ldi r21,lo8(63)
-  74 001e 6D85      		ldd r22,Y+13
-  75 0020 7E85      		ldd r23,Y+14
-  76 0022 8F85      		ldd r24,Y+15
-  77 0024 9889      		ldd r25,Y+16
-  78 0026 0E94 0000 		call __eqsf2
-  79               	.LVL1:
-  80 002a 8111      		cpse r24,__zero_reg__
-  81 002c 00C0      		rjmp .L2
-  82               		.loc 1 75 0 is_stmt 0 discriminator 1
-  83 002e 199B      		sbis 0x3,1
-  84 0030 00C0      		rjmp .L2
-  85               	.LVL2:
-  86               	.LBB21:
-  87               	.LBB22:
-  88               		.file 2 "/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h"
+  41:hero.c        **** 	hero.dx = 1;
+  55               		.loc 1 41 0
+  56 002e 80E0      		ldi r24,0
+  57 0030 90E0      		ldi r25,0
+  58 0032 A0E8      		ldi r26,lo8(-128)
+  59 0034 BFE3      		ldi r27,lo8(63)
+  60 0036 8093 0000 		sts hero+13,r24
+  61 003a 9093 0000 		sts hero+13+1,r25
+  62 003e A093 0000 		sts hero+13+2,r26
+  63 0042 B093 0000 		sts hero+13+3,r27
+  42:hero.c        **** 	hero.dy = 0;
+  64               		.loc 1 42 0
+  65 0046 1092 0000 		sts hero+17,__zero_reg__
+  66 004a 1092 0000 		sts hero+17+1,__zero_reg__
+  67 004e 1092 0000 		sts hero+17+2,__zero_reg__
+  68 0052 1092 0000 		sts hero+17+3,__zero_reg__
+  43:hero.c        **** 
+  44:hero.c        **** 	draw_sprite( &hero );
+  69               		.loc 1 44 0
+  70 0056 80E0      		ldi r24,lo8(hero)
+  71 0058 90E0      		ldi r25,hi8(hero)
+  72               	/* epilogue start */
+  45:hero.c        **** 
+  46:hero.c        **** 
+  47:hero.c        **** }
+  73               		.loc 1 47 0
+  74 005a 0F91      		pop r16
+  75 005c FF90      		pop r15
+  76 005e EF90      		pop r14
+  44:hero.c        **** 	draw_sprite( &hero );
+  77               		.loc 1 44 0
+  78 0060 0C94 0000 		jmp draw_sprite
+  79               	.LVL2:
+  80               		.cfi_endproc
+  81               	.LFE7:
+  83               	.global	__eqsf2
+  84               	.global	__addsf3
+  85               	.global	__floatsisf
+  86               	.global	__gesf2
+  87               	.global	__subsf3
+  88               	.global	__ltsf2
+  89               		.section	.text.move_hero,"ax",@progbits
+  90               	.global	move_hero
+  92               	move_hero:
+  93               	.LFB8:
+  48:hero.c        **** 
+  49:hero.c        **** void move_hero( Sprite * hero ) {
+  94               		.loc 1 49 0
+  95               		.cfi_startproc
+  96               	.LVL3:
+  97 0000 8F92      		push r8
+  98               	.LCFI3:
+  99               		.cfi_def_cfa_offset 3
+ 100               		.cfi_offset 8, -2
+ 101 0002 9F92      		push r9
+ 102               	.LCFI4:
+ 103               		.cfi_def_cfa_offset 4
+ 104               		.cfi_offset 9, -3
+ 105 0004 AF92      		push r10
+ 106               	.LCFI5:
+ 107               		.cfi_def_cfa_offset 5
+ 108               		.cfi_offset 10, -4
+ 109 0006 BF92      		push r11
+ 110               	.LCFI6:
+ 111               		.cfi_def_cfa_offset 6
+ 112               		.cfi_offset 11, -5
+ 113 0008 CF92      		push r12
+ 114               	.LCFI7:
+ 115               		.cfi_def_cfa_offset 7
+ 116               		.cfi_offset 12, -6
+ 117 000a DF92      		push r13
+ 118               	.LCFI8:
+ 119               		.cfi_def_cfa_offset 8
+ 120               		.cfi_offset 13, -7
+ 121 000c EF92      		push r14
+ 122               	.LCFI9:
+ 123               		.cfi_def_cfa_offset 9
+ 124               		.cfi_offset 14, -8
+ 125 000e FF92      		push r15
+ 126               	.LCFI10:
+ 127               		.cfi_def_cfa_offset 10
+ 128               		.cfi_offset 15, -9
+ 129 0010 0F93      		push r16
+ 130               	.LCFI11:
+ 131               		.cfi_def_cfa_offset 11
+ 132               		.cfi_offset 16, -10
+ 133 0012 1F93      		push r17
+ 134               	.LCFI12:
+ 135               		.cfi_def_cfa_offset 12
+ 136               		.cfi_offset 17, -11
+ 137 0014 CF93      		push r28
+ 138               	.LCFI13:
+ 139               		.cfi_def_cfa_offset 13
+ 140               		.cfi_offset 28, -12
+ 141 0016 DF93      		push r29
+ 142               	.LCFI14:
+ 143               		.cfi_def_cfa_offset 14
+ 144               		.cfi_offset 29, -13
+ 145               	/* prologue: function */
+ 146               	/* frame size = 0 */
+ 147               	/* stack size = 12 */
+ 148               	.L__stack_usage = 12
+ 149 0018 EC01      		movw r28,r24
+  50:hero.c        **** 
+  51:hero.c        **** 	if ( ( hero->dx == 1) && ( pressed ( SW1 ) ) ) { // Right Button, turn right, down
+ 150               		.loc 1 51 0
+ 151 001a 20E0      		ldi r18,0
+ 152 001c 30E0      		ldi r19,0
+ 153 001e 40E8      		ldi r20,lo8(-128)
+ 154 0020 5FE3      		ldi r21,lo8(63)
+ 155 0022 6D85      		ldd r22,Y+13
+ 156 0024 7E85      		ldd r23,Y+14
+ 157 0026 8F85      		ldd r24,Y+15
+ 158 0028 9889      		ldd r25,Y+16
+ 159 002a 0E94 0000 		call __eqsf2
+ 160               	.LVL4:
+ 161 002e 8111      		cpse r24,__zero_reg__
+ 162 0030 00C0      		rjmp .L3
+ 163               		.loc 1 51 0 is_stmt 0 discriminator 1
+ 164 0032 199B      		sbis 0x3,1
+ 165 0034 00C0      		rjmp .L3
+ 166               	.LVL5:
+ 167               	.LBB18:
+ 168               	.LBB19:
+ 169               		.file 2 "/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h"
    1:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** /* Copyright (c) 2002, Marek Michalkiewicz
    2:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    Copyright (c) 2004,2005,2007 Joerg Wunsch
    3:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    Copyright (c) 2007  Florin-Viorel Petrov
@@ -324,863 +380,785 @@
  162:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 	#endif
  163:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
  164:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
-  89               		.loc 2 164 0 is_stmt 1
-  90 0032 2FEF      		ldi r18,lo8(159999)
-  91 0034 80E7      		ldi r24,hi8(159999)
-  92 0036 92E0      		ldi r25,hlo8(159999)
-  93 0038 2150      		1: subi r18,1
-  94 003a 8040      		sbci r24,0
-  95 003c 9040      		sbci r25,0
-  96 003e 01F4      		brne 1b
-  97 0040 00C0      		rjmp .
-  98 0042 0000      		nop
-  99               	.LBE22:
- 100               	.LBE21:
-  76:hero.c        **** 		_delay_ms(100);
-  77:hero.c        **** 		hero->dx = 0;
- 101               		.loc 1 77 0
- 102 0044 1D86      		std Y+13,__zero_reg__
- 103 0046 1E86      		std Y+14,__zero_reg__
- 104 0048 1F86      		std Y+15,__zero_reg__
- 105 004a 188A      		std Y+16,__zero_reg__
-  78:hero.c        **** 		hero->dy = 1;
- 106               		.loc 1 78 0
- 107 004c 80E0      		ldi r24,0
- 108 004e 90E0      		ldi r25,0
- 109 0050 A0E8      		ldi r26,lo8(-128)
- 110 0052 BFE3      		ldi r27,lo8(63)
- 111 0054 898B      		std Y+17,r24
- 112 0056 9A8B      		std Y+18,r25
- 113 0058 AB8B      		std Y+19,r26
- 114 005a BC8B      		std Y+20,r27
-  79:hero.c        **** 		px = 0;
- 115               		.loc 1 79 0
- 116 005c 1092 0000 		sts px+1,__zero_reg__
- 117 0060 1092 0000 		sts px,__zero_reg__
-  80:hero.c        **** 		py = 1;
- 118               		.loc 1 80 0
- 119 0064 81E0      		ldi r24,lo8(1)
- 120 0066 90E0      		ldi r25,0
- 121 0068 9093 0000 		sts py+1,r25
- 122 006c 8093 0000 		sts py,r24
- 123               	.LVL3:
- 124               	.L2:
-  81:hero.c        **** 	}
-  82:hero.c        **** 	if ( (hero->dx == -1) && ( pressed ( SW1 ) )) { // Right Button, turn right, up
- 125               		.loc 1 82 0
- 126 0070 20E0      		ldi r18,0
- 127 0072 30E0      		ldi r19,0
- 128 0074 40E8      		ldi r20,lo8(-128)
- 129 0076 5FEB      		ldi r21,lo8(-65)
- 130 0078 6D85      		ldd r22,Y+13
- 131 007a 7E85      		ldd r23,Y+14
- 132 007c 8F85      		ldd r24,Y+15
- 133 007e 9889      		ldd r25,Y+16
- 134 0080 0E94 0000 		call __eqsf2
- 135               	.LVL4:
- 136 0084 8111      		cpse r24,__zero_reg__
- 137 0086 00C0      		rjmp .L4
- 138               		.loc 1 82 0 is_stmt 0 discriminator 1
- 139 0088 199B      		sbis 0x3,1
- 140 008a 00C0      		rjmp .L4
- 141               	.LVL5:
- 142               	.LBB23:
- 143               	.LBB24:
- 144               		.loc 2 164 0 is_stmt 1
- 145 008c 2FEF      		ldi r18,lo8(159999)
- 146 008e 80E7      		ldi r24,hi8(159999)
- 147 0090 92E0      		ldi r25,hlo8(159999)
- 148 0092 2150      		1: subi r18,1
- 149 0094 8040      		sbci r24,0
- 150 0096 9040      		sbci r25,0
- 151 0098 01F4      		brne 1b
- 152 009a 00C0      		rjmp .
- 153 009c 0000      		nop
- 154               	.LBE24:
- 155               	.LBE23:
-  83:hero.c        **** 		_delay_ms(100);
-  84:hero.c        **** 		hero->dx = 0;
- 156               		.loc 1 84 0
- 157 009e 1D86      		std Y+13,__zero_reg__
- 158 00a0 1E86      		std Y+14,__zero_reg__
- 159 00a2 1F86      		std Y+15,__zero_reg__
- 160 00a4 188A      		std Y+16,__zero_reg__
-  85:hero.c        **** 		hero->dy = -1;
- 161               		.loc 1 85 0
- 162 00a6 80E0      		ldi r24,0
- 163 00a8 90E0      		ldi r25,0
- 164 00aa A0E8      		ldi r26,lo8(-128)
- 165 00ac BFEB      		ldi r27,lo8(-65)
- 166 00ae 898B      		std Y+17,r24
- 167 00b0 9A8B      		std Y+18,r25
- 168 00b2 AB8B      		std Y+19,r26
- 169 00b4 BC8B      		std Y+20,r27
-  86:hero.c        **** 		px = 0;
- 170               		.loc 1 86 0
- 171 00b6 1092 0000 		sts px+1,__zero_reg__
- 172 00ba 1092 0000 		sts px,__zero_reg__
-  87:hero.c        **** 		py = -1;
- 173               		.loc 1 87 0
- 174 00be 8FEF      		ldi r24,lo8(-1)
- 175 00c0 9FEF      		ldi r25,lo8(-1)
- 176 00c2 9093 0000 		sts py+1,r25
- 177 00c6 8093 0000 		sts py,r24
- 178               	.LVL6:
- 179               	.L4:
-  88:hero.c        **** 	}
-  89:hero.c        **** 	if ( ( hero->dy == 1 ) && ( pressed ( SW1 ) )) { // Right Button, turn right, left
- 180               		.loc 1 89 0
- 181 00ca 20E0      		ldi r18,0
- 182 00cc 30E0      		ldi r19,0
- 183 00ce 40E8      		ldi r20,lo8(-128)
- 184 00d0 5FE3      		ldi r21,lo8(63)
- 185 00d2 6989      		ldd r22,Y+17
- 186 00d4 7A89      		ldd r23,Y+18
- 187 00d6 8B89      		ldd r24,Y+19
- 188 00d8 9C89      		ldd r25,Y+20
- 189 00da 0E94 0000 		call __eqsf2
- 190               	.LVL7:
- 191 00de 8111      		cpse r24,__zero_reg__
- 192 00e0 00C0      		rjmp .L6
- 193               		.loc 1 89 0 is_stmt 0 discriminator 1
- 194 00e2 199B      		sbis 0x3,1
- 195 00e4 00C0      		rjmp .L6
- 196               	.LVL8:
- 197               	.LBB25:
- 198               	.LBB26:
- 199               		.loc 2 164 0 is_stmt 1
- 200 00e6 2FEF      		ldi r18,lo8(159999)
- 201 00e8 80E7      		ldi r24,hi8(159999)
- 202 00ea 92E0      		ldi r25,hlo8(159999)
- 203 00ec 2150      		1: subi r18,1
- 204 00ee 8040      		sbci r24,0
- 205 00f0 9040      		sbci r25,0
- 206 00f2 01F4      		brne 1b
- 207 00f4 00C0      		rjmp .
- 208 00f6 0000      		nop
- 209               	.LBE26:
- 210               	.LBE25:
-  90:hero.c        **** 		_delay_ms(100);
-  91:hero.c        **** 		hero->dx = -1;
- 211               		.loc 1 91 0
- 212 00f8 80E0      		ldi r24,0
- 213 00fa 90E0      		ldi r25,0
- 214 00fc A0E8      		ldi r26,lo8(-128)
- 215 00fe BFEB      		ldi r27,lo8(-65)
- 216 0100 8D87      		std Y+13,r24
- 217 0102 9E87      		std Y+14,r25
- 218 0104 AF87      		std Y+15,r26
- 219 0106 B88B      		std Y+16,r27
-  92:hero.c        **** 		hero->dy = 0;
- 220               		.loc 1 92 0
- 221 0108 198A      		std Y+17,__zero_reg__
- 222 010a 1A8A      		std Y+18,__zero_reg__
- 223 010c 1B8A      		std Y+19,__zero_reg__
- 224 010e 1C8A      		std Y+20,__zero_reg__
-  93:hero.c        **** 		px = -1;
- 225               		.loc 1 93 0
- 226 0110 8FEF      		ldi r24,lo8(-1)
- 227 0112 9FEF      		ldi r25,lo8(-1)
- 228 0114 9093 0000 		sts px+1,r25
- 229 0118 8093 0000 		sts px,r24
-  94:hero.c        **** 		py = 0;
- 230               		.loc 1 94 0
- 231 011c 1092 0000 		sts py+1,__zero_reg__
- 232 0120 1092 0000 		sts py,__zero_reg__
- 233               	.LVL9:
- 234               	.L6:
-  95:hero.c        **** 	}
-  96:hero.c        **** 	if ( ( hero->dy == -1 ) && ( pressed ( SW1 ) )) { // Right Button, turn right , right
- 235               		.loc 1 96 0
- 236 0124 20E0      		ldi r18,0
- 237 0126 30E0      		ldi r19,0
- 238 0128 40E8      		ldi r20,lo8(-128)
- 239 012a 5FEB      		ldi r21,lo8(-65)
- 240 012c 6989      		ldd r22,Y+17
- 241 012e 7A89      		ldd r23,Y+18
- 242 0130 8B89      		ldd r24,Y+19
- 243 0132 9C89      		ldd r25,Y+20
- 244 0134 0E94 0000 		call __eqsf2
- 245               	.LVL10:
- 246 0138 8111      		cpse r24,__zero_reg__
- 247 013a 00C0      		rjmp .L8
- 248               		.loc 1 96 0 is_stmt 0 discriminator 1
- 249 013c 199B      		sbis 0x3,1
- 250 013e 00C0      		rjmp .L8
- 251               	.LVL11:
- 252               	.LBB27:
- 253               	.LBB28:
- 254               		.loc 2 164 0 is_stmt 1
- 255 0140 2FEF      		ldi r18,lo8(159999)
- 256 0142 80E7      		ldi r24,hi8(159999)
- 257 0144 92E0      		ldi r25,hlo8(159999)
- 258 0146 2150      		1: subi r18,1
- 259 0148 8040      		sbci r24,0
- 260 014a 9040      		sbci r25,0
- 261 014c 01F4      		brne 1b
- 262 014e 00C0      		rjmp .
- 263 0150 0000      		nop
- 264               	.LBE28:
- 265               	.LBE27:
-  97:hero.c        **** 		_delay_ms(100);
-  98:hero.c        **** 		hero->dx = 1;
- 266               		.loc 1 98 0
- 267 0152 80E0      		ldi r24,0
- 268 0154 90E0      		ldi r25,0
- 269 0156 A0E8      		ldi r26,lo8(-128)
- 270 0158 BFE3      		ldi r27,lo8(63)
- 271 015a 8D87      		std Y+13,r24
- 272 015c 9E87      		std Y+14,r25
- 273 015e AF87      		std Y+15,r26
- 274 0160 B88B      		std Y+16,r27
-  99:hero.c        **** 		hero->dy = 0;
- 275               		.loc 1 99 0
- 276 0162 198A      		std Y+17,__zero_reg__
- 277 0164 1A8A      		std Y+18,__zero_reg__
- 278 0166 1B8A      		std Y+19,__zero_reg__
- 279 0168 1C8A      		std Y+20,__zero_reg__
- 100:hero.c        **** 		px = 1;
- 280               		.loc 1 100 0
- 281 016a 81E0      		ldi r24,lo8(1)
- 282 016c 90E0      		ldi r25,0
- 283 016e 9093 0000 		sts px+1,r25
- 284 0172 8093 0000 		sts px,r24
- 101:hero.c        **** 		py = 0;
- 285               		.loc 1 101 0
- 286 0176 1092 0000 		sts py+1,__zero_reg__
- 287 017a 1092 0000 		sts py,__zero_reg__
- 288               	.LVL12:
- 289               	.L8:
- 102:hero.c        **** 	}
- 103:hero.c        **** 	if ( ( hero->dx == 1 ) && ( pressed ( SW0 ) )) { // Left Button, turn left, up
- 290               		.loc 1 103 0
- 291 017e 20E0      		ldi r18,0
- 292 0180 30E0      		ldi r19,0
- 293 0182 40E8      		ldi r20,lo8(-128)
- 294 0184 5FE3      		ldi r21,lo8(63)
- 295 0186 6D85      		ldd r22,Y+13
- 296 0188 7E85      		ldd r23,Y+14
- 297 018a 8F85      		ldd r24,Y+15
- 298 018c 9889      		ldd r25,Y+16
- 299 018e 0E94 0000 		call __eqsf2
- 300               	.LVL13:
- 301 0192 8111      		cpse r24,__zero_reg__
- 302 0194 00C0      		rjmp .L10
- 303               		.loc 1 103 0 is_stmt 0 discriminator 1
- 304 0196 189B      		sbis 0x3,0
- 305 0198 00C0      		rjmp .L10
- 306               	.LVL14:
- 307               	.LBB29:
- 308               	.LBB30:
- 309               		.loc 2 164 0 is_stmt 1
- 310 019a 2FEF      		ldi r18,lo8(159999)
- 311 019c 80E7      		ldi r24,hi8(159999)
- 312 019e 92E0      		ldi r25,hlo8(159999)
- 313 01a0 2150      		1: subi r18,1
- 314 01a2 8040      		sbci r24,0
- 315 01a4 9040      		sbci r25,0
- 316 01a6 01F4      		brne 1b
- 317 01a8 00C0      		rjmp .
- 318 01aa 0000      		nop
- 319               	.LBE30:
- 320               	.LBE29:
- 104:hero.c        **** 		_delay_ms(100);
- 105:hero.c        **** 		hero->dx = 0;
- 321               		.loc 1 105 0
- 322 01ac 1D86      		std Y+13,__zero_reg__
- 323 01ae 1E86      		std Y+14,__zero_reg__
- 324 01b0 1F86      		std Y+15,__zero_reg__
- 325 01b2 188A      		std Y+16,__zero_reg__
- 106:hero.c        **** 		hero->dy = -1;
- 326               		.loc 1 106 0
- 327 01b4 80E0      		ldi r24,0
- 328 01b6 90E0      		ldi r25,0
- 329 01b8 A0E8      		ldi r26,lo8(-128)
- 330 01ba BFEB      		ldi r27,lo8(-65)
- 331 01bc 898B      		std Y+17,r24
- 332 01be 9A8B      		std Y+18,r25
- 333 01c0 AB8B      		std Y+19,r26
- 334 01c2 BC8B      		std Y+20,r27
- 107:hero.c        **** 		px = 0;
- 335               		.loc 1 107 0
- 336 01c4 1092 0000 		sts px+1,__zero_reg__
- 337 01c8 1092 0000 		sts px,__zero_reg__
- 108:hero.c        **** 		py = -1;
- 338               		.loc 1 108 0
- 339 01cc 8FEF      		ldi r24,lo8(-1)
- 340 01ce 9FEF      		ldi r25,lo8(-1)
- 341 01d0 9093 0000 		sts py+1,r25
- 342 01d4 8093 0000 		sts py,r24
- 343               	.LVL15:
- 344               	.L10:
- 109:hero.c        **** 	}
- 110:hero.c        **** 	if ( ( hero->dx == -1 ) && ( pressed ( SW0 ) )) { // Left Button, turn left, down
- 345               		.loc 1 110 0
- 346 01d8 20E0      		ldi r18,0
- 347 01da 30E0      		ldi r19,0
- 348 01dc 40E8      		ldi r20,lo8(-128)
- 349 01de 5FEB      		ldi r21,lo8(-65)
- 350 01e0 6D85      		ldd r22,Y+13
- 351 01e2 7E85      		ldd r23,Y+14
- 352 01e4 8F85      		ldd r24,Y+15
- 353 01e6 9889      		ldd r25,Y+16
- 354 01e8 0E94 0000 		call __eqsf2
- 355               	.LVL16:
- 356 01ec 8111      		cpse r24,__zero_reg__
- 357 01ee 00C0      		rjmp .L12
- 358               		.loc 1 110 0 is_stmt 0 discriminator 1
- 359 01f0 189B      		sbis 0x3,0
- 360 01f2 00C0      		rjmp .L12
- 361               	.LVL17:
- 362               	.LBB31:
- 363               	.LBB32:
- 364               		.loc 2 164 0 is_stmt 1
- 365 01f4 2FEF      		ldi r18,lo8(159999)
- 366 01f6 80E7      		ldi r24,hi8(159999)
- 367 01f8 92E0      		ldi r25,hlo8(159999)
- 368 01fa 2150      		1: subi r18,1
- 369 01fc 8040      		sbci r24,0
- 370 01fe 9040      		sbci r25,0
- 371 0200 01F4      		brne 1b
- 372 0202 00C0      		rjmp .
- 373 0204 0000      		nop
- 374               	.LBE32:
- 375               	.LBE31:
- 111:hero.c        **** 		_delay_ms(100);
- 112:hero.c        **** 		hero->dx = 0;
- 376               		.loc 1 112 0
- 377 0206 1D86      		std Y+13,__zero_reg__
- 378 0208 1E86      		std Y+14,__zero_reg__
- 379 020a 1F86      		std Y+15,__zero_reg__
- 380 020c 188A      		std Y+16,__zero_reg__
- 113:hero.c        **** 		hero->dy = 1;
- 381               		.loc 1 113 0
- 382 020e 80E0      		ldi r24,0
- 383 0210 90E0      		ldi r25,0
- 384 0212 A0E8      		ldi r26,lo8(-128)
- 385 0214 BFE3      		ldi r27,lo8(63)
- 386 0216 898B      		std Y+17,r24
- 387 0218 9A8B      		std Y+18,r25
- 388 021a AB8B      		std Y+19,r26
- 389 021c BC8B      		std Y+20,r27
- 114:hero.c        **** 		px = 0;
- 390               		.loc 1 114 0
- 391 021e 1092 0000 		sts px+1,__zero_reg__
- 392 0222 1092 0000 		sts px,__zero_reg__
- 115:hero.c        **** 		py = 1;
- 393               		.loc 1 115 0
- 394 0226 81E0      		ldi r24,lo8(1)
- 395 0228 90E0      		ldi r25,0
- 396 022a 9093 0000 		sts py+1,r25
- 397 022e 8093 0000 		sts py,r24
- 398               	.LVL18:
- 399               	.L12:
- 116:hero.c        **** 	}
- 117:hero.c        **** 	if ( ( hero->dy == 1 ) && ( pressed ( SW0 ) )) { // Left Button, turn left, right
- 400               		.loc 1 117 0
- 401 0232 20E0      		ldi r18,0
- 402 0234 30E0      		ldi r19,0
- 403 0236 40E8      		ldi r20,lo8(-128)
- 404 0238 5FE3      		ldi r21,lo8(63)
- 405 023a 6989      		ldd r22,Y+17
- 406 023c 7A89      		ldd r23,Y+18
- 407 023e 8B89      		ldd r24,Y+19
- 408 0240 9C89      		ldd r25,Y+20
- 409 0242 0E94 0000 		call __eqsf2
- 410               	.LVL19:
- 411 0246 8111      		cpse r24,__zero_reg__
- 412 0248 00C0      		rjmp .L14
- 413               		.loc 1 117 0 is_stmt 0 discriminator 1
- 414 024a 189B      		sbis 0x3,0
- 415 024c 00C0      		rjmp .L14
- 416               	.LVL20:
- 417               	.LBB33:
- 418               	.LBB34:
- 419               		.loc 2 164 0 is_stmt 1
- 420 024e 2FEF      		ldi r18,lo8(159999)
- 421 0250 80E7      		ldi r24,hi8(159999)
- 422 0252 92E0      		ldi r25,hlo8(159999)
- 423 0254 2150      		1: subi r18,1
- 424 0256 8040      		sbci r24,0
- 425 0258 9040      		sbci r25,0
- 426 025a 01F4      		brne 1b
- 427 025c 00C0      		rjmp .
- 428 025e 0000      		nop
- 429               	.LBE34:
- 430               	.LBE33:
- 118:hero.c        **** 		_delay_ms(100);
- 119:hero.c        **** 		hero->dx = 1;
- 431               		.loc 1 119 0
- 432 0260 80E0      		ldi r24,0
- 433 0262 90E0      		ldi r25,0
- 434 0264 A0E8      		ldi r26,lo8(-128)
- 435 0266 BFE3      		ldi r27,lo8(63)
- 436 0268 8D87      		std Y+13,r24
- 437 026a 9E87      		std Y+14,r25
- 438 026c AF87      		std Y+15,r26
- 439 026e B88B      		std Y+16,r27
- 120:hero.c        **** 		hero->dy = 0;
- 440               		.loc 1 120 0
- 441 0270 198A      		std Y+17,__zero_reg__
- 442 0272 1A8A      		std Y+18,__zero_reg__
- 443 0274 1B8A      		std Y+19,__zero_reg__
- 444 0276 1C8A      		std Y+20,__zero_reg__
- 121:hero.c        **** 		px = 1;
- 445               		.loc 1 121 0
- 446 0278 81E0      		ldi r24,lo8(1)
- 447 027a 90E0      		ldi r25,0
- 448 027c 9093 0000 		sts px+1,r25
- 449 0280 8093 0000 		sts px,r24
- 122:hero.c        **** 		py = 0;
- 450               		.loc 1 122 0
- 451 0284 1092 0000 		sts py+1,__zero_reg__
- 452 0288 1092 0000 		sts py,__zero_reg__
- 453               	.LVL21:
- 454               	.L14:
- 123:hero.c        **** 	}
- 124:hero.c        **** 	if ( ( hero->dy == -1 ) && ( pressed ( SW0 ) )) { // Left Button, turn left, left
- 455               		.loc 1 124 0
- 456 028c 20E0      		ldi r18,0
- 457 028e 30E0      		ldi r19,0
- 458 0290 40E8      		ldi r20,lo8(-128)
- 459 0292 5FEB      		ldi r21,lo8(-65)
- 460 0294 6989      		ldd r22,Y+17
- 461 0296 7A89      		ldd r23,Y+18
- 462 0298 8B89      		ldd r24,Y+19
- 463 029a 9C89      		ldd r25,Y+20
- 464 029c 0E94 0000 		call __eqsf2
- 465               	.LVL22:
- 466 02a0 8111      		cpse r24,__zero_reg__
- 467 02a2 00C0      		rjmp .L16
- 468               		.loc 1 124 0 is_stmt 0 discriminator 1
- 469 02a4 189B      		sbis 0x3,0
- 470 02a6 00C0      		rjmp .L16
- 471               	.LVL23:
- 472               	.LBB35:
- 473               	.LBB36:
- 474               		.loc 2 164 0 is_stmt 1
- 475 02a8 2FEF      		ldi r18,lo8(159999)
- 476 02aa 80E7      		ldi r24,hi8(159999)
- 477 02ac 92E0      		ldi r25,hlo8(159999)
- 478 02ae 2150      		1: subi r18,1
- 479 02b0 8040      		sbci r24,0
- 480 02b2 9040      		sbci r25,0
- 481 02b4 01F4      		brne 1b
- 482 02b6 00C0      		rjmp .
- 483 02b8 0000      		nop
- 484               	.LBE36:
- 485               	.LBE35:
- 125:hero.c        **** 		_delay_ms(100);
- 126:hero.c        **** 		hero->dx = -1;
- 486               		.loc 1 126 0
- 487 02ba 80E0      		ldi r24,0
- 488 02bc 90E0      		ldi r25,0
- 489 02be A0E8      		ldi r26,lo8(-128)
- 490 02c0 BFEB      		ldi r27,lo8(-65)
- 491 02c2 8D87      		std Y+13,r24
- 492 02c4 9E87      		std Y+14,r25
- 493 02c6 AF87      		std Y+15,r26
- 494 02c8 B88B      		std Y+16,r27
- 127:hero.c        **** 		hero->dy = 0;
- 495               		.loc 1 127 0
- 496 02ca 198A      		std Y+17,__zero_reg__
- 497 02cc 1A8A      		std Y+18,__zero_reg__
- 498 02ce 1B8A      		std Y+19,__zero_reg__
- 499 02d0 1C8A      		std Y+20,__zero_reg__
- 128:hero.c        **** 		px = -1;
- 500               		.loc 1 128 0
- 501 02d2 8FEF      		ldi r24,lo8(-1)
- 502 02d4 9FEF      		ldi r25,lo8(-1)
- 503 02d6 9093 0000 		sts px+1,r25
- 504 02da 8093 0000 		sts px,r24
- 129:hero.c        **** 		py = 0;
- 505               		.loc 1 129 0
- 506 02de 1092 0000 		sts py+1,__zero_reg__
- 507 02e2 1092 0000 		sts py,__zero_reg__
- 508               	.LVL24:
- 509               	.L16:
- 130:hero.c        **** 	}
- 131:hero.c        **** 
- 132:hero.c        **** 	hero->x += hero->dx;
- 510               		.loc 1 132 0
- 511 02e6 2D85      		ldd r18,Y+13
- 512 02e8 3E85      		ldd r19,Y+14
- 513 02ea 4F85      		ldd r20,Y+15
- 514 02ec 5889      		ldd r21,Y+16
- 515 02ee 6881      		ld r22,Y
- 516 02f0 7981      		ldd r23,Y+1
- 517 02f2 8A81      		ldd r24,Y+2
- 518 02f4 9B81      		ldd r25,Y+3
- 519 02f6 0E94 0000 		call __addsf3
- 520               	.LVL25:
- 521 02fa 5B01      		movw r10,r22
- 522 02fc 6C01      		movw r12,r24
- 523 02fe 862F      		mov r24,r22
- 524 0300 9B2D      		mov r25,r11
- 525 0302 AC2D      		mov r26,r12
- 526 0304 BD2D      		mov r27,r13
- 527 0306 8883      		st Y,r24
- 528 0308 9983      		std Y+1,r25
- 529 030a AA83      		std Y+2,r26
- 530 030c BB83      		std Y+3,r27
- 133:hero.c        **** 	hero->y += hero->dy;
- 531               		.loc 1 133 0
- 532 030e 2989      		ldd r18,Y+17
- 533 0310 3A89      		ldd r19,Y+18
- 534 0312 4B89      		ldd r20,Y+19
- 535 0314 5C89      		ldd r21,Y+20
- 536 0316 6C81      		ldd r22,Y+4
- 537 0318 7D81      		ldd r23,Y+5
- 538 031a 8E81      		ldd r24,Y+6
- 539 031c 9F81      		ldd r25,Y+7
- 540 031e 0E94 0000 		call __addsf3
- 541               	.LVL26:
- 542 0322 7B01      		movw r14,r22
- 543 0324 8C01      		movw r16,r24
- 544 0326 982F      		mov r25,r24
- 545 0328 4E2D      		mov r20,r14
- 546 032a 5F2D      		mov r21,r15
- 547 032c 692F      		mov r22,r25
- 548 032e 712F      		mov r23,r17
- 549 0330 4C83      		std Y+4,r20
- 550 0332 5D83      		std Y+5,r21
- 551 0334 6E83      		std Y+6,r22
- 552 0336 7F83      		std Y+7,r23
- 134:hero.c        **** 
- 135:hero.c        **** 	if ( hero->x >= (LCD_X - 1) - hero->width || hero->x < 2 ) {
- 553               		.loc 1 135 0
- 554 0338 8885      		ldd r24,Y+8
- 555 033a 63E5      		ldi r22,lo8(83)
- 556 033c 70E0      		ldi r23,0
- 557 033e 681B      		sub r22,r24
- 558 0340 7109      		sbc r23,__zero_reg__
- 559 0342 8827      		clr r24
- 560 0344 77FD      		sbrc r23,7
- 561 0346 8095      		com r24
- 562 0348 982F      		mov r25,r24
- 563 034a 0E94 0000 		call __floatsisf
- 564               	.LVL27:
- 565 034e 9B01      		movw r18,r22
- 566 0350 AC01      		movw r20,r24
- 567 0352 6A2D      		mov r22,r10
- 568 0354 7B2D      		mov r23,r11
- 569 0356 8C2D      		mov r24,r12
- 570 0358 9D2D      		mov r25,r13
- 571 035a 0E94 0000 		call __gesf2
- 572               	.LVL28:
- 573 035e 87FF      		sbrs r24,7
- 574 0360 00C0      		rjmp .L18
- 575               		.loc 1 135 0 is_stmt 0 discriminator 1
- 576 0362 20E0      		ldi r18,0
- 577 0364 30E0      		ldi r19,0
- 578 0366 40E0      		ldi r20,0
- 579 0368 50E4      		ldi r21,lo8(64)
- 580 036a 6A2D      		mov r22,r10
- 581 036c 7B2D      		mov r23,r11
- 582 036e 8C2D      		mov r24,r12
- 583 0370 9D2D      		mov r25,r13
- 584 0372 0E94 0000 		call __ltsf2
- 585               	.LVL29:
- 586 0376 87FF      		sbrs r24,7
- 587 0378 00C0      		rjmp .L19
- 588               	.L18:
- 136:hero.c        **** 		hero->dx = 0;
- 589               		.loc 1 136 0 is_stmt 1
- 590 037a 1D86      		std Y+13,__zero_reg__
- 591 037c 1E86      		std Y+14,__zero_reg__
- 592 037e 1F86      		std Y+15,__zero_reg__
- 593 0380 188A      		std Y+16,__zero_reg__
- 594               	.L19:
- 137:hero.c        **** 	}
- 138:hero.c        **** 
- 139:hero.c        **** 	if ( hero->y >= (LCD_Y - 1) - hero->height || hero->y < 14 ) {
- 595               		.loc 1 139 0
- 596 0382 8985      		ldd r24,Y+9
- 597 0384 6FE2      		ldi r22,lo8(47)
- 598 0386 70E0      		ldi r23,0
- 599 0388 681B      		sub r22,r24
- 600 038a 7109      		sbc r23,__zero_reg__
- 601 038c 8827      		clr r24
- 602 038e 77FD      		sbrc r23,7
- 603 0390 8095      		com r24
- 604 0392 982F      		mov r25,r24
- 605 0394 0E94 0000 		call __floatsisf
- 606               	.LVL30:
- 607 0398 9B01      		movw r18,r22
- 608 039a AC01      		movw r20,r24
- 609 039c 6E2D      		mov r22,r14
- 610 039e 7F2D      		mov r23,r15
- 611 03a0 802F      		mov r24,r16
- 612 03a2 912F      		mov r25,r17
- 613 03a4 0E94 0000 		call __gesf2
- 614               	.LVL31:
- 615 03a8 87FF      		sbrs r24,7
- 616 03aa 00C0      		rjmp .L21
- 617               		.loc 1 139 0 is_stmt 0 discriminator 1
- 618 03ac 20E0      		ldi r18,0
- 619 03ae 30E0      		ldi r19,0
- 620 03b0 40E6      		ldi r20,lo8(96)
- 621 03b2 51E4      		ldi r21,lo8(65)
- 622 03b4 6E2D      		mov r22,r14
- 623 03b6 7F2D      		mov r23,r15
- 624 03b8 802F      		mov r24,r16
- 625 03ba 912F      		mov r25,r17
- 626 03bc 0E94 0000 		call __ltsf2
- 627               	.LVL32:
- 628 03c0 87FF      		sbrs r24,7
- 629 03c2 00C0      		rjmp .L1
- 630               	.L21:
- 140:hero.c        **** 		hero->dy = 0;
- 631               		.loc 1 140 0 is_stmt 1
- 632 03c4 198A      		std Y+17,__zero_reg__
- 633 03c6 1A8A      		std Y+18,__zero_reg__
- 634 03c8 1B8A      		std Y+19,__zero_reg__
- 635 03ca 1C8A      		std Y+20,__zero_reg__
- 636               	.L1:
- 637               	/* epilogue start */
- 141:hero.c        **** 	}
- 142:hero.c        **** 
- 143:hero.c        **** }
- 638               		.loc 1 143 0
- 639 03cc DF91      		pop r29
- 640 03ce CF91      		pop r28
- 641               	.LVL33:
- 642 03d0 1F91      		pop r17
- 643 03d2 0F91      		pop r16
- 644 03d4 FF90      		pop r15
- 645 03d6 EF90      		pop r14
- 646 03d8 DF90      		pop r13
- 647 03da CF90      		pop r12
- 648 03dc BF90      		pop r11
- 649 03de AF90      		pop r10
- 650 03e0 0895      		ret
- 651               		.cfi_endproc
- 652               	.LFE8:
- 654               		.section	.text.start_hero,"ax",@progbits
- 655               	.global	start_hero
- 657               	start_hero:
- 658               	.LFB7:
-  25:hero.c        **** void start_hero() {
- 659               		.loc 1 25 0
- 660               		.cfi_startproc
- 661 0000 CF93      		push r28
- 662               	.LCFI10:
- 663               		.cfi_def_cfa_offset 3
- 664               		.cfi_offset 28, -2
- 665 0002 DF93      		push r29
- 666               	.LCFI11:
- 667               		.cfi_def_cfa_offset 4
- 668               		.cfi_offset 29, -3
- 669 0004 CDB7      		in r28,__SP_L__
- 670 0006 DEB7      		in r29,__SP_H__
- 671               	.LCFI12:
- 672               		.cfi_def_cfa_register 28
- 673 0008 6897      		sbiw r28,24
- 674               	.LCFI13:
- 675               		.cfi_def_cfa_offset 28
- 676 000a 0FB6      		in __tmp_reg__,__SREG__
- 677 000c F894      		cli
- 678 000e DEBF      		out __SP_H__,r29
- 679 0010 0FBE      		out __SREG__,__tmp_reg__
- 680 0012 CDBF      		out __SP_L__,r28
- 681               	/* prologue: function */
- 682               	/* frame size = 24 */
- 683               	/* stack size = 26 */
- 684               	.L__stack_usage = 26
-  26:hero.c        **** 	byte bitmap_hero[] = {
- 685               		.loc 1 26 0
- 686 0014 80EE      		ldi r24,lo8(-32)
- 687 0016 8E8B      		std Y+22,r24
- 688 0018 90E4      		ldi r25,lo8(64)
- 689 001a 9F8B      		std Y+23,r25
- 690 001c 888F      		std Y+24,r24
+ 170               		.loc 2 164 0 is_stmt 1
+ 171 0036 2FEF      		ldi r18,lo8(159999)
+ 172 0038 80E7      		ldi r24,hi8(159999)
+ 173 003a 92E0      		ldi r25,hlo8(159999)
+ 174 003c 2150      		1: subi r18,1
+ 175 003e 8040      		sbci r24,0
+ 176 0040 9040      		sbci r25,0
+ 177 0042 01F4      		brne 1b
+ 178 0044 00C0      		rjmp .
+ 179 0046 0000      		nop
+ 180               	.LBE19:
+ 181               	.LBE18:
+  52:hero.c        **** 		_delay_ms(100);
+  53:hero.c        **** 		hero->dx = 0;
+ 182               		.loc 1 53 0
+ 183 0048 1D86      		std Y+13,__zero_reg__
+ 184 004a 1E86      		std Y+14,__zero_reg__
+ 185 004c 1F86      		std Y+15,__zero_reg__
+ 186 004e 188A      		std Y+16,__zero_reg__
+  54:hero.c        **** 		hero->dy = 1;
+ 187               		.loc 1 54 0
+ 188 0050 80E0      		ldi r24,0
+ 189 0052 90E0      		ldi r25,0
+ 190 0054 A0E8      		ldi r26,lo8(-128)
+ 191 0056 BFE3      		ldi r27,lo8(63)
+ 192 0058 898B      		std Y+17,r24
+ 193 005a 9A8B      		std Y+18,r25
+ 194 005c AB8B      		std Y+19,r26
+ 195 005e BC8B      		std Y+20,r27
+  55:hero.c        **** 		px = 0;
+ 196               		.loc 1 55 0
+ 197 0060 1092 0000 		sts px+1,__zero_reg__
+ 198 0064 1092 0000 		sts px,__zero_reg__
+  56:hero.c        **** 		py = 1;
+ 199               		.loc 1 56 0
+ 200 0068 81E0      		ldi r24,lo8(1)
+ 201 006a 90E0      		ldi r25,0
+ 202 006c 9093 0000 		sts py+1,r25
+ 203 0070 8093 0000 		sts py,r24
+ 204               	.LVL6:
+ 205               	.L3:
+  57:hero.c        **** 	}
+  58:hero.c        **** 	if ( (hero->dx == -1) && ( pressed ( SW1 ) )) { // Right Button, turn right, up
+ 206               		.loc 1 58 0
+ 207 0074 20E0      		ldi r18,0
+ 208 0076 30E0      		ldi r19,0
+ 209 0078 40E8      		ldi r20,lo8(-128)
+ 210 007a 5FEB      		ldi r21,lo8(-65)
+ 211 007c 6D85      		ldd r22,Y+13
+ 212 007e 7E85      		ldd r23,Y+14
+ 213 0080 8F85      		ldd r24,Y+15
+ 214 0082 9889      		ldd r25,Y+16
+ 215 0084 0E94 0000 		call __eqsf2
+ 216               	.LVL7:
+ 217 0088 8111      		cpse r24,__zero_reg__
+ 218 008a 00C0      		rjmp .L5
+ 219               		.loc 1 58 0 is_stmt 0 discriminator 1
+ 220 008c 199B      		sbis 0x3,1
+ 221 008e 00C0      		rjmp .L5
+ 222               	.LVL8:
+ 223               	.LBB20:
+ 224               	.LBB21:
+ 225               		.loc 2 164 0 is_stmt 1
+ 226 0090 2FEF      		ldi r18,lo8(159999)
+ 227 0092 80E7      		ldi r24,hi8(159999)
+ 228 0094 92E0      		ldi r25,hlo8(159999)
+ 229 0096 2150      		1: subi r18,1
+ 230 0098 8040      		sbci r24,0
+ 231 009a 9040      		sbci r25,0
+ 232 009c 01F4      		brne 1b
+ 233 009e 00C0      		rjmp .
+ 234 00a0 0000      		nop
+ 235               	.LBE21:
+ 236               	.LBE20:
+  59:hero.c        **** 		_delay_ms(100);
+  60:hero.c        **** 		hero->dx = 0;
+ 237               		.loc 1 60 0
+ 238 00a2 1D86      		std Y+13,__zero_reg__
+ 239 00a4 1E86      		std Y+14,__zero_reg__
+ 240 00a6 1F86      		std Y+15,__zero_reg__
+ 241 00a8 188A      		std Y+16,__zero_reg__
+  61:hero.c        **** 		hero->dy = -1;
+ 242               		.loc 1 61 0
+ 243 00aa 80E0      		ldi r24,0
+ 244 00ac 90E0      		ldi r25,0
+ 245 00ae A0E8      		ldi r26,lo8(-128)
+ 246 00b0 BFEB      		ldi r27,lo8(-65)
+ 247 00b2 898B      		std Y+17,r24
+ 248 00b4 9A8B      		std Y+18,r25
+ 249 00b6 AB8B      		std Y+19,r26
+ 250 00b8 BC8B      		std Y+20,r27
+  62:hero.c        **** 		px = 0;
+ 251               		.loc 1 62 0
+ 252 00ba 1092 0000 		sts px+1,__zero_reg__
+ 253 00be 1092 0000 		sts px,__zero_reg__
+  63:hero.c        **** 		py = -1;
+ 254               		.loc 1 63 0
+ 255 00c2 8FEF      		ldi r24,lo8(-1)
+ 256 00c4 9FEF      		ldi r25,lo8(-1)
+ 257 00c6 9093 0000 		sts py+1,r25
+ 258 00ca 8093 0000 		sts py,r24
+ 259               	.LVL9:
+ 260               	.L5:
+  64:hero.c        **** 	}
+  65:hero.c        **** 	if ( ( hero->dy == 1 ) && ( pressed ( SW1 ) )) { // Right Button, turn right, left
+ 261               		.loc 1 65 0
+ 262 00ce 20E0      		ldi r18,0
+ 263 00d0 30E0      		ldi r19,0
+ 264 00d2 40E8      		ldi r20,lo8(-128)
+ 265 00d4 5FE3      		ldi r21,lo8(63)
+ 266 00d6 6989      		ldd r22,Y+17
+ 267 00d8 7A89      		ldd r23,Y+18
+ 268 00da 8B89      		ldd r24,Y+19
+ 269 00dc 9C89      		ldd r25,Y+20
+ 270 00de 0E94 0000 		call __eqsf2
+ 271               	.LVL10:
+ 272 00e2 8111      		cpse r24,__zero_reg__
+ 273 00e4 00C0      		rjmp .L7
+ 274               		.loc 1 65 0 is_stmt 0 discriminator 1
+ 275 00e6 199B      		sbis 0x3,1
+ 276 00e8 00C0      		rjmp .L7
+ 277               	.LVL11:
+ 278               	.LBB22:
+ 279               	.LBB23:
+ 280               		.loc 2 164 0 is_stmt 1
+ 281 00ea 2FEF      		ldi r18,lo8(159999)
+ 282 00ec 80E7      		ldi r24,hi8(159999)
+ 283 00ee 92E0      		ldi r25,hlo8(159999)
+ 284 00f0 2150      		1: subi r18,1
+ 285 00f2 8040      		sbci r24,0
+ 286 00f4 9040      		sbci r25,0
+ 287 00f6 01F4      		brne 1b
+ 288 00f8 00C0      		rjmp .
+ 289 00fa 0000      		nop
+ 290               	.LBE23:
+ 291               	.LBE22:
+  66:hero.c        **** 		_delay_ms(100);
+  67:hero.c        **** 		hero->dx = -1;
+ 292               		.loc 1 67 0
+ 293 00fc 80E0      		ldi r24,0
+ 294 00fe 90E0      		ldi r25,0
+ 295 0100 A0E8      		ldi r26,lo8(-128)
+ 296 0102 BFEB      		ldi r27,lo8(-65)
+ 297 0104 8D87      		std Y+13,r24
+ 298 0106 9E87      		std Y+14,r25
+ 299 0108 AF87      		std Y+15,r26
+ 300 010a B88B      		std Y+16,r27
+  68:hero.c        **** 		hero->dy = 0;
+ 301               		.loc 1 68 0
+ 302 010c 198A      		std Y+17,__zero_reg__
+ 303 010e 1A8A      		std Y+18,__zero_reg__
+ 304 0110 1B8A      		std Y+19,__zero_reg__
+ 305 0112 1C8A      		std Y+20,__zero_reg__
+  69:hero.c        **** 		px = -1;
+ 306               		.loc 1 69 0
+ 307 0114 8FEF      		ldi r24,lo8(-1)
+ 308 0116 9FEF      		ldi r25,lo8(-1)
+ 309 0118 9093 0000 		sts px+1,r25
+ 310 011c 8093 0000 		sts px,r24
+  70:hero.c        **** 		py = 0;
+ 311               		.loc 1 70 0
+ 312 0120 1092 0000 		sts py+1,__zero_reg__
+ 313 0124 1092 0000 		sts py,__zero_reg__
+ 314               	.LVL12:
+ 315               	.L7:
+  71:hero.c        **** 	}
+  72:hero.c        **** 	if ( ( hero->dy == -1 ) && ( pressed ( SW1 ) )) { // Right Button, turn right , right
+ 316               		.loc 1 72 0
+ 317 0128 20E0      		ldi r18,0
+ 318 012a 30E0      		ldi r19,0
+ 319 012c 40E8      		ldi r20,lo8(-128)
+ 320 012e 5FEB      		ldi r21,lo8(-65)
+ 321 0130 6989      		ldd r22,Y+17
+ 322 0132 7A89      		ldd r23,Y+18
+ 323 0134 8B89      		ldd r24,Y+19
+ 324 0136 9C89      		ldd r25,Y+20
+ 325 0138 0E94 0000 		call __eqsf2
+ 326               	.LVL13:
+ 327 013c 8111      		cpse r24,__zero_reg__
+ 328 013e 00C0      		rjmp .L9
+ 329               		.loc 1 72 0 is_stmt 0 discriminator 1
+ 330 0140 199B      		sbis 0x3,1
+ 331 0142 00C0      		rjmp .L9
+ 332               	.LVL14:
+ 333               	.LBB24:
+ 334               	.LBB25:
+ 335               		.loc 2 164 0 is_stmt 1
+ 336 0144 2FEF      		ldi r18,lo8(159999)
+ 337 0146 80E7      		ldi r24,hi8(159999)
+ 338 0148 92E0      		ldi r25,hlo8(159999)
+ 339 014a 2150      		1: subi r18,1
+ 340 014c 8040      		sbci r24,0
+ 341 014e 9040      		sbci r25,0
+ 342 0150 01F4      		brne 1b
+ 343 0152 00C0      		rjmp .
+ 344 0154 0000      		nop
+ 345               	.LBE25:
+ 346               	.LBE24:
+  73:hero.c        **** 		_delay_ms(100);
+  74:hero.c        **** 		hero->dx = 1;
+ 347               		.loc 1 74 0
+ 348 0156 80E0      		ldi r24,0
+ 349 0158 90E0      		ldi r25,0
+ 350 015a A0E8      		ldi r26,lo8(-128)
+ 351 015c BFE3      		ldi r27,lo8(63)
+ 352 015e 8D87      		std Y+13,r24
+ 353 0160 9E87      		std Y+14,r25
+ 354 0162 AF87      		std Y+15,r26
+ 355 0164 B88B      		std Y+16,r27
+  75:hero.c        **** 		hero->dy = 0;
+ 356               		.loc 1 75 0
+ 357 0166 198A      		std Y+17,__zero_reg__
+ 358 0168 1A8A      		std Y+18,__zero_reg__
+ 359 016a 1B8A      		std Y+19,__zero_reg__
+ 360 016c 1C8A      		std Y+20,__zero_reg__
+  76:hero.c        **** 		px = 1;
+ 361               		.loc 1 76 0
+ 362 016e 81E0      		ldi r24,lo8(1)
+ 363 0170 90E0      		ldi r25,0
+ 364 0172 9093 0000 		sts px+1,r25
+ 365 0176 8093 0000 		sts px,r24
+  77:hero.c        **** 		py = 0;
+ 366               		.loc 1 77 0
+ 367 017a 1092 0000 		sts py+1,__zero_reg__
+ 368 017e 1092 0000 		sts py,__zero_reg__
+ 369               	.LVL15:
+ 370               	.L9:
+  78:hero.c        **** 	}
+  79:hero.c        **** 	if ( ( hero->dx == 1 ) && ( pressed ( SW0 ) )) { // Left Button, turn left, up
+ 371               		.loc 1 79 0
+ 372 0182 20E0      		ldi r18,0
+ 373 0184 30E0      		ldi r19,0
+ 374 0186 40E8      		ldi r20,lo8(-128)
+ 375 0188 5FE3      		ldi r21,lo8(63)
+ 376 018a 6D85      		ldd r22,Y+13
+ 377 018c 7E85      		ldd r23,Y+14
+ 378 018e 8F85      		ldd r24,Y+15
+ 379 0190 9889      		ldd r25,Y+16
+ 380 0192 0E94 0000 		call __eqsf2
+ 381               	.LVL16:
+ 382 0196 8111      		cpse r24,__zero_reg__
+ 383 0198 00C0      		rjmp .L11
+ 384               		.loc 1 79 0 is_stmt 0 discriminator 1
+ 385 019a 189B      		sbis 0x3,0
+ 386 019c 00C0      		rjmp .L11
+ 387               	.LVL17:
+ 388               	.LBB26:
+ 389               	.LBB27:
+ 390               		.loc 2 164 0 is_stmt 1
+ 391 019e 2FEF      		ldi r18,lo8(159999)
+ 392 01a0 80E7      		ldi r24,hi8(159999)
+ 393 01a2 92E0      		ldi r25,hlo8(159999)
+ 394 01a4 2150      		1: subi r18,1
+ 395 01a6 8040      		sbci r24,0
+ 396 01a8 9040      		sbci r25,0
+ 397 01aa 01F4      		brne 1b
+ 398 01ac 00C0      		rjmp .
+ 399 01ae 0000      		nop
+ 400               	.LBE27:
+ 401               	.LBE26:
+  80:hero.c        **** 		_delay_ms(100);
+  81:hero.c        **** 		hero->dx = 0;
+ 402               		.loc 1 81 0
+ 403 01b0 1D86      		std Y+13,__zero_reg__
+ 404 01b2 1E86      		std Y+14,__zero_reg__
+ 405 01b4 1F86      		std Y+15,__zero_reg__
+ 406 01b6 188A      		std Y+16,__zero_reg__
+  82:hero.c        **** 		hero->dy = -1;
+ 407               		.loc 1 82 0
+ 408 01b8 80E0      		ldi r24,0
+ 409 01ba 90E0      		ldi r25,0
+ 410 01bc A0E8      		ldi r26,lo8(-128)
+ 411 01be BFEB      		ldi r27,lo8(-65)
+ 412 01c0 898B      		std Y+17,r24
+ 413 01c2 9A8B      		std Y+18,r25
+ 414 01c4 AB8B      		std Y+19,r26
+ 415 01c6 BC8B      		std Y+20,r27
+  83:hero.c        **** 		px = 0;
+ 416               		.loc 1 83 0
+ 417 01c8 1092 0000 		sts px+1,__zero_reg__
+ 418 01cc 1092 0000 		sts px,__zero_reg__
+  84:hero.c        **** 		py = -1;
+ 419               		.loc 1 84 0
+ 420 01d0 8FEF      		ldi r24,lo8(-1)
+ 421 01d2 9FEF      		ldi r25,lo8(-1)
+ 422 01d4 9093 0000 		sts py+1,r25
+ 423 01d8 8093 0000 		sts py,r24
+ 424               	.LVL18:
+ 425               	.L11:
+  85:hero.c        **** 	}
+  86:hero.c        **** 	if ( ( hero->dx == -1 ) && ( pressed ( SW0 ) )) { // Left Button, turn left, down
+ 426               		.loc 1 86 0
+ 427 01dc 20E0      		ldi r18,0
+ 428 01de 30E0      		ldi r19,0
+ 429 01e0 40E8      		ldi r20,lo8(-128)
+ 430 01e2 5FEB      		ldi r21,lo8(-65)
+ 431 01e4 6D85      		ldd r22,Y+13
+ 432 01e6 7E85      		ldd r23,Y+14
+ 433 01e8 8F85      		ldd r24,Y+15
+ 434 01ea 9889      		ldd r25,Y+16
+ 435 01ec 0E94 0000 		call __eqsf2
+ 436               	.LVL19:
+ 437 01f0 8111      		cpse r24,__zero_reg__
+ 438 01f2 00C0      		rjmp .L13
+ 439               		.loc 1 86 0 is_stmt 0 discriminator 1
+ 440 01f4 189B      		sbis 0x3,0
+ 441 01f6 00C0      		rjmp .L13
+ 442               	.LVL20:
+ 443               	.LBB28:
+ 444               	.LBB29:
+ 445               		.loc 2 164 0 is_stmt 1
+ 446 01f8 2FEF      		ldi r18,lo8(159999)
+ 447 01fa 80E7      		ldi r24,hi8(159999)
+ 448 01fc 92E0      		ldi r25,hlo8(159999)
+ 449 01fe 2150      		1: subi r18,1
+ 450 0200 8040      		sbci r24,0
+ 451 0202 9040      		sbci r25,0
+ 452 0204 01F4      		brne 1b
+ 453 0206 00C0      		rjmp .
+ 454 0208 0000      		nop
+ 455               	.LBE29:
+ 456               	.LBE28:
+  87:hero.c        **** 		_delay_ms(100);
+  88:hero.c        **** 		hero->dx = 0;
+ 457               		.loc 1 88 0
+ 458 020a 1D86      		std Y+13,__zero_reg__
+ 459 020c 1E86      		std Y+14,__zero_reg__
+ 460 020e 1F86      		std Y+15,__zero_reg__
+ 461 0210 188A      		std Y+16,__zero_reg__
+  89:hero.c        **** 		hero->dy = 1;
+ 462               		.loc 1 89 0
+ 463 0212 80E0      		ldi r24,0
+ 464 0214 90E0      		ldi r25,0
+ 465 0216 A0E8      		ldi r26,lo8(-128)
+ 466 0218 BFE3      		ldi r27,lo8(63)
+ 467 021a 898B      		std Y+17,r24
+ 468 021c 9A8B      		std Y+18,r25
+ 469 021e AB8B      		std Y+19,r26
+ 470 0220 BC8B      		std Y+20,r27
+  90:hero.c        **** 		px = 0;
+ 471               		.loc 1 90 0
+ 472 0222 1092 0000 		sts px+1,__zero_reg__
+ 473 0226 1092 0000 		sts px,__zero_reg__
+  91:hero.c        **** 		py = 1;
+ 474               		.loc 1 91 0
+ 475 022a 81E0      		ldi r24,lo8(1)
+ 476 022c 90E0      		ldi r25,0
+ 477 022e 9093 0000 		sts py+1,r25
+ 478 0232 8093 0000 		sts py,r24
+ 479               	.LVL21:
+ 480               	.L13:
+  92:hero.c        **** 	}
+  93:hero.c        **** 	if ( ( hero->dy == 1 ) && ( pressed ( SW0 ) )) { // Left Button, turn left, right
+ 481               		.loc 1 93 0
+ 482 0236 20E0      		ldi r18,0
+ 483 0238 30E0      		ldi r19,0
+ 484 023a 40E8      		ldi r20,lo8(-128)
+ 485 023c 5FE3      		ldi r21,lo8(63)
+ 486 023e 6989      		ldd r22,Y+17
+ 487 0240 7A89      		ldd r23,Y+18
+ 488 0242 8B89      		ldd r24,Y+19
+ 489 0244 9C89      		ldd r25,Y+20
+ 490 0246 0E94 0000 		call __eqsf2
+ 491               	.LVL22:
+ 492 024a 8111      		cpse r24,__zero_reg__
+ 493 024c 00C0      		rjmp .L15
+ 494               		.loc 1 93 0 is_stmt 0 discriminator 1
+ 495 024e 189B      		sbis 0x3,0
+ 496 0250 00C0      		rjmp .L15
+ 497               	.LVL23:
+ 498               	.LBB30:
+ 499               	.LBB31:
+ 500               		.loc 2 164 0 is_stmt 1
+ 501 0252 2FEF      		ldi r18,lo8(159999)
+ 502 0254 80E7      		ldi r24,hi8(159999)
+ 503 0256 92E0      		ldi r25,hlo8(159999)
+ 504 0258 2150      		1: subi r18,1
+ 505 025a 8040      		sbci r24,0
+ 506 025c 9040      		sbci r25,0
+ 507 025e 01F4      		brne 1b
+ 508 0260 00C0      		rjmp .
+ 509 0262 0000      		nop
+ 510               	.LBE31:
+ 511               	.LBE30:
+  94:hero.c        **** 		_delay_ms(100);
+  95:hero.c        **** 		hero->dx = 1;
+ 512               		.loc 1 95 0
+ 513 0264 80E0      		ldi r24,0
+ 514 0266 90E0      		ldi r25,0
+ 515 0268 A0E8      		ldi r26,lo8(-128)
+ 516 026a BFE3      		ldi r27,lo8(63)
+ 517 026c 8D87      		std Y+13,r24
+ 518 026e 9E87      		std Y+14,r25
+ 519 0270 AF87      		std Y+15,r26
+ 520 0272 B88B      		std Y+16,r27
+  96:hero.c        **** 		hero->dy = 0;
+ 521               		.loc 1 96 0
+ 522 0274 198A      		std Y+17,__zero_reg__
+ 523 0276 1A8A      		std Y+18,__zero_reg__
+ 524 0278 1B8A      		std Y+19,__zero_reg__
+ 525 027a 1C8A      		std Y+20,__zero_reg__
+  97:hero.c        **** 		px = 1;
+ 526               		.loc 1 97 0
+ 527 027c 81E0      		ldi r24,lo8(1)
+ 528 027e 90E0      		ldi r25,0
+ 529 0280 9093 0000 		sts px+1,r25
+ 530 0284 8093 0000 		sts px,r24
+  98:hero.c        **** 		py = 0;
+ 531               		.loc 1 98 0
+ 532 0288 1092 0000 		sts py+1,__zero_reg__
+ 533 028c 1092 0000 		sts py,__zero_reg__
+ 534               	.LVL24:
+ 535               	.L15:
+  99:hero.c        **** 	}
+ 100:hero.c        **** 	if ( ( hero->dy == -1 ) && ( pressed ( SW0 ) )) { // Left Button, turn left, left
+ 536               		.loc 1 100 0
+ 537 0290 20E0      		ldi r18,0
+ 538 0292 30E0      		ldi r19,0
+ 539 0294 40E8      		ldi r20,lo8(-128)
+ 540 0296 5FEB      		ldi r21,lo8(-65)
+ 541 0298 6989      		ldd r22,Y+17
+ 542 029a 7A89      		ldd r23,Y+18
+ 543 029c 8B89      		ldd r24,Y+19
+ 544 029e 9C89      		ldd r25,Y+20
+ 545 02a0 0E94 0000 		call __eqsf2
+ 546               	.LVL25:
+ 547 02a4 8111      		cpse r24,__zero_reg__
+ 548 02a6 00C0      		rjmp .L17
+ 549               		.loc 1 100 0 is_stmt 0 discriminator 1
+ 550 02a8 189B      		sbis 0x3,0
+ 551 02aa 00C0      		rjmp .L17
+ 552               	.LVL26:
+ 553               	.LBB32:
+ 554               	.LBB33:
+ 555               		.loc 2 164 0 is_stmt 1
+ 556 02ac 2FEF      		ldi r18,lo8(159999)
+ 557 02ae 80E7      		ldi r24,hi8(159999)
+ 558 02b0 92E0      		ldi r25,hlo8(159999)
+ 559 02b2 2150      		1: subi r18,1
+ 560 02b4 8040      		sbci r24,0
+ 561 02b6 9040      		sbci r25,0
+ 562 02b8 01F4      		brne 1b
+ 563 02ba 00C0      		rjmp .
+ 564 02bc 0000      		nop
+ 565               	.LBE33:
+ 566               	.LBE32:
+ 101:hero.c        **** 		_delay_ms(100);
+ 102:hero.c        **** 		hero->dx = -1;
+ 567               		.loc 1 102 0
+ 568 02be 80E0      		ldi r24,0
+ 569 02c0 90E0      		ldi r25,0
+ 570 02c2 A0E8      		ldi r26,lo8(-128)
+ 571 02c4 BFEB      		ldi r27,lo8(-65)
+ 572 02c6 8D87      		std Y+13,r24
+ 573 02c8 9E87      		std Y+14,r25
+ 574 02ca AF87      		std Y+15,r26
+ 575 02cc B88B      		std Y+16,r27
+ 103:hero.c        **** 		hero->dy = 0;
+ 576               		.loc 1 103 0
+ 577 02ce 198A      		std Y+17,__zero_reg__
+ 578 02d0 1A8A      		std Y+18,__zero_reg__
+ 579 02d2 1B8A      		std Y+19,__zero_reg__
+ 580 02d4 1C8A      		std Y+20,__zero_reg__
+ 104:hero.c        **** 		px = -1;
+ 581               		.loc 1 104 0
+ 582 02d6 8FEF      		ldi r24,lo8(-1)
+ 583 02d8 9FEF      		ldi r25,lo8(-1)
+ 584 02da 9093 0000 		sts px+1,r25
+ 585 02de 8093 0000 		sts px,r24
+ 105:hero.c        **** 		py = 0;
+ 586               		.loc 1 105 0
+ 587 02e2 1092 0000 		sts py+1,__zero_reg__
+ 588 02e6 1092 0000 		sts py,__zero_reg__
+ 589               	.LVL27:
+ 590               	.L17:
+ 106:hero.c        **** 	}
+ 107:hero.c        **** 
+ 108:hero.c        **** 	hero->x += hero->dx;
+ 591               		.loc 1 108 0
+ 592 02ea 2D85      		ldd r18,Y+13
+ 593 02ec 3E85      		ldd r19,Y+14
+ 594 02ee 4F85      		ldd r20,Y+15
+ 595 02f0 5889      		ldd r21,Y+16
+ 596 02f2 6881      		ld r22,Y
+ 597 02f4 7981      		ldd r23,Y+1
+ 598 02f6 8A81      		ldd r24,Y+2
+ 599 02f8 9B81      		ldd r25,Y+3
+ 600 02fa 0E94 0000 		call __addsf3
+ 601               	.LVL28:
+ 602 02fe 4B01      		movw r8,r22
+ 603 0300 5C01      		movw r10,r24
+ 604 0302 862F      		mov r24,r22
+ 605 0304 992D      		mov r25,r9
+ 606 0306 AA2D      		mov r26,r10
+ 607 0308 BB2D      		mov r27,r11
+ 608 030a 8883      		st Y,r24
+ 609 030c 9983      		std Y+1,r25
+ 610 030e AA83      		std Y+2,r26
+ 611 0310 BB83      		std Y+3,r27
+ 109:hero.c        **** 	hero->y += hero->dy;
+ 612               		.loc 1 109 0
+ 613 0312 2989      		ldd r18,Y+17
+ 614 0314 3A89      		ldd r19,Y+18
+ 615 0316 4B89      		ldd r20,Y+19
+ 616 0318 5C89      		ldd r21,Y+20
+ 617 031a 6C81      		ldd r22,Y+4
+ 618 031c 7D81      		ldd r23,Y+5
+ 619 031e 8E81      		ldd r24,Y+6
+ 620 0320 9F81      		ldd r25,Y+7
+ 621 0322 0E94 0000 		call __addsf3
+ 622               	.LVL29:
+ 623 0326 6B01      		movw r12,r22
+ 624 0328 7C01      		movw r14,r24
+ 625 032a 862F      		mov r24,r22
+ 626 032c 9D2D      		mov r25,r13
+ 627 032e AE2D      		mov r26,r14
+ 628 0330 BF2D      		mov r27,r15
+ 629 0332 8C83      		std Y+4,r24
+ 630 0334 9D83      		std Y+5,r25
+ 631 0336 AE83      		std Y+6,r26
+ 632 0338 BF83      		std Y+7,r27
+ 110:hero.c        **** 
+ 111:hero.c        **** 	if ( hero->x >= LCD_X - hero->width) {
+ 633               		.loc 1 111 0
+ 634 033a 0885      		ldd r16,Y+8
+ 635 033c 10E0      		ldi r17,0
+ 636 033e 64E5      		ldi r22,lo8(84)
+ 637 0340 70E0      		ldi r23,0
+ 638 0342 601B      		sub r22,r16
+ 639 0344 710B      		sbc r23,r17
+ 640 0346 8827      		clr r24
+ 641 0348 77FD      		sbrc r23,7
+ 642 034a 8095      		com r24
+ 643 034c 982F      		mov r25,r24
+ 644 034e 0E94 0000 		call __floatsisf
+ 645               	.LVL30:
+ 646 0352 9B01      		movw r18,r22
+ 647 0354 AC01      		movw r20,r24
+ 648 0356 682D      		mov r22,r8
+ 649 0358 792D      		mov r23,r9
+ 650 035a 8A2D      		mov r24,r10
+ 651 035c 9B2D      		mov r25,r11
+ 652 035e 0E94 0000 		call __gesf2
+ 653               	.LVL31:
+ 654 0362 87FD      		sbrc r24,7
+ 655 0364 00C0      		rjmp .L19
+ 112:hero.c        **** 		hero->x -=1;
+ 656               		.loc 1 112 0
+ 657 0366 20E0      		ldi r18,0
+ 658 0368 30E0      		ldi r19,0
+ 659 036a 40E8      		ldi r20,lo8(-128)
+ 660 036c 5FE3      		ldi r21,lo8(63)
+ 661 036e 682D      		mov r22,r8
+ 662 0370 792D      		mov r23,r9
+ 663 0372 8A2D      		mov r24,r10
+ 664 0374 9B2D      		mov r25,r11
+ 665 0376 0E94 0000 		call __subsf3
+ 666               	.LVL32:
+ 667 037a 6883      		st Y,r22
+ 668 037c 7983      		std Y+1,r23
+ 669 037e 8A83      		std Y+2,r24
+ 670 0380 9B83      		std Y+3,r25
+ 671               	.L19:
+ 113:hero.c        **** 	}
+ 114:hero.c        **** 
+ 115:hero.c        **** 	if (hero->x < 0 + hero->width - 2) {
+ 672               		.loc 1 115 0
+ 673 0382 8880      		ld r8,Y
+ 674 0384 9980      		ldd r9,Y+1
+ 675 0386 AA80      		ldd r10,Y+2
+ 676 0388 BB80      		ldd r11,Y+3
+ 677 038a B801      		movw r22,r16
+ 678 038c 6250      		subi r22,2
+ 679 038e 7109      		sbc r23,__zero_reg__
+ 680 0390 8827      		clr r24
+ 681 0392 77FD      		sbrc r23,7
+ 682 0394 8095      		com r24
+ 683 0396 982F      		mov r25,r24
+ 684 0398 0E94 0000 		call __floatsisf
+ 685               	.LVL33:
+ 686 039c 9B01      		movw r18,r22
+ 687 039e AC01      		movw r20,r24
+ 688 03a0 C501      		movw r24,r10
+ 689 03a2 B401      		movw r22,r8
+ 690 03a4 0E94 0000 		call __ltsf2
  691               	.LVL34:
-  37:hero.c        **** 	init_sprite( &hero, 38,28,hero_width,hero_height, bitmap_hero );
- 692               		.loc 1 37 0
- 693 001e 86E1      		ldi r24,lo8(22)
- 694 0020 E82E      		mov r14,r24
- 695 0022 F12C      		mov r15,__zero_reg__
- 696 0024 EC0E      		add r14,r28
- 697 0026 FD1E      		adc r15,r29
- 698 0028 03E0      		ldi r16,lo8(3)
- 699 002a 23E0      		ldi r18,lo8(3)
- 700 002c 4CE1      		ldi r20,lo8(28)
- 701 002e 66E2      		ldi r22,lo8(38)
- 702 0030 CC24      		clr r12
- 703 0032 C394      		inc r12
- 704 0034 D12C      		mov r13,__zero_reg__
- 705 0036 CC0E      		add r12,r28
- 706 0038 DD1E      		adc r13,r29
- 707 003a C601      		movw r24,r12
- 708 003c 0E94 0000 		call init_sprite
- 709               	.LVL35:
-  38:hero.c        **** 	hero.dx = 1;
- 710               		.loc 1 38 0
- 711 0040 40E0      		ldi r20,0
- 712 0042 50E0      		ldi r21,0
- 713 0044 60E8      		ldi r22,lo8(-128)
- 714 0046 7FE3      		ldi r23,lo8(63)
- 715 0048 4E87      		std Y+14,r20
- 716 004a 5F87      		std Y+15,r21
- 717 004c 688B      		std Y+16,r22
- 718 004e 798B      		std Y+17,r23
-  39:hero.c        **** 	hero.dy = 0;
- 719               		.loc 1 39 0
- 720 0050 1A8A      		std Y+18,__zero_reg__
- 721 0052 1B8A      		std Y+19,__zero_reg__
- 722 0054 1C8A      		std Y+20,__zero_reg__
- 723 0056 1D8A      		std Y+21,__zero_reg__
-  41:hero.c        **** 	draw_sprite( &hero );
- 724               		.loc 1 41 0
- 725 0058 C601      		movw r24,r12
- 726 005a 0E94 0000 		call draw_sprite
- 727               	.LVL36:
-  43:hero.c        **** 	int score_update = 0;
- 728               		.loc 1 43 0
- 729 005e 00E0      		ldi r16,0
- 730 0060 10E0      		ldi r17,0
-  42:hero.c        **** 	int zombie_update = 0;
- 731               		.loc 1 42 0
- 732 0062 E12C      		mov r14,__zero_reg__
- 733 0064 F12C      		mov r15,__zero_reg__
- 734               	.LVL37:
- 735               	.L59:
- 736               	.LBB37:
-  45:hero.c        **** 		clear();
- 737               		.loc 1 45 0
- 738 0066 0E94 0000 		call clear
- 739               	.LVL38:
-  46:hero.c        **** 		screen_lines();
- 740               		.loc 1 46 0
- 741 006a 0E94 0000 		call screen_lines
- 742               	.LVL39:
-  47:hero.c        ****     	lives_setup();
- 743               		.loc 1 47 0
- 744 006e 0E94 0000 		call lives_setup
- 745               	.LVL40:
-  48:hero.c        ****     	score_setup();
- 746               		.loc 1 48 0
- 747 0072 0E94 0000 		call score_setup
- 748               	.LVL41:
-  54:hero.c        **** 		move_hero( &hero );
- 749               		.loc 1 54 0
- 750 0076 C601      		movw r24,r12
- 751 0078 0E94 0000 		call move_hero
- 752               	.LVL42:
-  55:hero.c        **** 		draw_sprite (&hero );
- 753               		.loc 1 55 0
- 754 007c C601      		movw r24,r12
- 755 007e 0E94 0000 		call draw_sprite
- 756               	.LVL43:
-  56:hero.c        **** 		if ( zombie_update == 10 ) {
- 757               		.loc 1 56 0
- 758 0082 2AE0      		ldi r18,10
- 759 0084 E216      		cp r14,r18
- 760 0086 F104      		cpc r15,__zero_reg__
- 761 0088 01F4      		brne .L57
-  57:hero.c        **** 			new_zombies_pos();
- 762               		.loc 1 57 0
- 763 008a 0E94 0000 		call new_zombies_pos
- 764               	.LVL44:
-  59:hero.c        **** 			zombie_update = 0;
- 765               		.loc 1 59 0
- 766 008e E12C      		mov r14,__zero_reg__
- 767 0090 F12C      		mov r15,__zero_reg__
- 768               	.LVL45:
- 769               	.L57:
-  61:hero.c        **** 		if ( score_update == 50 ) {
- 770               		.loc 1 61 0
- 771 0092 0233      		cpi r16,50
- 772 0094 1105      		cpc r17,__zero_reg__
- 773 0096 01F4      		brne .L58
-  62:hero.c        **** 			update_score_time();
- 774               		.loc 1 62 0
- 775 0098 0E94 0000 		call update_score_time
- 776               	.LVL46:
-  63:hero.c        **** 			score_update = 0;
- 777               		.loc 1 63 0
- 778 009c 00E0      		ldi r16,0
- 779 009e 10E0      		ldi r17,0
- 780               	.LVL47:
- 781               	.L58:
-  65:hero.c        **** 		refresh();
- 782               		.loc 1 65 0
- 783 00a0 0E94 0000 		call refresh
- 784               	.LVL48:
-  66:hero.c        **** 		zombie_update++;
- 785               		.loc 1 66 0
- 786 00a4 8FEF      		ldi r24,-1
- 787 00a6 E81A      		sub r14,r24
- 788 00a8 F80A      		sbc r15,r24
- 789               	.LVL49:
-  67:hero.c        **** 		score_update++;
- 790               		.loc 1 67 0
- 791 00aa 0F5F      		subi r16,-1
- 792 00ac 1F4F      		sbci r17,-1
- 793               	.LVL50:
- 794               	.LBB38:
- 795               	.LBB39:
- 796               		.loc 2 164 0
- 797 00ae 9FEF      		ldi r25,lo8(159999)
- 798 00b0 20E7      		ldi r18,hi8(159999)
- 799 00b2 82E0      		ldi r24,hlo8(159999)
- 800 00b4 9150      		1: subi r25,1
- 801 00b6 2040      		sbci r18,0
- 802 00b8 8040      		sbci r24,0
- 803 00ba 01F4      		brne 1b
- 804 00bc 00C0      		rjmp .
- 805 00be 0000      		nop
- 806 00c0 00C0      		rjmp .L59
- 807               	.LBE39:
- 808               	.LBE38:
- 809               	.LBE37:
- 810               		.cfi_endproc
- 811               	.LFE7:
- 813               	.global	py
- 814               		.section .bss
- 817               	py:
- 818 0000 0000      		.zero	2
- 819               	.global	px
- 820               		.data
- 823               	px:
- 824 0000 0100      		.word	1
- 825               		.text
- 826               	.Letext0:
- 827               		.file 3 "/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/stdint.h"
- 828               		.file 4 "../teensy_graphics/byte.h"
- 829               		.file 5 "../teensy_graphics/sprite.h"
- 830               		.file 6 "../teensy_graphics/ascii_font.h"
- 831               		.file 7 "../teensy_graphics/graphics.h"
- 832               		.file 8 "screen.h"
- 833               		.file 9 "lives.h"
- 834               		.file 10 "score.h"
- 835               		.file 11 "zombies.h"
+ 692 03a8 87FF      		sbrs r24,7
+ 693 03aa 00C0      		rjmp .L21
+ 116:hero.c        **** 		hero ->x +=1;
+ 694               		.loc 1 116 0
+ 695 03ac 20E0      		ldi r18,0
+ 696 03ae 30E0      		ldi r19,0
+ 697 03b0 40E8      		ldi r20,lo8(-128)
+ 698 03b2 5FE3      		ldi r21,lo8(63)
+ 699 03b4 C501      		movw r24,r10
+ 700 03b6 B401      		movw r22,r8
+ 701 03b8 0E94 0000 		call __addsf3
+ 702               	.LVL35:
+ 703 03bc 6883      		st Y,r22
+ 704 03be 7983      		std Y+1,r23
+ 705 03c0 8A83      		std Y+2,r24
+ 706 03c2 9B83      		std Y+3,r25
+ 707               	.L21:
+ 117:hero.c        **** 	}
+ 118:hero.c        **** 
+ 119:hero.c        **** 	if ( hero->y >= LCD_Y - hero->height ) {
+ 708               		.loc 1 119 0
+ 709 03c4 8985      		ldd r24,Y+9
+ 710 03c6 60E3      		ldi r22,lo8(48)
+ 711 03c8 70E0      		ldi r23,0
+ 712 03ca 681B      		sub r22,r24
+ 713 03cc 7109      		sbc r23,__zero_reg__
+ 714 03ce 8827      		clr r24
+ 715 03d0 77FD      		sbrc r23,7
+ 716 03d2 8095      		com r24
+ 717 03d4 982F      		mov r25,r24
+ 718 03d6 0E94 0000 		call __floatsisf
+ 719               	.LVL36:
+ 720 03da 9B01      		movw r18,r22
+ 721 03dc AC01      		movw r20,r24
+ 722 03de 6C2D      		mov r22,r12
+ 723 03e0 7D2D      		mov r23,r13
+ 724 03e2 8E2D      		mov r24,r14
+ 725 03e4 9F2D      		mov r25,r15
+ 726 03e6 0E94 0000 		call __gesf2
+ 727               	.LVL37:
+ 728 03ea 87FD      		sbrc r24,7
+ 729 03ec 00C0      		rjmp .L23
+ 120:hero.c        **** 		hero->y -=1;
+ 730               		.loc 1 120 0
+ 731 03ee 20E0      		ldi r18,0
+ 732 03f0 30E0      		ldi r19,0
+ 733 03f2 40E8      		ldi r20,lo8(-128)
+ 734 03f4 5FE3      		ldi r21,lo8(63)
+ 735 03f6 6C2D      		mov r22,r12
+ 736 03f8 7D2D      		mov r23,r13
+ 737 03fa 8E2D      		mov r24,r14
+ 738 03fc 9F2D      		mov r25,r15
+ 739 03fe 0E94 0000 		call __subsf3
+ 740               	.LVL38:
+ 741 0402 6C83      		std Y+4,r22
+ 742 0404 7D83      		std Y+5,r23
+ 743 0406 8E83      		std Y+6,r24
+ 744 0408 9F83      		std Y+7,r25
+ 745               	.L23:
+ 121:hero.c        **** 	}
+ 122:hero.c        **** 
+ 123:hero.c        **** 	if ( hero->y < 0 + 13) {
+ 746               		.loc 1 123 0
+ 747 040a CC80      		ldd r12,Y+4
+ 748 040c DD80      		ldd r13,Y+5
+ 749 040e EE80      		ldd r14,Y+6
+ 750 0410 FF80      		ldd r15,Y+7
+ 751 0412 20E0      		ldi r18,0
+ 752 0414 30E0      		ldi r19,0
+ 753 0416 40E5      		ldi r20,lo8(80)
+ 754 0418 51E4      		ldi r21,lo8(65)
+ 755 041a C701      		movw r24,r14
+ 756 041c B601      		movw r22,r12
+ 757 041e 0E94 0000 		call __ltsf2
+ 758               	.LVL39:
+ 759 0422 87FF      		sbrs r24,7
+ 760 0424 00C0      		rjmp .L2
+ 124:hero.c        **** 		hero->y +=1;
+ 761               		.loc 1 124 0
+ 762 0426 20E0      		ldi r18,0
+ 763 0428 30E0      		ldi r19,0
+ 764 042a 40E8      		ldi r20,lo8(-128)
+ 765 042c 5FE3      		ldi r21,lo8(63)
+ 766 042e C701      		movw r24,r14
+ 767 0430 B601      		movw r22,r12
+ 768 0432 0E94 0000 		call __addsf3
+ 769               	.LVL40:
+ 770 0436 6C83      		std Y+4,r22
+ 771 0438 7D83      		std Y+5,r23
+ 772 043a 8E83      		std Y+6,r24
+ 773 043c 9F83      		std Y+7,r25
+ 774               	.L2:
+ 775               	/* epilogue start */
+ 125:hero.c        **** 	}
+ 126:hero.c        **** }
+ 776               		.loc 1 126 0
+ 777 043e DF91      		pop r29
+ 778 0440 CF91      		pop r28
+ 779               	.LVL41:
+ 780 0442 1F91      		pop r17
+ 781 0444 0F91      		pop r16
+ 782 0446 FF90      		pop r15
+ 783 0448 EF90      		pop r14
+ 784 044a DF90      		pop r13
+ 785 044c CF90      		pop r12
+ 786 044e BF90      		pop r11
+ 787 0450 AF90      		pop r10
+ 788 0452 9F90      		pop r9
+ 789 0454 8F90      		pop r8
+ 790 0456 0895      		ret
+ 791               		.cfi_endproc
+ 792               	.LFE8:
+ 794               		.section	.text.update_hero,"ax",@progbits
+ 795               	.global	update_hero
+ 797               	update_hero:
+ 798               	.LFB9:
+ 127:hero.c        **** 
+ 128:hero.c        **** 
+ 129:hero.c        **** 
+ 130:hero.c        **** void update_hero() {
+ 799               		.loc 1 130 0
+ 800               		.cfi_startproc
+ 801               	/* prologue: function */
+ 802               	/* frame size = 0 */
+ 803               	/* stack size = 0 */
+ 804               	.L__stack_usage = 0
+ 131:hero.c        **** 	move_hero ( hero_prt );
+ 805               		.loc 1 131 0
+ 806 0000 8091 0000 		lds r24,hero_prt
+ 807 0004 9091 0000 		lds r25,hero_prt+1
+ 808 0008 0E94 0000 		call move_hero
+ 809               	.LVL42:
+ 132:hero.c        **** 	draw_sprite ( hero_prt );
+ 810               		.loc 1 132 0
+ 811 000c 8091 0000 		lds r24,hero_prt
+ 812 0010 9091 0000 		lds r25,hero_prt+1
+ 813 0014 0C94 0000 		jmp draw_sprite
+ 814               	.LVL43:
+ 815               		.cfi_endproc
+ 816               	.LFE9:
+ 818               	.global	bitmap_hero
+ 819               		.data
+ 822               	bitmap_hero:
+ 823 0000 E0        		.byte	-32
+ 824 0001 40        		.byte	64
+ 825 0002 E0        		.byte	-32
+ 826               	.global	hero_prt
+ 829               	hero_prt:
+ 830 0003 0000      		.word	hero
+ 831               	.global	py
+ 832               		.section .bss
+ 835               	py:
+ 836 0000 0000      		.zero	2
+ 837               	.global	px
+ 838               		.data
+ 841               	px:
+ 842 0005 0100      		.word	1
+ 843               		.comm	z,2,1
+ 844               		.comm	zombies,168,1
+ 845               		.comm	hero,21,1
+ 846               		.text
+ 847               	.Letext0:
+ 848               		.file 3 "/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/stdint.h"
+ 849               		.file 4 "../teensy_graphics/byte.h"
+ 850               		.file 5 "../teensy_graphics/sprite.h"
+ 851               		.file 6 "../teensy_graphics/ascii_font.h"
+ 852               		.file 7 "zombies.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 hero.c
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc8xuD66.s:2      *ABS*:0000003e __SP_H__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc8xuD66.s:3      *ABS*:0000003d __SP_L__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc8xuD66.s:4      *ABS*:0000003f __SREG__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc8xuD66.s:5      *ABS*:00000000 __tmp_reg__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc8xuD66.s:6      *ABS*:00000001 __zero_reg__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc8xuD66.s:18     .text.move_hero:00000000 move_hero
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc8xuD66.s:823    .data:00000000 px
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc8xuD66.s:817    .bss:00000000 py
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc8xuD66.s:657    .text.start_hero:00000000 start_hero
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccWhNfpX.s:2      *ABS*:0000003e __SP_H__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccWhNfpX.s:3      *ABS*:0000003d __SP_L__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccWhNfpX.s:4      *ABS*:0000003f __SREG__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccWhNfpX.s:5      *ABS*:00000000 __tmp_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccWhNfpX.s:6      *ABS*:00000001 __zero_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccWhNfpX.s:13     .text.start_hero:00000000 start_hero
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccWhNfpX.s:822    .data:00000000 bitmap_hero
+                            *COM*:00000015 hero
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccWhNfpX.s:829    .data:00000003 hero_prt
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccWhNfpX.s:92     .text.move_hero:00000000 move_hero
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccWhNfpX.s:841    .data:00000005 px
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccWhNfpX.s:835    .bss:00000000 py
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccWhNfpX.s:797    .text.update_hero:00000000 update_hero
+                            *COM*:00000002 z
+                            *COM*:000000a8 zombies
 
 UNDEFINED SYMBOLS
+init_sprite
+draw_sprite
 __eqsf2
 __addsf3
 __floatsisf
 __gesf2
+__subsf3
 __ltsf2
-init_sprite
-draw_sprite
-clear
-screen_lines
-lives_setup
-score_setup
-new_zombies_pos
-update_score_time
-refresh
 __do_copy_data
 __do_clear_bss

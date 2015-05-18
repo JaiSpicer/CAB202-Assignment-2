@@ -10,7 +10,7 @@
   10               		.section	.text.section_selector,"ax",@progbits
   11               	.global	section_selector
   13               	section_selector:
-  14               	.LFB4:
+  14               	.LFB3:
   15               		.file 1 "zombies.c"
    1:zombies.c     **** /*
    2:zombies.c     ****  * zombies.c
@@ -42,55 +42,57 @@
   28:zombies.c     **** #define zombie_count (8)
   29:zombies.c     **** 
   30:zombies.c     **** Sprite zombies[zombie_count];
-  31:zombies.c     **** 
-  32:zombies.c     **** void start_zombies() {
-  33:zombies.c     **** 	byte bitmap1[] = {
-  34:zombies.c     **** 		BYTE( 11100000 ),
-  35:zombies.c     **** 		BYTE( 01000000 ),
-  36:zombies.c     **** 		BYTE( 10100000 )
-  37:zombies.c     **** 	};
-  38:zombies.c     **** 
-  39:zombies.c     **** 	byte *zbitmaps[1] = { bitmap1 };
-  40:zombies.c     **** 	byte width[] = {4};
-  41:zombies.c     **** 	byte height[] = {3};
-  42:zombies.c     **** 
-  43:zombies.c     **** 	Sprite zombies[zombie_count];
+  31:zombies.c     **** Sprite * z = &zombies;
+  32:zombies.c     **** byte bitmap1[] = {
+  33:zombies.c     **** 		BYTE( 11100000 ),
+  34:zombies.c     **** 		BYTE( 01000000 ),
+  35:zombies.c     **** 		BYTE( 10100000 )
+  36:zombies.c     **** 	};
+  37:zombies.c     **** 
+  38:zombies.c     **** void start_zombies() {
+  39:zombies.c     **** 
+  40:zombies.c     **** 
+  41:zombies.c     **** 	byte *zbitmaps[1] = { bitmap1 };
+  42:zombies.c     **** 	byte width[] = {4};
+  43:zombies.c     **** 	byte height[] = {3};
   44:zombies.c     **** 
-  45:zombies.c     **** 
-  46:zombies.c     **** 	setup_zombies ( zombies, zbitmaps, width, height );
+  45:zombies.c     **** //	Sprite zombies[zombie_count];
+  46:zombies.c     **** 
   47:zombies.c     **** 
-  48:zombies.c     **** 	draw_zombies ( zombies );
+  48:zombies.c     **** 	setup_zombies ( zombies, zbitmaps, width, height );
   49:zombies.c     **** 
-  50:zombies.c     **** }
+  50:zombies.c     **** 	draw_zombies ( zombies );
   51:zombies.c     **** 
-  52:zombies.c     **** 
-  53:zombies.c     **** void setup_zombies(
-  54:zombies.c     **** 	Sprite zombies[],
-  55:zombies.c     **** 	byte *zbitmaps[],
-  56:zombies.c     **** 	byte width[],
-  57:zombies.c     **** 	byte height[]
-  58:zombies.c     **** 	) {
-  59:zombies.c     **** 
-  60:zombies.c     **** 	for ( int i = 0; i < 8; i++ ) {
-  61:zombies.c     **** 		Sprite * sprite = &zombies[i];
-  62:zombies.c     **** 
-  63:zombies.c     **** 		byte * bitmap = zbitmaps[ i % 1];
+  52:zombies.c     **** }
+  53:zombies.c     **** 
+  54:zombies.c     **** 
+  55:zombies.c     **** void setup_zombies(
+  56:zombies.c     **** 	Sprite zombies[],
+  57:zombies.c     **** 	byte *zbitmaps[],
+  58:zombies.c     **** 	byte width[],
+  59:zombies.c     **** 	byte height[]
+  60:zombies.c     **** 	) {
+  61:zombies.c     **** 
+  62:zombies.c     **** 	for ( int i = 0; i < 8; i++ ) {
+  63:zombies.c     **** 		Sprite * sprite = &zombies[i];
   64:zombies.c     **** 
-  65:zombies.c     **** 		int picker = 1 + rand() % 2; // 1 - 70
-  66:zombies.c     **** 		section_selector ( picker );
-  67:zombies.c     **** 
-  68:zombies.c     **** 		init_sprite ( sprite, randx, randy, 4, 3, bitmap );
+  65:zombies.c     **** 		byte * bitmap = zbitmaps[ i % 1];
+  66:zombies.c     **** 
+  67:zombies.c     **** 		int picker = 1 + rand() % 2; // 1 - 70
+  68:zombies.c     **** 		section_selector ( picker );
   69:zombies.c     **** 
-  70:zombies.c     **** 
-  71:zombies.c     **** 	}
-  72:zombies.c     **** }
-  73:zombies.c     **** void new_zombies_pos() {
-  74:zombies.c     **** 	update_zombies ( zombies );
-  75:zombies.c     **** 	draw_zombies ( zombies );
-  76:zombies.c     **** }
-  77:zombies.c     **** 
-  78:zombies.c     **** void section_selector( int picker ) {
-  16               		.loc 1 78 0
+  70:zombies.c     **** 		init_sprite ( sprite, randx, randy, 4, 3, bitmap );
+  71:zombies.c     **** 		sprite->is_visible = 1;
+  72:zombies.c     **** 		sprite->dx = 1;
+  73:zombies.c     **** 		sprite->dy = 0;
+  74:zombies.c     **** 
+  75:zombies.c     **** 
+  76:zombies.c     **** 	}
+  77:zombies.c     **** }
+  78:zombies.c     **** 
+  79:zombies.c     **** 
+  80:zombies.c     **** void section_selector( int picker ) {
+  16               		.loc 1 80 0
   17               		.cfi_startproc
   18               	.LVL0:
   19 0000 CF93      		push r28
@@ -105,14 +107,14 @@
   28               	/* frame size = 0 */
   29               	/* stack size = 2 */
   30               	.L__stack_usage = 2
-  79:zombies.c     **** 	if ( picker == 1 ) { // Left Section
-  31               		.loc 1 79 0
+  81:zombies.c     **** 	if ( picker == 1 ) { // Left Section
+  31               		.loc 1 81 0
   32 0004 8130      		cpi r24,1
   33 0006 9105      		cpc r25,__zero_reg__
   34 0008 01F4      		brne .L2
-  35               	.LBB2:
-  80:zombies.c     **** 		randx = (rand()%25)+1; // 1 - 28
-  36               		.loc 1 80 0
+  35               	.LBB6:
+  82:zombies.c     **** 		randx = (rand()%25)+1; // 1 - 28
+  36               		.loc 1 82 0
   37 000a 0E94 0000 		call rand
   38               	.LVL1:
   39 000e 69E1      		ldi r22,lo8(25)
@@ -121,8 +123,8 @@
   42 0016 0196      		adiw r24,1
   43 0018 9093 0000 		sts randx+1,r25
   44 001c 8093 0000 		sts randx,r24
-  81:zombies.c     **** 		randy = (rand()%30)+14; // 14 - 47
-  45               		.loc 1 81 0
+  83:zombies.c     **** 		randy = (rand()%30)+14; // 14 - 47
+  45               		.loc 1 83 0
   46 0020 0E94 0000 		call rand
   47               	.LVL2:
   48 0024 6EE1      		ldi r22,lo8(30)
@@ -130,15 +132,15 @@
   50 0028 00C0      		rjmp .L4
   51               	.LVL3:
   52               	.L2:
-  53               	.LBE2:
-  82:zombies.c     **** 	}
-  83:zombies.c     **** 	else if ( picker == 2 ) { // Right Section
-  54               		.loc 1 83 0
+  53               	.LBE6:
+  84:zombies.c     **** 	}
+  85:zombies.c     **** 	else if ( picker == 2 ) { // Right Section
+  54               		.loc 1 85 0
   55 002a 0297      		sbiw r24,2
   56 002c 01F4      		brne .L1
-  57               	.LBB3:
-  84:zombies.c     **** 		randx = (rand()%30)+51; // 50 - 81
-  58               		.loc 1 84 0
+  57               	.LBB7:
+  86:zombies.c     **** 		randx = (rand()%30)+51; // 50 - 81
+  58               		.loc 1 86 0
   59 002e 0E94 0000 		call rand
   60               	.LVL4:
   61 0032 CEE1      		ldi r28,lo8(30)
@@ -148,8 +150,8 @@
   65 003c C396      		adiw r24,51
   66 003e 9093 0000 		sts randx+1,r25
   67 0042 8093 0000 		sts randx,r24
-  85:zombies.c     **** 		randy = (rand()%30)+14; // 14 - 47
-  68               		.loc 1 85 0
+  87:zombies.c     **** 		randy = (rand()%30)+14; // 14 - 47
+  68               		.loc 1 87 0
   69 0046 0E94 0000 		call rand
   70               	.LVL5:
   71 004a BE01      		movw r22,r28
@@ -160,622 +162,510 @@
   76 0056 8093 0000 		sts randy,r24
   77               	.L1:
   78               	/* epilogue start */
-  79               	.LBE3:
-  86:zombies.c     **** 	}
-  87:zombies.c     **** }
-  80               		.loc 1 87 0
+  79               	.LBE7:
+  88:zombies.c     **** 	}
+  89:zombies.c     **** }
+  80               		.loc 1 89 0
   81 005a DF91      		pop r29
   82 005c CF91      		pop r28
   83 005e 0895      		ret
   84               		.cfi_endproc
-  85               	.LFE4:
+  85               	.LFE3:
   87               		.section	.text.setup_zombies,"ax",@progbits
   88               	.global	setup_zombies
   90               	setup_zombies:
   91               	.LFB2:
-  58:zombies.c     **** 	) {
-  92               		.loc 1 58 0
+  60:zombies.c     **** 	) {
+  92               		.loc 1 60 0
   93               		.cfi_startproc
   94               	.LVL6:
-  95 0000 8F92      		push r8
+  95 0000 4F92      		push r4
   96               	.LCFI2:
   97               		.cfi_def_cfa_offset 3
-  98               		.cfi_offset 8, -2
-  99 0002 9F92      		push r9
+  98               		.cfi_offset 4, -2
+  99 0002 5F92      		push r5
  100               	.LCFI3:
  101               		.cfi_def_cfa_offset 4
- 102               		.cfi_offset 9, -3
- 103 0004 AF92      		push r10
+ 102               		.cfi_offset 5, -3
+ 103 0004 6F92      		push r6
  104               	.LCFI4:
  105               		.cfi_def_cfa_offset 5
- 106               		.cfi_offset 10, -4
- 107 0006 BF92      		push r11
+ 106               		.cfi_offset 6, -4
+ 107 0006 7F92      		push r7
  108               	.LCFI5:
  109               		.cfi_def_cfa_offset 6
- 110               		.cfi_offset 11, -5
- 111 0008 CF92      		push r12
+ 110               		.cfi_offset 7, -5
+ 111 0008 8F92      		push r8
  112               	.LCFI6:
  113               		.cfi_def_cfa_offset 7
- 114               		.cfi_offset 12, -6
- 115 000a DF92      		push r13
+ 114               		.cfi_offset 8, -6
+ 115 000a 9F92      		push r9
  116               	.LCFI7:
  117               		.cfi_def_cfa_offset 8
- 118               		.cfi_offset 13, -7
- 119 000c EF92      		push r14
+ 118               		.cfi_offset 9, -7
+ 119 000c AF92      		push r10
  120               	.LCFI8:
  121               		.cfi_def_cfa_offset 9
- 122               		.cfi_offset 14, -8
- 123 000e FF92      		push r15
+ 122               		.cfi_offset 10, -8
+ 123 000e BF92      		push r11
  124               	.LCFI9:
  125               		.cfi_def_cfa_offset 10
- 126               		.cfi_offset 15, -9
- 127 0010 0F93      		push r16
+ 126               		.cfi_offset 11, -9
+ 127 0010 CF92      		push r12
  128               	.LCFI10:
  129               		.cfi_def_cfa_offset 11
- 130               		.cfi_offset 16, -10
- 131 0012 CF93      		push r28
+ 130               		.cfi_offset 12, -10
+ 131 0012 DF92      		push r13
  132               	.LCFI11:
  133               		.cfi_def_cfa_offset 12
- 134               		.cfi_offset 28, -11
- 135 0014 DF93      		push r29
+ 134               		.cfi_offset 13, -11
+ 135 0014 EF92      		push r14
  136               	.LCFI12:
  137               		.cfi_def_cfa_offset 13
- 138               		.cfi_offset 29, -12
- 139               	/* prologue: function */
- 140               	/* frame size = 0 */
- 141               	/* stack size = 11 */
- 142               	.L__stack_usage = 11
- 143 0016 6C01      		movw r12,r24
- 144 0018 4B01      		movw r8,r22
- 145               	.LVL7:
-  58:zombies.c     **** 	) {
- 146               		.loc 1 58 0
- 147 001a C0E0      		ldi r28,0
- 148 001c D0E0      		ldi r29,0
- 149               	.LBB4:
- 150               	.LBB5:
-  65:zombies.c     **** 		int picker = 1 + rand() % 2; // 1 - 70
- 151               		.loc 1 65 0
- 152 001e 82E0      		ldi r24,lo8(2)
- 153 0020 A82E      		mov r10,r24
- 154 0022 B12C      		mov r11,__zero_reg__
- 155               	.LVL8:
- 156               	.L6:
-  63:zombies.c     **** 		byte * bitmap = zbitmaps[ i % 1];
- 157               		.loc 1 63 0 discriminator 2
- 158 0024 F401      		movw r30,r8
- 159 0026 E080      		ld r14,Z
- 160 0028 F180      		ldd r15,Z+1
- 161               	.LVL9:
-  65:zombies.c     **** 		int picker = 1 + rand() % 2; // 1 - 70
- 162               		.loc 1 65 0 discriminator 2
- 163 002a 0E94 0000 		call rand
- 164               	.LVL10:
- 165 002e B501      		movw r22,r10
- 166 0030 0E94 0000 		call __divmodhi4
- 167               	.LVL11:
-  66:zombies.c     **** 		section_selector ( picker );
- 168               		.loc 1 66 0 discriminator 2
- 169 0034 0196      		adiw r24,1
- 170 0036 0E94 0000 		call section_selector
- 171               	.LVL12:
-  68:zombies.c     **** 		init_sprite ( sprite, randx, randy, 4, 3, bitmap );
- 172               		.loc 1 68 0 discriminator 2
- 173 003a 03E0      		ldi r16,lo8(3)
- 174 003c 24E0      		ldi r18,lo8(4)
- 175 003e 4091 0000 		lds r20,randy
- 176 0042 6091 0000 		lds r22,randx
- 177 0046 C601      		movw r24,r12
- 178 0048 8C0F      		add r24,r28
- 179 004a 9D1F      		adc r25,r29
- 180               	.LVL13:
- 181 004c 0E94 0000 		call init_sprite
- 182               	.LVL14:
- 183 0050 6596      		adiw r28,21
- 184               	.LVL15:
- 185               	.LBE5:
-  60:zombies.c     **** 	for ( int i = 0; i < 8; i++ ) {
- 186               		.loc 1 60 0 discriminator 2
- 187 0052 C83A      		cpi r28,-88
- 188 0054 D105      		cpc r29,__zero_reg__
- 189 0056 01F4      		brne .L6
- 190               	/* epilogue start */
- 191               	.LBE4:
-  72:zombies.c     **** }
- 192               		.loc 1 72 0
- 193 0058 DF91      		pop r29
- 194 005a CF91      		pop r28
- 195               	.LVL16:
- 196 005c 0F91      		pop r16
- 197 005e FF90      		pop r15
- 198 0060 EF90      		pop r14
- 199               	.LVL17:
- 200 0062 DF90      		pop r13
- 201 0064 CF90      		pop r12
- 202               	.LVL18:
- 203 0066 BF90      		pop r11
- 204 0068 AF90      		pop r10
- 205 006a 9F90      		pop r9
- 206 006c 8F90      		pop r8
- 207               	.LVL19:
- 208 006e 0895      		ret
- 209               		.cfi_endproc
- 210               	.LFE2:
- 212               		.section	.text.draw_zombies,"ax",@progbits
- 213               	.global	draw_zombies
- 215               	draw_zombies:
- 216               	.LFB5:
-  88:zombies.c     **** 
-  89:zombies.c     **** void draw_zombies ( Sprite * sprites ) {
- 217               		.loc 1 89 0
- 218               		.cfi_startproc
- 219               	.LVL20:
- 220 0000 0F93      		push r16
- 221               	.LCFI13:
- 222               		.cfi_def_cfa_offset 3
- 223               		.cfi_offset 16, -2
- 224 0002 1F93      		push r17
- 225               	.LCFI14:
- 226               		.cfi_def_cfa_offset 4
- 227               		.cfi_offset 17, -3
- 228 0004 CF93      		push r28
- 229               	.LCFI15:
- 230               		.cfi_def_cfa_offset 5
- 231               		.cfi_offset 28, -4
- 232 0006 DF93      		push r29
- 233               	.LCFI16:
- 234               		.cfi_def_cfa_offset 6
- 235               		.cfi_offset 29, -5
- 236               	/* prologue: function */
- 237               	/* frame size = 0 */
- 238               	/* stack size = 4 */
- 239               	.L__stack_usage = 4
- 240 0008 8C01      		movw r16,r24
- 241               	.LVL21:
- 242               		.loc 1 89 0
- 243 000a C0E0      		ldi r28,0
- 244 000c D0E0      		ldi r29,0
- 245               	.LVL22:
- 246               	.L9:
- 247               	.LBB6:
-  90:zombies.c     **** 	for ( int i = 0; i < zombie_count; i++ ) {
-  91:zombies.c     **** 		draw_sprite ( sprites + i );
- 248               		.loc 1 91 0 discriminator 2
- 249 000e C801      		movw r24,r16
- 250 0010 8C0F      		add r24,r28
- 251 0012 9D1F      		adc r25,r29
- 252 0014 0E94 0000 		call draw_sprite
- 253               	.LVL23:
- 254 0018 6596      		adiw r28,21
-  90:zombies.c     **** 	for ( int i = 0; i < zombie_count; i++ ) {
- 255               		.loc 1 90 0 discriminator 2
- 256 001a C83A      		cpi r28,-88
- 257 001c D105      		cpc r29,__zero_reg__
- 258 001e 01F4      		brne .L9
- 259               	/* epilogue start */
- 260               	.LBE6:
-  92:zombies.c     **** 	}
-  93:zombies.c     **** }
- 261               		.loc 1 93 0
- 262 0020 DF91      		pop r29
- 263 0022 CF91      		pop r28
- 264 0024 1F91      		pop r17
- 265 0026 0F91      		pop r16
- 266               	.LVL24:
- 267 0028 0895      		ret
- 268               		.cfi_endproc
- 269               	.LFE5:
- 271               		.section	.text.start_zombies,"ax",@progbits
- 272               	.global	start_zombies
- 274               	start_zombies:
- 275               	.LFB1:
-  32:zombies.c     **** void start_zombies() {
- 276               		.loc 1 32 0
- 277               		.cfi_startproc
- 278 0000 CF93      		push r28
- 279               	.LCFI17:
- 280               		.cfi_def_cfa_offset 3
- 281               		.cfi_offset 28, -2
- 282 0002 DF93      		push r29
- 283               	.LCFI18:
- 284               		.cfi_def_cfa_offset 4
- 285               		.cfi_offset 29, -3
- 286 0004 CDB7      		in r28,__SP_L__
- 287 0006 DEB7      		in r29,__SP_H__
- 288               	.LCFI19:
- 289               		.cfi_def_cfa_register 28
- 290 0008 CF5A      		subi r28,-81
- 291 000a D109      		sbc r29,__zero_reg__
- 292               	.LCFI20:
- 293               		.cfi_def_cfa_offset 179
- 294 000c 0FB6      		in __tmp_reg__,__SREG__
- 295 000e F894      		cli
- 296 0010 DEBF      		out __SP_H__,r29
- 297 0012 0FBE      		out __SREG__,__tmp_reg__
- 298 0014 CDBF      		out __SP_L__,r28
- 299               	/* prologue: function */
- 300               	/* frame size = 175 */
- 301               	/* stack size = 177 */
- 302               	.L__stack_usage = 177
-  33:zombies.c     **** 	byte bitmap1[] = {
- 303               		.loc 1 33 0
- 304 0016 FE01      		movw r30,r28
- 305 0018 E755      		subi r30,87
- 306 001a FF4F      		sbci r31,-1
- 307 001c 80EE      		ldi r24,lo8(-32)
- 308 001e 8083      		st Z,r24
- 309 0020 80E4      		ldi r24,lo8(64)
- 310 0022 8183      		std Z+1,r24
- 311 0024 80EA      		ldi r24,lo8(-96)
- 312 0026 8283      		std Z+2,r24
-  39:zombies.c     **** 	byte *zbitmaps[1] = { bitmap1 };
- 313               		.loc 1 39 0
- 314 0028 C455      		subi r28,lo8(-172)
- 315 002a DF4F      		sbci r29,hi8(-172)
- 316 002c F983      		std Y+1,r31
- 317 002e E883      		st Y,r30
- 318 0030 CC5A      		subi r28,lo8(172)
- 319 0032 D040      		sbci r29,hi8(172)
-  40:zombies.c     **** 	byte width[] = {4};
- 320               		.loc 1 40 0
- 321 0034 84E0      		ldi r24,lo8(4)
- 322 0036 C155      		subi r28,lo8(-175)
- 323 0038 DF4F      		sbci r29,hi8(-175)
- 324 003a 8883      		st Y,r24
- 325 003c CF5A      		subi r28,lo8(175)
- 326 003e D040      		sbci r29,hi8(175)
-  41:zombies.c     **** 	byte height[] = {3};
- 327               		.loc 1 41 0
- 328 0040 83E0      		ldi r24,lo8(3)
- 329 0042 C255      		subi r28,lo8(-174)
- 330 0044 DF4F      		sbci r29,hi8(-174)
- 331 0046 8883      		st Y,r24
- 332 0048 CE5A      		subi r28,lo8(174)
- 333 004a D040      		sbci r29,hi8(174)
-  46:zombies.c     **** 	setup_zombies ( zombies, zbitmaps, width, height );
- 334               		.loc 1 46 0
- 335 004c 9E01      		movw r18,r28
- 336 004e 2255      		subi r18,82
- 337 0050 3F4F      		sbci r19,-1
- 338 0052 AE01      		movw r20,r28
- 339 0054 4155      		subi r20,81
- 340 0056 5F4F      		sbci r21,-1
- 341 0058 BE01      		movw r22,r28
- 342 005a 6455      		subi r22,84
- 343 005c 7F4F      		sbci r23,-1
- 344 005e CE01      		movw r24,r28
- 345 0060 0196      		adiw r24,1
- 346 0062 0E94 0000 		call setup_zombies
- 347               	.LVL25:
-  48:zombies.c     **** 	draw_zombies ( zombies );
- 348               		.loc 1 48 0
- 349 0066 CE01      		movw r24,r28
- 350 0068 0196      		adiw r24,1
- 351 006a 0E94 0000 		call draw_zombies
- 352               	.LVL26:
- 353               	/* epilogue start */
-  50:zombies.c     **** }
- 354               		.loc 1 50 0
- 355 006e C155      		subi r28,81
- 356 0070 DF4F      		sbci r29,-1
- 357 0072 0FB6      		in __tmp_reg__,__SREG__
- 358 0074 F894      		cli
- 359 0076 DEBF      		out __SP_H__,r29
- 360 0078 0FBE      		out __SREG__,__tmp_reg__
- 361 007a CDBF      		out __SP_L__,r28
- 362 007c DF91      		pop r29
- 363 007e CF91      		pop r28
- 364 0080 0895      		ret
- 365               		.cfi_endproc
- 366               	.LFE1:
- 368               	.global	__floatsisf
- 369               	.global	__gesf2
- 370               	.global	__ltsf2
- 371               		.section	.text.update_one_zombie,"ax",@progbits
- 372               	.global	update_one_zombie
- 374               	update_one_zombie:
- 375               	.LFB7:
-  94:zombies.c     **** 
-  95:zombies.c     **** void update_zombies ( Sprite * zombies ) {
-  96:zombies.c     **** 	// pick a direction to move in
-  97:zombies.c     **** 	for ( int i = 0; i < zombie_count; i++ ) {
-  98:zombies.c     **** 		update_one_zombie( zombies + 1);
-  99:zombies.c     **** 
- 100:zombies.c     **** 	}
- 101:zombies.c     **** }
- 102:zombies.c     **** 
- 103:zombies.c     **** void update_one_zombie ( Sprite * zombie ) {
- 376               		.loc 1 103 0
- 377               		.cfi_startproc
- 378               	.LVL27:
- 379 0000 8F92      		push r8
- 380               	.LCFI21:
- 381               		.cfi_def_cfa_offset 3
- 382               		.cfi_offset 8, -2
- 383 0002 9F92      		push r9
- 384               	.LCFI22:
- 385               		.cfi_def_cfa_offset 4
- 386               		.cfi_offset 9, -3
- 387 0004 AF92      		push r10
- 388               	.LCFI23:
- 389               		.cfi_def_cfa_offset 5
- 390               		.cfi_offset 10, -4
- 391 0006 BF92      		push r11
- 392               	.LCFI24:
- 393               		.cfi_def_cfa_offset 6
- 394               		.cfi_offset 11, -5
- 395 0008 CF92      		push r12
- 396               	.LCFI25:
- 397               		.cfi_def_cfa_offset 7
- 398               		.cfi_offset 12, -6
- 399 000a DF92      		push r13
- 400               	.LCFI26:
- 401               		.cfi_def_cfa_offset 8
- 402               		.cfi_offset 13, -7
- 403 000c EF92      		push r14
- 404               	.LCFI27:
- 405               		.cfi_def_cfa_offset 9
- 406               		.cfi_offset 14, -8
- 407 000e FF92      		push r15
- 408               	.LCFI28:
- 409               		.cfi_def_cfa_offset 10
- 410               		.cfi_offset 15, -9
- 411 0010 CF93      		push r28
- 412               	.LCFI29:
- 413               		.cfi_def_cfa_offset 11
- 414               		.cfi_offset 28, -10
- 415 0012 DF93      		push r29
- 416               	.LCFI30:
- 417               		.cfi_def_cfa_offset 12
- 418               		.cfi_offset 29, -11
- 419               	/* prologue: function */
- 420               	/* frame size = 0 */
- 421               	/* stack size = 10 */
- 422               	.L__stack_usage = 10
- 423 0014 EC01      		movw r28,r24
- 104:zombies.c     **** 	zombie->x = zombie->dx;
- 424               		.loc 1 104 0
- 425 0016 8D84      		ldd r8,Y+13
- 426 0018 9E84      		ldd r9,Y+14
- 427 001a AF84      		ldd r10,Y+15
- 428 001c B888      		ldd r11,Y+16
- 429 001e 8882      		st Y,r8
- 430 0020 9982      		std Y+1,r9
- 431 0022 AA82      		std Y+2,r10
- 432 0024 BB82      		std Y+3,r11
- 105:zombies.c     **** 	zombie->y = zombie->dy;
- 433               		.loc 1 105 0
- 434 0026 C988      		ldd r12,Y+17
- 435 0028 DA88      		ldd r13,Y+18
- 436 002a EB88      		ldd r14,Y+19
- 437 002c FC88      		ldd r15,Y+20
- 438 002e CC82      		std Y+4,r12
- 439 0030 DD82      		std Y+5,r13
- 440 0032 EE82      		std Y+6,r14
- 441 0034 FF82      		std Y+7,r15
+ 138               		.cfi_offset 14, -12
+ 139 0016 FF92      		push r15
+ 140               	.LCFI13:
+ 141               		.cfi_def_cfa_offset 14
+ 142               		.cfi_offset 15, -13
+ 143 0018 0F93      		push r16
+ 144               	.LCFI14:
+ 145               		.cfi_def_cfa_offset 15
+ 146               		.cfi_offset 16, -14
+ 147 001a 1F93      		push r17
+ 148               	.LCFI15:
+ 149               		.cfi_def_cfa_offset 16
+ 150               		.cfi_offset 17, -15
+ 151 001c CF93      		push r28
+ 152               	.LCFI16:
+ 153               		.cfi_def_cfa_offset 17
+ 154               		.cfi_offset 28, -16
+ 155 001e DF93      		push r29
+ 156               	.LCFI17:
+ 157               		.cfi_def_cfa_offset 18
+ 158               		.cfi_offset 29, -17
+ 159               	/* prologue: function */
+ 160               	/* frame size = 0 */
+ 161               	/* stack size = 16 */
+ 162               	.L__stack_usage = 16
+ 163 0020 4B01      		movw r8,r22
+ 164               	.LVL7:
+ 165 0022 EC01      		movw r28,r24
+  60:zombies.c     **** 	) {
+ 166               		.loc 1 60 0
+ 167 0024 88E0      		ldi r24,lo8(8)
+ 168 0026 C82E      		mov r12,r24
+ 169 0028 D12C      		mov r13,__zero_reg__
+ 170               	.LVL8:
+ 171               	.LBB8:
+ 172               	.LBB9:
+  67:zombies.c     **** 		int picker = 1 + rand() % 2; // 1 - 70
+ 173               		.loc 1 67 0
+ 174 002a 92E0      		ldi r25,lo8(2)
+ 175 002c A92E      		mov r10,r25
+ 176 002e B12C      		mov r11,__zero_reg__
+  71:zombies.c     **** 		sprite->is_visible = 1;
+ 177               		.loc 1 71 0
+ 178 0030 11E0      		ldi r17,lo8(1)
+  72:zombies.c     **** 		sprite->dx = 1;
+ 179               		.loc 1 72 0
+ 180 0032 412C      		mov r4,__zero_reg__
+ 181 0034 512C      		mov r5,__zero_reg__
+ 182 0036 20E8      		ldi r18,lo8(-128)
+ 183 0038 622E      		mov r6,r18
+ 184 003a 2FE3      		ldi r18,lo8(63)
+ 185 003c 722E      		mov r7,r18
+ 186               	.LVL9:
+ 187               	.L6:
+  65:zombies.c     **** 		byte * bitmap = zbitmaps[ i % 1];
+ 188               		.loc 1 65 0 discriminator 2
+ 189 003e F401      		movw r30,r8
+ 190 0040 E080      		ld r14,Z
+ 191 0042 F180      		ldd r15,Z+1
+ 192               	.LVL10:
+  67:zombies.c     **** 		int picker = 1 + rand() % 2; // 1 - 70
+ 193               		.loc 1 67 0 discriminator 2
+ 194 0044 0E94 0000 		call rand
+ 195               	.LVL11:
+ 196 0048 B501      		movw r22,r10
+ 197 004a 0E94 0000 		call __divmodhi4
+ 198               	.LVL12:
+  68:zombies.c     **** 		section_selector ( picker );
+ 199               		.loc 1 68 0 discriminator 2
+ 200 004e 0196      		adiw r24,1
+ 201 0050 0E94 0000 		call section_selector
+ 202               	.LVL13:
+  70:zombies.c     **** 		init_sprite ( sprite, randx, randy, 4, 3, bitmap );
+ 203               		.loc 1 70 0 discriminator 2
+ 204 0054 03E0      		ldi r16,lo8(3)
+ 205 0056 24E0      		ldi r18,lo8(4)
+ 206 0058 4091 0000 		lds r20,randy
+ 207 005c 6091 0000 		lds r22,randx
+ 208 0060 CE01      		movw r24,r28
+ 209 0062 0E94 0000 		call init_sprite
+ 210               	.LVL14:
+  71:zombies.c     **** 		sprite->is_visible = 1;
+ 211               		.loc 1 71 0 discriminator 2
+ 212 0066 1A87      		std Y+10,r17
+  72:zombies.c     **** 		sprite->dx = 1;
+ 213               		.loc 1 72 0 discriminator 2
+ 214 0068 4D86      		std Y+13,r4
+ 215 006a 5E86      		std Y+14,r5
+ 216 006c 6F86      		std Y+15,r6
+ 217 006e 788A      		std Y+16,r7
+  73:zombies.c     **** 		sprite->dy = 0;
+ 218               		.loc 1 73 0 discriminator 2
+ 219 0070 198A      		std Y+17,__zero_reg__
+ 220 0072 1A8A      		std Y+18,__zero_reg__
+ 221 0074 1B8A      		std Y+19,__zero_reg__
+ 222 0076 1C8A      		std Y+20,__zero_reg__
+ 223 0078 F1E0      		ldi r31,1
+ 224 007a CF1A      		sub r12,r31
+ 225 007c D108      		sbc r13,__zero_reg__
+ 226 007e 6596      		adiw r28,21
+ 227               	.LVL15:
+ 228               	.LBE9:
+  62:zombies.c     **** 	for ( int i = 0; i < 8; i++ ) {
+ 229               		.loc 1 62 0 discriminator 2
+ 230 0080 C114      		cp r12,__zero_reg__
+ 231 0082 D104      		cpc r13,__zero_reg__
+ 232 0084 01F4      		brne .L6
+ 233               	/* epilogue start */
+ 234               	.LBE8:
+  77:zombies.c     **** }
+ 235               		.loc 1 77 0
+ 236 0086 DF91      		pop r29
+ 237 0088 CF91      		pop r28
+ 238               	.LVL16:
+ 239 008a 1F91      		pop r17
+ 240 008c 0F91      		pop r16
+ 241 008e FF90      		pop r15
+ 242 0090 EF90      		pop r14
+ 243               	.LVL17:
+ 244 0092 DF90      		pop r13
+ 245 0094 CF90      		pop r12
+ 246 0096 BF90      		pop r11
+ 247 0098 AF90      		pop r10
+ 248 009a 9F90      		pop r9
+ 249 009c 8F90      		pop r8
+ 250               	.LVL18:
+ 251 009e 7F90      		pop r7
+ 252 00a0 6F90      		pop r6
+ 253 00a2 5F90      		pop r5
+ 254 00a4 4F90      		pop r4
+ 255 00a6 0895      		ret
+ 256               		.cfi_endproc
+ 257               	.LFE2:
+ 259               		.section	.text.draw_zombies,"ax",@progbits
+ 260               	.global	draw_zombies
+ 262               	draw_zombies:
+ 263               	.LFB4:
+  90:zombies.c     **** 
+  91:zombies.c     **** void draw_zombies ( Sprite * sprites ) {
+ 264               		.loc 1 91 0
+ 265               		.cfi_startproc
+ 266               	.LVL19:
+ 267 0000 0F93      		push r16
+ 268               	.LCFI18:
+ 269               		.cfi_def_cfa_offset 3
+ 270               		.cfi_offset 16, -2
+ 271 0002 1F93      		push r17
+ 272               	.LCFI19:
+ 273               		.cfi_def_cfa_offset 4
+ 274               		.cfi_offset 17, -3
+ 275 0004 CF93      		push r28
+ 276               	.LCFI20:
+ 277               		.cfi_def_cfa_offset 5
+ 278               		.cfi_offset 28, -4
+ 279 0006 DF93      		push r29
+ 280               	.LCFI21:
+ 281               		.cfi_def_cfa_offset 6
+ 282               		.cfi_offset 29, -5
+ 283               	/* prologue: function */
+ 284               	/* frame size = 0 */
+ 285               	/* stack size = 4 */
+ 286               	.L__stack_usage = 4
+ 287 0008 8C01      		movw r16,r24
+ 288               	.LVL20:
+ 289               		.loc 1 91 0
+ 290 000a C0E0      		ldi r28,0
+ 291 000c D0E0      		ldi r29,0
+ 292               	.LVL21:
+ 293               	.L9:
+ 294               	.LBB10:
+  92:zombies.c     **** 	for ( int i = 0; i < zombie_count; i++ ) {
+  93:zombies.c     **** 		draw_sprite ( sprites + i );
+ 295               		.loc 1 93 0 discriminator 2
+ 296 000e C801      		movw r24,r16
+ 297 0010 8C0F      		add r24,r28
+ 298 0012 9D1F      		adc r25,r29
+ 299 0014 0E94 0000 		call draw_sprite
+ 300               	.LVL22:
+ 301 0018 6596      		adiw r28,21
+  92:zombies.c     **** 	for ( int i = 0; i < zombie_count; i++ ) {
+ 302               		.loc 1 92 0 discriminator 2
+ 303 001a C83A      		cpi r28,-88
+ 304 001c D105      		cpc r29,__zero_reg__
+ 305 001e 01F4      		brne .L9
+ 306               	/* epilogue start */
+ 307               	.LBE10:
+  94:zombies.c     **** 	}
+  95:zombies.c     **** }
+ 308               		.loc 1 95 0
+ 309 0020 DF91      		pop r29
+ 310 0022 CF91      		pop r28
+ 311 0024 1F91      		pop r17
+ 312 0026 0F91      		pop r16
+ 313               	.LVL23:
+ 314 0028 0895      		ret
+ 315               		.cfi_endproc
+ 316               	.LFE4:
+ 318               		.section	.text.start_zombies,"ax",@progbits
+ 319               	.global	start_zombies
+ 321               	start_zombies:
+ 322               	.LFB1:
+  38:zombies.c     **** void start_zombies() {
+ 323               		.loc 1 38 0
+ 324               		.cfi_startproc
+ 325 0000 CF93      		push r28
+ 326               	.LCFI22:
+ 327               		.cfi_def_cfa_offset 3
+ 328               		.cfi_offset 28, -2
+ 329 0002 DF93      		push r29
+ 330               	.LCFI23:
+ 331               		.cfi_def_cfa_offset 4
+ 332               		.cfi_offset 29, -3
+ 333 0004 00D0      		rcall .
+ 334 0006 00D0      		rcall .
+ 335               	.LCFI24:
+ 336               		.cfi_def_cfa_offset 8
+ 337 0008 CDB7      		in r28,__SP_L__
+ 338 000a DEB7      		in r29,__SP_H__
+ 339               	.LCFI25:
+ 340               		.cfi_def_cfa_register 28
+ 341               	/* prologue: function */
+ 342               	/* frame size = 4 */
+ 343               	/* stack size = 6 */
+ 344               	.L__stack_usage = 6
+  41:zombies.c     **** 	byte *zbitmaps[1] = { bitmap1 };
+ 345               		.loc 1 41 0
+ 346 000c 80E0      		ldi r24,lo8(bitmap1)
+ 347 000e 90E0      		ldi r25,hi8(bitmap1)
+ 348 0010 9A83      		std Y+2,r25
+ 349 0012 8983      		std Y+1,r24
+  42:zombies.c     **** 	byte width[] = {4};
+ 350               		.loc 1 42 0
+ 351 0014 84E0      		ldi r24,lo8(4)
+ 352 0016 8C83      		std Y+4,r24
+  43:zombies.c     **** 	byte height[] = {3};
+ 353               		.loc 1 43 0
+ 354 0018 83E0      		ldi r24,lo8(3)
+ 355 001a 8B83      		std Y+3,r24
+  48:zombies.c     **** 	setup_zombies ( zombies, zbitmaps, width, height );
+ 356               		.loc 1 48 0
+ 357 001c 9E01      		movw r18,r28
+ 358 001e 2D5F      		subi r18,-3
+ 359 0020 3F4F      		sbci r19,-1
+ 360 0022 AE01      		movw r20,r28
+ 361 0024 4C5F      		subi r20,-4
+ 362 0026 5F4F      		sbci r21,-1
+ 363 0028 BE01      		movw r22,r28
+ 364 002a 6F5F      		subi r22,-1
+ 365 002c 7F4F      		sbci r23,-1
+ 366 002e 80E0      		ldi r24,lo8(zombies)
+ 367 0030 90E0      		ldi r25,hi8(zombies)
+ 368 0032 0E94 0000 		call setup_zombies
+ 369               	.LVL24:
+  50:zombies.c     **** 	draw_zombies ( zombies );
+ 370               		.loc 1 50 0
+ 371 0036 80E0      		ldi r24,lo8(zombies)
+ 372 0038 90E0      		ldi r25,hi8(zombies)
+ 373 003a 0E94 0000 		call draw_zombies
+ 374               	.LVL25:
+ 375               	/* epilogue start */
+  52:zombies.c     **** }
+ 376               		.loc 1 52 0
+ 377 003e 0F90      		pop __tmp_reg__
+ 378 0040 0F90      		pop __tmp_reg__
+ 379 0042 0F90      		pop __tmp_reg__
+ 380 0044 0F90      		pop __tmp_reg__
+ 381 0046 DF91      		pop r29
+ 382 0048 CF91      		pop r28
+ 383 004a 0895      		ret
+ 384               		.cfi_endproc
+ 385               	.LFE1:
+ 387               		.section	.text.update_zombies,"ax",@progbits
+ 388               	.global	update_zombies
+ 390               	update_zombies:
+ 391               	.LFB6:
+  96:zombies.c     **** 
+  97:zombies.c     **** void zombie_updater() {
+  98:zombies.c     **** 	update_zombies( zombies );
+  99:zombies.c     **** 	draw_zombies( zombies );
+ 100:zombies.c     **** }
+ 101:zombies.c     **** 
+ 102:zombies.c     **** void update_zombies ( Sprite * sprites ) {
+ 392               		.loc 1 102 0
+ 393               		.cfi_startproc
+ 394               	.LVL26:
+ 395 0000 0F93      		push r16
+ 396               	.LCFI26:
+ 397               		.cfi_def_cfa_offset 3
+ 398               		.cfi_offset 16, -2
+ 399 0002 1F93      		push r17
+ 400               	.LCFI27:
+ 401               		.cfi_def_cfa_offset 4
+ 402               		.cfi_offset 17, -3
+ 403               	/* prologue: function */
+ 404               	/* frame size = 0 */
+ 405               	/* stack size = 2 */
+ 406               	.L__stack_usage = 2
+ 407 0004 FC01      		movw r30,r24
+ 408               	.LVL27:
+ 409               	.LBB11:
+ 410               	.LBB12:
+ 411               	.LBB13:
+ 412               	.LBB14:
+ 103:zombies.c     **** 	// pick a direction to move in
+ 104:zombies.c     **** 	for ( int i = 0; i < zombie_count; i++ ) {
+ 105:zombies.c     **** 		update_one_zombie( sprites + 1);
  106:zombies.c     **** 
- 107:zombies.c     **** 	if ( zombie->x >= (LCD_X - 1) - zombie->width || zombie->x < 1 ) {
- 442               		.loc 1 107 0
- 443 0036 8885      		ldd r24,Y+8
- 444               	.LVL28:
- 445 0038 63E5      		ldi r22,lo8(83)
- 446 003a 70E0      		ldi r23,0
- 447 003c 681B      		sub r22,r24
- 448 003e 7109      		sbc r23,__zero_reg__
- 449 0040 8827      		clr r24
- 450 0042 77FD      		sbrc r23,7
- 451 0044 8095      		com r24
- 452 0046 982F      		mov r25,r24
- 453 0048 0E94 0000 		call __floatsisf
- 454               	.LVL29:
- 455 004c 9B01      		movw r18,r22
- 456 004e AC01      		movw r20,r24
- 457 0050 C501      		movw r24,r10
- 458 0052 B401      		movw r22,r8
- 459 0054 0E94 0000 		call __gesf2
- 460               	.LVL30:
- 461 0058 87FF      		sbrs r24,7
- 462 005a 00C0      		rjmp .L13
- 463               		.loc 1 107 0 is_stmt 0 discriminator 1
- 464 005c 20E0      		ldi r18,0
- 465 005e 30E0      		ldi r19,0
- 466 0060 40E8      		ldi r20,lo8(-128)
- 467 0062 5FE3      		ldi r21,lo8(63)
- 468 0064 C501      		movw r24,r10
- 469 0066 B401      		movw r22,r8
- 470 0068 0E94 0000 		call __ltsf2
- 471               	.LVL31:
- 472 006c 87FF      		sbrs r24,7
- 473 006e 00C0      		rjmp .L14
- 474               	.L13:
- 108:zombies.c     **** 		zombie->dx = 0;
- 475               		.loc 1 108 0 is_stmt 1
- 476 0070 1D86      		std Y+13,__zero_reg__
- 477 0072 1E86      		std Y+14,__zero_reg__
- 478 0074 1F86      		std Y+15,__zero_reg__
- 479 0076 188A      		std Y+16,__zero_reg__
- 480               	.L14:
- 109:zombies.c     **** 	}
- 110:zombies.c     **** 
- 111:zombies.c     **** 	if ( zombie->y >= (LCD_Y - 1) - zombie->height || zombie->y < 14 ) {
- 481               		.loc 1 111 0
- 482 0078 8985      		ldd r24,Y+9
- 483 007a 6FE2      		ldi r22,lo8(47)
- 484 007c 70E0      		ldi r23,0
- 485 007e 681B      		sub r22,r24
- 486 0080 7109      		sbc r23,__zero_reg__
- 487 0082 8827      		clr r24
- 488 0084 77FD      		sbrc r23,7
- 489 0086 8095      		com r24
- 490 0088 982F      		mov r25,r24
- 491 008a 0E94 0000 		call __floatsisf
- 492               	.LVL32:
- 493 008e 9B01      		movw r18,r22
- 494 0090 AC01      		movw r20,r24
- 495 0092 C701      		movw r24,r14
- 496 0094 B601      		movw r22,r12
- 497 0096 0E94 0000 		call __gesf2
- 498               	.LVL33:
- 499 009a 87FF      		sbrs r24,7
- 500 009c 00C0      		rjmp .L16
- 501               		.loc 1 111 0 is_stmt 0 discriminator 1
- 502 009e 20E0      		ldi r18,0
- 503 00a0 30E0      		ldi r19,0
- 504 00a2 40E6      		ldi r20,lo8(96)
- 505 00a4 51E4      		ldi r21,lo8(65)
- 506 00a6 C701      		movw r24,r14
- 507 00a8 B601      		movw r22,r12
- 508 00aa 0E94 0000 		call __ltsf2
- 509               	.LVL34:
- 510 00ae 87FF      		sbrs r24,7
- 511 00b0 00C0      		rjmp .L12
- 512               	.L16:
- 112:zombies.c     **** 		zombie->dy = 0;
- 513               		.loc 1 112 0 is_stmt 1
- 514 00b2 198A      		std Y+17,__zero_reg__
- 515 00b4 1A8A      		std Y+18,__zero_reg__
- 516 00b6 1B8A      		std Y+19,__zero_reg__
- 517 00b8 1C8A      		std Y+20,__zero_reg__
- 518               	.L12:
- 519               	/* epilogue start */
- 113:zombies.c     **** 	}
- 114:zombies.c     **** }
- 520               		.loc 1 114 0
- 521 00ba DF91      		pop r29
- 522 00bc CF91      		pop r28
- 523               	.LVL35:
- 524 00be FF90      		pop r15
- 525 00c0 EF90      		pop r14
- 526 00c2 DF90      		pop r13
- 527 00c4 CF90      		pop r12
- 528 00c6 BF90      		pop r11
- 529 00c8 AF90      		pop r10
- 530 00ca 9F90      		pop r9
- 531 00cc 8F90      		pop r8
- 532 00ce 0895      		ret
- 533               		.cfi_endproc
- 534               	.LFE7:
- 536               		.section	.text.update_zombies,"ax",@progbits
- 537               	.global	update_zombies
- 539               	update_zombies:
- 540               	.LFB6:
-  95:zombies.c     **** void update_zombies ( Sprite * zombies ) {
- 541               		.loc 1 95 0
- 542               		.cfi_startproc
- 543               	.LVL36:
- 544 0000 0F93      		push r16
- 545               	.LCFI31:
- 546               		.cfi_def_cfa_offset 3
- 547               		.cfi_offset 16, -2
- 548 0002 1F93      		push r17
- 549               	.LCFI32:
- 550               		.cfi_def_cfa_offset 4
- 551               		.cfi_offset 17, -3
- 552 0004 CF93      		push r28
- 553               	.LCFI33:
- 554               		.cfi_def_cfa_offset 5
- 555               		.cfi_offset 28, -4
- 556 0006 DF93      		push r29
- 557               	.LCFI34:
- 558               		.cfi_def_cfa_offset 6
- 559               		.cfi_offset 29, -5
- 560               	/* prologue: function */
- 561               	/* frame size = 0 */
- 562               	/* stack size = 4 */
- 563               	.L__stack_usage = 4
- 564               	.LVL37:
-  95:zombies.c     **** void update_zombies ( Sprite * zombies ) {
- 565               		.loc 1 95 0
- 566 0008 C8E0      		ldi r28,lo8(8)
- 567 000a D0E0      		ldi r29,0
- 568               	.LBB7:
- 569               	.LBB8:
-  98:zombies.c     **** 		update_one_zombie( zombies + 1);
- 570               		.loc 1 98 0
- 571 000c 8C01      		movw r16,r24
- 572 000e 0B5E      		subi r16,-21
- 573 0010 1F4F      		sbci r17,-1
- 574               	.LVL38:
- 575               	.L20:
-  98:zombies.c     **** 		update_one_zombie( zombies + 1);
- 576               		.loc 1 98 0 is_stmt 0 discriminator 2
- 577 0012 C801      		movw r24,r16
- 578 0014 0E94 0000 		call update_one_zombie
- 579               	.LVL39:
- 580 0018 2197      		sbiw r28,1
- 581               	.LBE8:
-  97:zombies.c     **** 	for ( int i = 0; i < zombie_count; i++ ) {
- 582               		.loc 1 97 0 is_stmt 1 discriminator 2
- 583 001a 01F4      		brne .L20
- 584               	/* epilogue start */
- 585               	.LBE7:
- 101:zombies.c     **** }
- 586               		.loc 1 101 0
- 587 001c DF91      		pop r29
- 588 001e CF91      		pop r28
- 589 0020 1F91      		pop r17
- 590 0022 0F91      		pop r16
- 591               	.LVL40:
- 592 0024 0895      		ret
- 593               		.cfi_endproc
- 594               	.LFE6:
- 596               		.section	.text.new_zombies_pos,"ax",@progbits
- 597               	.global	new_zombies_pos
- 599               	new_zombies_pos:
- 600               	.LFB3:
-  73:zombies.c     **** void new_zombies_pos() {
- 601               		.loc 1 73 0
- 602               		.cfi_startproc
- 603               	/* prologue: function */
- 604               	/* frame size = 0 */
- 605               	/* stack size = 0 */
- 606               	.L__stack_usage = 0
-  74:zombies.c     **** 	update_zombies ( zombies );
- 607               		.loc 1 74 0
- 608 0000 80E0      		ldi r24,lo8(zombies)
- 609 0002 90E0      		ldi r25,hi8(zombies)
- 610 0004 0E94 0000 		call update_zombies
- 611               	.LVL41:
-  75:zombies.c     **** 	draw_zombies ( zombies );
- 612               		.loc 1 75 0
- 613 0008 80E0      		ldi r24,lo8(zombies)
- 614 000a 90E0      		ldi r25,hi8(zombies)
- 615 000c 0C94 0000 		jmp draw_zombies
- 616               	.LVL42:
- 617               		.cfi_endproc
- 618               	.LFE3:
- 620               		.comm	zombies,168,1
- 621               		.comm	randy,2,1
- 622               		.comm	randx,2,1
- 623               		.text
- 624               	.Letext0:
- 625               		.file 2 "../teensy_graphics/sprite.h"
- 626               		.file 3 "../teensy_graphics/byte.h"
- 627               		.file 4 "../teensy_graphics/ascii_font.h"
+ 107:zombies.c     **** 	}
+ 108:zombies.c     **** }
+ 109:zombies.c     **** 
+ 110:zombies.c     **** void update_one_zombie ( Sprite * zombie ) {
+ 111:zombies.c     **** 	zombie->x = zombie->dx;
+ 112:zombies.c     **** 	zombie->y = zombie->dy;
+ 413               		.loc 1 112 0
+ 414 0006 46A1      		ldd r20,Z+38
+ 415 0008 57A1      		ldd r21,Z+39
+ 416 000a 60A5      		ldd r22,Z+40
+ 417 000c 71A5      		ldd r23,Z+41
+ 418               	.LVL28:
+ 419 000e 02A1      		ldd r16,Z+34
+ 420 0010 13A1      		ldd r17,Z+35
+ 421 0012 24A1      		ldd r18,Z+36
+ 422 0014 35A1      		ldd r19,Z+37
+ 423 0016 058B      		std Z+21,r16
+ 424 0018 168B      		std Z+22,r17
+ 425 001a 278B      		std Z+23,r18
+ 426 001c 308F      		std Z+24,r19
+ 427 001e 418F      		std Z+25,r20
+ 428 0020 528F      		std Z+26,r21
+ 429 0022 638F      		std Z+27,r22
+ 430 0024 748F      		std Z+28,r23
+ 431               	/* epilogue start */
+ 432               	.LBE14:
+ 433               	.LBE13:
+ 434               	.LBE12:
+ 435               	.LBE11:
+ 108:zombies.c     **** }
+ 436               		.loc 1 108 0
+ 437 0026 1F91      		pop r17
+ 438 0028 0F91      		pop r16
+ 439 002a 0895      		ret
+ 440               		.cfi_endproc
+ 441               	.LFE6:
+ 443               		.section	.text.zombie_updater,"ax",@progbits
+ 444               	.global	zombie_updater
+ 446               	zombie_updater:
+ 447               	.LFB5:
+  97:zombies.c     **** void zombie_updater() {
+ 448               		.loc 1 97 0
+ 449               		.cfi_startproc
+ 450               	/* prologue: function */
+ 451               	/* frame size = 0 */
+ 452               	/* stack size = 0 */
+ 453               	.L__stack_usage = 0
+  98:zombies.c     **** 	update_zombies( zombies );
+ 454               		.loc 1 98 0
+ 455 0000 80E0      		ldi r24,lo8(zombies)
+ 456 0002 90E0      		ldi r25,hi8(zombies)
+ 457 0004 0E94 0000 		call update_zombies
+ 458               	.LVL29:
+  99:zombies.c     **** 	draw_zombies( zombies );
+ 459               		.loc 1 99 0
+ 460 0008 80E0      		ldi r24,lo8(zombies)
+ 461 000a 90E0      		ldi r25,hi8(zombies)
+ 462 000c 0C94 0000 		jmp draw_zombies
+ 463               	.LVL30:
+ 464               		.cfi_endproc
+ 465               	.LFE5:
+ 467               		.section	.text.update_one_zombie,"ax",@progbits
+ 468               	.global	update_one_zombie
+ 470               	update_one_zombie:
+ 471               	.LFB7:
+ 110:zombies.c     **** void update_one_zombie ( Sprite * zombie ) {
+ 472               		.loc 1 110 0
+ 473               		.cfi_startproc
+ 474               	.LVL31:
+ 475               	/* prologue: function */
+ 476               	/* frame size = 0 */
+ 477               	/* stack size = 0 */
+ 478               	.L__stack_usage = 0
+ 479 0000 FC01      		movw r30,r24
+ 111:zombies.c     **** 	zombie->x = zombie->dx;
+ 480               		.loc 1 111 0
+ 481 0002 4585      		ldd r20,Z+13
+ 482 0004 5685      		ldd r21,Z+14
+ 483 0006 6785      		ldd r22,Z+15
+ 484 0008 7089      		ldd r23,Z+16
+ 485 000a 4083      		st Z,r20
+ 486 000c 5183      		std Z+1,r21
+ 487 000e 6283      		std Z+2,r22
+ 488 0010 7383      		std Z+3,r23
+ 489               		.loc 1 112 0
+ 490 0012 4189      		ldd r20,Z+17
+ 491 0014 5289      		ldd r21,Z+18
+ 492 0016 6389      		ldd r22,Z+19
+ 493 0018 7489      		ldd r23,Z+20
+ 494 001a 4483      		std Z+4,r20
+ 495 001c 5583      		std Z+5,r21
+ 496 001e 6683      		std Z+6,r22
+ 497 0020 7783      		std Z+7,r23
+ 498 0022 0895      		ret
+ 499               		.cfi_endproc
+ 500               	.LFE7:
+ 502               	.global	bitmap1
+ 503               		.data
+ 506               	bitmap1:
+ 507 0000 E0        		.byte	-32
+ 508 0001 40        		.byte	64
+ 509 0002 A0        		.byte	-96
+ 510               		.comm	randy,2,1
+ 511               		.comm	randx,2,1
+ 512               	.global	z
+ 515               	z:
+ 516 0003 0000      		.word	zombies
+ 517               		.comm	zombies,168,1
+ 518               		.text
+ 519               	.Letext0:
+ 520               		.file 2 "../teensy_graphics/sprite.h"
+ 521               		.file 3 "../teensy_graphics/byte.h"
+ 522               		.file 4 "../teensy_graphics/ascii_font.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 zombies.c
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccjePEO9.s:2      *ABS*:0000003e __SP_H__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccjePEO9.s:3      *ABS*:0000003d __SP_L__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccjePEO9.s:4      *ABS*:0000003f __SREG__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccjePEO9.s:5      *ABS*:00000000 __tmp_reg__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccjePEO9.s:6      *ABS*:00000001 __zero_reg__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccjePEO9.s:13     .text.section_selector:00000000 section_selector
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc25PD8u.s:2      *ABS*:0000003e __SP_H__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc25PD8u.s:3      *ABS*:0000003d __SP_L__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc25PD8u.s:4      *ABS*:0000003f __SREG__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc25PD8u.s:5      *ABS*:00000000 __tmp_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc25PD8u.s:6      *ABS*:00000001 __zero_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc25PD8u.s:13     .text.section_selector:00000000 section_selector
                             *COM*:00000002 randx
                             *COM*:00000002 randy
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccjePEO9.s:90     .text.setup_zombies:00000000 setup_zombies
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccjePEO9.s:215    .text.draw_zombies:00000000 draw_zombies
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccjePEO9.s:274    .text.start_zombies:00000000 start_zombies
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccjePEO9.s:374    .text.update_one_zombie:00000000 update_one_zombie
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccjePEO9.s:539    .text.update_zombies:00000000 update_zombies
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccjePEO9.s:599    .text.new_zombies_pos:00000000 new_zombies_pos
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc25PD8u.s:90     .text.setup_zombies:00000000 setup_zombies
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc25PD8u.s:262    .text.draw_zombies:00000000 draw_zombies
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc25PD8u.s:321    .text.start_zombies:00000000 start_zombies
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc25PD8u.s:506    .data:00000000 bitmap1
                             *COM*:000000a8 zombies
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc25PD8u.s:390    .text.update_zombies:00000000 update_zombies
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc25PD8u.s:446    .text.zombie_updater:00000000 zombie_updater
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc25PD8u.s:470    .text.update_one_zombie:00000000 update_one_zombie
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc25PD8u.s:515    .data:00000003 z
 
 UNDEFINED SYMBOLS
 rand
 __divmodhi4
 init_sprite
 draw_sprite
-__floatsisf
-__gesf2
-__ltsf2
+__do_copy_data
 __do_clear_bss

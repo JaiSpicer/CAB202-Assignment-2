@@ -9,5 +9,9 @@
 #define __HERO__
 
 void start_hero( void );
+void update_hero( void );
+
+Sprite hero;
+extern Sprite * hero_prt;
 
 #endif /* HERO */

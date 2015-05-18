@@ -250,9 +250,9 @@
  163:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
  164:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
   53               		.loc 2 164 0
-  54 001e 2FEF      		ldi r18,lo8(799999)
-  55 0020 84E3      		ldi r24,hi8(799999)
-  56 0022 9CE0      		ldi r25,hlo8(799999)
+  54 001e 2FEF      		ldi r18,lo8(1599999)
+  55 0020 89E6      		ldi r24,hi8(1599999)
+  56 0022 98E1      		ldi r25,hlo8(1599999)
   57 0024 2150      		1: subi r18,1
   58 0026 8040      		sbci r24,0
   59 0028 9040      		sbci r25,0
@@ -261,7 +261,7 @@
   62 002e 0000      		nop
   63               	.LBE9:
   64               	.LBE8:
-  37:start_screen.c **** 		_delay_ms(500);
+  37:start_screen.c **** 		_delay_ms(1000);
   38:start_screen.c **** 		turn_off(LED0);
   65               		.loc 1 38 0
   66 0030 2A98      		cbi 0x5,2
@@ -298,9 +298,9 @@
   90               	.LBB10:
   91               	.LBB11:
   92               		.loc 2 164 0
-  93 0052 2FEF      		ldi r18,lo8(799999)
-  94 0054 84E3      		ldi r24,hi8(799999)
-  95 0056 9CE0      		ldi r25,hlo8(799999)
+  93 0052 2FEF      		ldi r18,lo8(1599999)
+  94 0054 89E6      		ldi r24,hi8(1599999)
+  95 0056 98E1      		ldi r25,hlo8(1599999)
   96 0058 2150      		1: subi r18,1
   97 005a 8040      		sbci r24,0
   98 005c 9040      		sbci r25,0
@@ -309,7 +309,7 @@
  101 0062 0000      		nop
  102               	.LBE11:
  103               	.LBE10:
-  46:start_screen.c **** 		_delay_ms(500);
+  46:start_screen.c **** 		_delay_ms(1000);
   47:start_screen.c **** 		turn_off(LED0);
  104               		.loc 1 47 0
  105 0064 2A98      		cbi 0x5,2
@@ -340,9 +340,9 @@
  125               	.LBB12:
  126               	.LBB13:
  127               		.loc 2 164 0
- 128 0082 2FEF      		ldi r18,lo8(799999)
- 129 0084 84E3      		ldi r24,hi8(799999)
- 130 0086 9CE0      		ldi r25,hlo8(799999)
+ 128 0082 2FEF      		ldi r18,lo8(1599999)
+ 129 0084 89E6      		ldi r24,hi8(1599999)
+ 130 0086 98E1      		ldi r25,hlo8(1599999)
  131 0088 2150      		1: subi r18,1
  132 008a 8040      		sbci r24,0
  133 008c 9040      		sbci r25,0
@@ -351,7 +351,7 @@
  136 0092 0000      		nop
  137               	.LBE13:
  138               	.LBE12:
-  53:start_screen.c **** 		_delay_ms(500);
+  53:start_screen.c **** 		_delay_ms(1000);
   54:start_screen.c **** 		turn_off(LED0);
  139               		.loc 1 54 0
  140 0094 2A98      		cbi 0x5,2
@@ -472,13 +472,13 @@
  233               		.file 3 "/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/stdint.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 start_screen.c
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccDrcaKp.s:2      *ABS*:0000003e __SP_H__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccDrcaKp.s:3      *ABS*:0000003d __SP_L__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccDrcaKp.s:4      *ABS*:0000003f __SREG__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccDrcaKp.s:5      *ABS*:00000000 __tmp_reg__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccDrcaKp.s:6      *ABS*:00000001 __zero_reg__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccDrcaKp.s:20     .text.game_countdown:00000000 game_countdown
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccDrcaKp.s:164    .text.setup_start_screen:00000000 setup_start_screen
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccWG9Jrd.s:2      *ABS*:0000003e __SP_H__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccWG9Jrd.s:3      *ABS*:0000003d __SP_L__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccWG9Jrd.s:4      *ABS*:0000003f __SREG__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccWG9Jrd.s:5      *ABS*:00000000 __tmp_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccWG9Jrd.s:6      *ABS*:00000001 __zero_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccWG9Jrd.s:20     .text.game_countdown:00000000 game_countdown
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccWG9Jrd.s:164    .text.setup_start_screen:00000000 setup_start_screen
 
 UNDEFINED SYMBOLS
 clear
