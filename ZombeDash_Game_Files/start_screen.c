@@ -17,6 +17,7 @@ void setup_start_screen() { // Write the different strings at the correct locati
 	draw_string("n9378880",19,27);
 	draw_string("Jai Spicer",15,36);
 	refresh();
+	random_seed();
 	wait_until( pressed( SW1 ) );
 	wait_until( !pressed( SW1 ) );
 

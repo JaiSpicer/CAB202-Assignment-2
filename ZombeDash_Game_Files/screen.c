@@ -15,10 +15,10 @@ void screen_lines() {
 	draw_line(0,12,83,12); // Score area
 
 	//zombie spawn debug
-	draw_line(28,18,51,18);
-	draw_line(28,41,51,41);
-	draw_line(28,18,28,41);
-	draw_line(51,18,51,41);
+//	draw_line(28,18,51,18);
+//	draw_line(28,41,51,41);
+//	draw_line(28,18,28,41);
+//	draw_line(51,18,51,41);
 }
 
 

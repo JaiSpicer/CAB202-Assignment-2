@@ -17,77 +17,84 @@
 #include "byte.h"
 #include "sprite.h"
 
+#include "random_seed.h"
 #include "start_screen.h"
 #include "screen.h"
 #include "lives.h"
 #include "score.h"
 #include "hero.h"
 #include "zombies.h"
+#include "game_over.h"
 
-//#include "pit.h"
-//#include "items.h"
+#include "pit.h"
+#include "items.h"
 
-void zombie_collision( void );
 void setup_device(void);
-void pit_collision( void );
 
 int main() {
 	setup_device();
-	setup_start_screen();
-
-	screen_lines();
-	lives_setup();
-	score_setup();
-
-//	start_pit();
-//	sword_setup();
-//	grenades_setup();
-
-	start_hero();
-	start_zombies ();
-
-	clear();
-
-	int zombie_update = 0;
-	int score_update = 0;
-	while ( lives > 0 ) {
-		clear();
+	while( 1 ) {
+		dead_zombies = 0;
+		setup_start_screen();
 		screen_lines();
-    	lives_setup();
-    	score_setup();
+		reset_lives();
+		lives_setup();
+		reset_score();
+		score_setup();
+		start_pit();
 
-//    	start_pit();
-//    	sword_setup();
-//    	grenades_setup();
+		sword_setup();
+		grenades_setup();
 
-//    	move_hero ( hero_prt );
-//    	draw_sprite ( hero_prt );
+		start_hero();
+		start_zombies ();
 
-    	update_hero();
+		clear();
 
-		if ( zombie_update == 10 ) {
-			update_zombies ( z );
-//			zombie_updater();
-			zombie_update = 0;
+		int zombie_update = 0;
+		int score_update = 0;
+		while ( lives > 0 && dead_zombies < 8) {
+			clear();
+			screen_lines();
+			lives_setup();
+			score_setup();
+
+			draw_pit();
+    		draw_sword();
+    		pickup_sword();
+    		draw_granades();
+    		pickup_granades();
+    		granade_use();
+    		bang_setup();
+
+			update_hero();
+
+			if ( zombie_update == 10 ) {
+				zombie_updater();
+				zombie_update = 0;
+			}
+			if ( score_update == 50 ) {
+				update_score_time();
+				score_update = 0;
+			}
+			zombie_drawer();
+
+			check_zombie();
+			pit_collision(); // Hero pit collision
+//			zombie_pit();
+
+			refresh();
+			zombie_update++;
+			score_update++;
+			_delay_ms( 100 );
 		}
-		if ( score_update == 50 ) {
-			update_score_time();
-			score_update = 0;
-		}
-//		zombie_collision();
-		zombie_updater();
-//		draw_zombies ( z );
+		clear();
 		refresh();
-		zombie_update++;
-		score_update++;
-		_delay_ms( 100 );
+		draw_string("GAMEOVER",20,10);
+		wait_until(pressed(SW1));
+		clear();
+		refresh();
 	}
-
-	clear();
-	draw_string("GAME OVER", 2,3);
-
-
-	refresh();
 	return 0;
 
 }
@@ -105,26 +112,3 @@ void setup_device() {
 	LCDInitialise(LCD_DEFAULT_CONTRAST);
 	clear();
 }
-
-//void zombie_collision() {
-//	if (
-//			(hero.x == z->x && hero.y == z->y) || // Top left
-//			( hero.x == z->x && hero.y == z->y + 1 ) || // Middle Left
-//			( hero.x == z->x && hero.y == z->y + 2 ) || // Bottom Left
-//			( hero.x == z->x + 1 && hero.y == z->y ) || // Top Middle
-//			( hero.x == z->x + 1 && hero.y == z->y + 1 ) || // Middle Middle
-//			( hero.x == z->x + 1 && hero.y == z->y + 2 ) || // Middle Bottom
-//			( hero.x == z->x + 2 && hero.y == z->y ) || // Right Top
-//			( hero.x == z->x + 2 && hero.y == z->y + 1 ) ||// Right Middle
-//			( hero.x == z->x + 2 && hero.y == z->y + 2 ) // Right Bottom
-//			) {
-//		lives = lives - 1;
-//	}
-//}
-
-//void pit_collision() {
-//	if (
-//			( hero.x == pit_prt->x && hero.y == pit_prt->y )
-//			) {
-//	}
-//}

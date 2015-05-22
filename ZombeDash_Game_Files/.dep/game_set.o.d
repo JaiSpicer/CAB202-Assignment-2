@@ -1,8 +1,8 @@
-zombies.o: zombies.c ../teensy_graphics/sprite.h \
+game_set.o: game_set.c ../teensy_graphics/sprite.h \
  ../teensy_graphics/byte.h ../teensy_graphics/graphics.h \
  ../teensy_graphics/ascii_font.h ../teensy_graphics/lcd.h \
- ../teensy_graphics/friendly_ports.h zombies.h score.h hero.h lives.h \
- game_set.h pit.h items.h
+ ../teensy_graphics/friendly_ports.h screen.h hero.h zombies.h \
+ game_over.h
 
 ../teensy_graphics/sprite.h:
 
@@ -16,16 +16,10 @@ zombies.o: zombies.c ../teensy_graphics/sprite.h \
 
 ../teensy_graphics/friendly_ports.h:
 
-zombies.h:
-
-score.h:
+screen.h:
 
 hero.h:
 
-lives.h:
+zombies.h:
 
-game_set.h:
-
-pit.h:
-
-items.h:
+game_over.h:

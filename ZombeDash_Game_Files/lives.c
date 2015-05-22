@@ -22,3 +22,7 @@ void lives_setup() {
 void update_lives() {
 	lives = lives - 1;
 }
+
+void reset_lives() {
+	lives = 3;
+}

@@ -120,25 +120,48 @@
  100 0012 0895      		ret
  101               		.cfi_endproc
  102               	.LFE1:
- 104               		.comm	l,15,1
- 105               	.global	lives
- 106               		.data
- 109               	lives:
- 110 0000 0300      		.word	3
- 111               		.text
- 112               	.Letext0:
- 113               		.file 2 "<built-in>"
+ 104               		.section	.text.reset_lives,"ax",@progbits
+ 105               	.global	reset_lives
+ 107               	reset_lives:
+ 108               	.LFB2:
+  24:lives.c       **** }
+  25:lives.c       **** 
+  26:lives.c       **** void reset_lives() {
+ 109               		.loc 1 26 0
+ 110               		.cfi_startproc
+ 111               	/* prologue: function */
+ 112               	/* frame size = 0 */
+ 113               	/* stack size = 0 */
+ 114               	.L__stack_usage = 0
+  27:lives.c       **** 	lives = 3;
+ 115               		.loc 1 27 0
+ 116 0000 83E0      		ldi r24,lo8(3)
+ 117 0002 90E0      		ldi r25,0
+ 118 0004 9093 0000 		sts lives+1,r25
+ 119 0008 8093 0000 		sts lives,r24
+ 120 000c 0895      		ret
+ 121               		.cfi_endproc
+ 122               	.LFE2:
+ 124               		.comm	l,15,1
+ 125               	.global	lives
+ 126               		.data
+ 129               	lives:
+ 130 0000 0300      		.word	3
+ 131               		.text
+ 132               	.Letext0:
+ 133               		.file 2 "<built-in>"
 DEFINED SYMBOLS
                             *ABS*:00000000 lives.c
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccKjtyk4.s:2      *ABS*:0000003e __SP_H__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccKjtyk4.s:3      *ABS*:0000003d __SP_L__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccKjtyk4.s:4      *ABS*:0000003f __SREG__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccKjtyk4.s:5      *ABS*:00000000 __tmp_reg__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccKjtyk4.s:6      *ABS*:00000001 __zero_reg__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccKjtyk4.s:18     .text.lives_setup:00000000 lives_setup
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccKjtyk4.s:109    .data:00000000 lives
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cccKxCs9.s:2      *ABS*:0000003e __SP_H__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cccKxCs9.s:3      *ABS*:0000003d __SP_L__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cccKxCs9.s:4      *ABS*:0000003f __SREG__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cccKxCs9.s:5      *ABS*:00000000 __tmp_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cccKxCs9.s:6      *ABS*:00000001 __zero_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cccKxCs9.s:18     .text.lives_setup:00000000 lives_setup
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cccKxCs9.s:129    .data:00000000 lives
                             *COM*:0000000f l
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccKjtyk4.s:86     .text.update_lives:00000000 update_lives
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cccKxCs9.s:86     .text.update_lives:00000000 update_lives
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cccKxCs9.s:107    .text.reset_lives:00000000 reset_lives
 
 UNDEFINED SYMBOLS
 draw_string

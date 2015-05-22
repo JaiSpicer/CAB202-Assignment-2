@@ -7,19 +7,11 @@
    7               		.text
    8               	.Ltext0:
    9               		.cfi_sections	.debug_frame
-  10               		.section	.rodata
-  11               	.LC0:
-  12 0000 FC        		.byte	-4
-  13 0001 84        		.byte	-124
-  14 0002 84        		.byte	-124
-  15 0003 84        		.byte	-124
-  16 0004 84        		.byte	-124
-  17 0005 FC        		.byte	-4
-  18               		.section	.text.start_pit,"ax",@progbits
-  19               	.global	start_pit
-  21               	start_pit:
-  22               	.LFB1:
-  23               		.file 1 "pit.c"
+  10               		.section	.text.start_pit,"ax",@progbits
+  11               	.global	start_pit
+  13               	start_pit:
+  14               	.LFB1:
+  15               		.file 1 "pit.c"
    1:pit.c         **** /*
    2:pit.c         ****  * pit.c
    3:pit.c         ****  *
@@ -32,134 +24,427 @@
   10:pit.c         **** #include "friendly_ports.h"
   11:pit.c         **** 
   12:pit.c         **** #include "pit.h"
-  13:pit.c         **** 
-  14:pit.c         **** int pit_x;
-  15:pit.c         **** int pit_y;
-  16:pit.c         **** 
-  17:pit.c         **** void start_pit() {
-  24               		.loc 1 17 0
-  25               		.cfi_startproc
-  26 0000 EF92      		push r14
-  27               	.LCFI0:
-  28               		.cfi_def_cfa_offset 3
-  29               		.cfi_offset 14, -2
-  30 0002 FF92      		push r15
-  31               	.LCFI1:
-  32               		.cfi_def_cfa_offset 4
-  33               		.cfi_offset 15, -3
-  34 0004 0F93      		push r16
-  35               	.LCFI2:
-  36               		.cfi_def_cfa_offset 5
-  37               		.cfi_offset 16, -4
-  38 0006 CF93      		push r28
-  39               	.LCFI3:
-  40               		.cfi_def_cfa_offset 6
-  41               		.cfi_offset 28, -5
-  42 0008 DF93      		push r29
-  43               	.LCFI4:
-  44               		.cfi_def_cfa_offset 7
-  45               		.cfi_offset 29, -6
-  46 000a CDB7      		in r28,__SP_L__
-  47 000c DEB7      		in r29,__SP_H__
-  48               	.LCFI5:
-  49               		.cfi_def_cfa_register 28
-  50 000e 6B97      		sbiw r28,27
-  51               	.LCFI6:
-  52               		.cfi_def_cfa_offset 34
-  53 0010 0FB6      		in __tmp_reg__,__SREG__
-  54 0012 F894      		cli
-  55 0014 DEBF      		out __SP_H__,r29
-  56 0016 0FBE      		out __SREG__,__tmp_reg__
-  57 0018 CDBF      		out __SP_L__,r28
-  58               	/* prologue: function */
-  59               	/* frame size = 27 */
-  60               	/* stack size = 32 */
-  61               	.L__stack_usage = 32
-  18:pit.c         **** 	byte bitmap_pit[] = {
-  62               		.loc 1 18 0
-  63 001a 86E0      		ldi r24,lo8(6)
-  64 001c E0E0      		ldi r30,lo8(.LC0)
-  65 001e F0E0      		ldi r31,hi8(.LC0)
-  66 0020 DE01      		movw r26,r28
-  67 0022 5696      		adiw r26,22
-  68               		0:
-  69 0024 0190      		ld r0,Z+
-  70 0026 0D92      		st X+,r0
-  71 0028 8A95      		dec r24
-  72 002a 01F4      		brne 0b
-  73               	.LVL0:
-  19:pit.c         **** 			BYTE( 11111100 ),
-  20:pit.c         **** 			BYTE( 10000100 ),
+  13:pit.c         **** #include "hero.h"
+  14:pit.c         **** #include "lives.h"
+  15:pit.c         **** 
+  16:pit.c         **** Sprite pit;
+  17:pit.c         **** Sprite * pit_prt = &pit;
+  18:pit.c         **** 
+  19:pit.c         **** byte bitmap_pit[] = {
+  20:pit.c         **** 			BYTE( 11111100 ),
   21:pit.c         **** 			BYTE( 10000100 ),
   22:pit.c         **** 			BYTE( 10000100 ),
   23:pit.c         **** 			BYTE( 10000100 ),
-  24:pit.c         **** 			BYTE( 11111100 ),
-  25:pit.c         **** 	};
-  26:pit.c         **** 
-  27:pit.c         **** 	const int pit_width = 6; // Maybe 4
-  28:pit.c         **** 	const int pit_height = 6;
+  24:pit.c         **** 			BYTE( 10000100 ),
+  25:pit.c         **** 			BYTE( 11111100 ),
+  26:pit.c         **** 	};
+  27:pit.c         **** 
+  28:pit.c         **** int in_pit = 0;
   29:pit.c         **** 
-  30:pit.c         **** 	Sprite pit;
+  30:pit.c         **** void start_pit() {
+  16               		.loc 1 30 0
+  17               		.cfi_startproc
+  18 0000 EF92      		push r14
+  19               	.LCFI0:
+  20               		.cfi_def_cfa_offset 3
+  21               		.cfi_offset 14, -2
+  22 0002 FF92      		push r15
+  23               	.LCFI1:
+  24               		.cfi_def_cfa_offset 4
+  25               		.cfi_offset 15, -3
+  26 0004 0F93      		push r16
+  27               	.LCFI2:
+  28               		.cfi_def_cfa_offset 5
+  29               		.cfi_offset 16, -4
+  30 0006 CF93      		push r28
+  31               	.LCFI3:
+  32               		.cfi_def_cfa_offset 6
+  33               		.cfi_offset 28, -5
+  34 0008 DF93      		push r29
+  35               	.LCFI4:
+  36               		.cfi_def_cfa_offset 7
+  37               		.cfi_offset 29, -6
+  38               	/* prologue: function */
+  39               	/* frame size = 0 */
+  40               	/* stack size = 5 */
+  41               	.L__stack_usage = 5
+  42               	.LVL0:
   31:pit.c         **** 
-  32:pit.c         **** 	init_sprite( &pit, 20,28,pit_width,pit_height, bitmap_pit );
-  74               		.loc 1 32 0
-  75 002c 86E1      		ldi r24,lo8(22)
-  76 002e E82E      		mov r14,r24
-  77 0030 F12C      		mov r15,__zero_reg__
-  78 0032 EC0E      		add r14,r28
-  79 0034 FD1E      		adc r15,r29
-  80 0036 06E0      		ldi r16,lo8(6)
-  81 0038 26E0      		ldi r18,lo8(6)
-  82 003a 4CE1      		ldi r20,lo8(28)
-  83 003c 64E1      		ldi r22,lo8(20)
-  84 003e CE01      		movw r24,r28
-  85 0040 0196      		adiw r24,1
-  86 0042 0E94 0000 		call init_sprite
-  87               	.LVL1:
-  33:pit.c         **** 
-  34:pit.c         **** 	draw_sprite( &pit );
-  88               		.loc 1 34 0
-  89 0046 CE01      		movw r24,r28
-  90 0048 0196      		adiw r24,1
-  91 004a 0E94 0000 		call draw_sprite
-  92               	.LVL2:
-  93               	/* epilogue start */
-  35:pit.c         **** }
-  94               		.loc 1 35 0
-  95 004e 6B96      		adiw r28,27
-  96 0050 0FB6      		in __tmp_reg__,__SREG__
-  97 0052 F894      		cli
-  98 0054 DEBF      		out __SP_H__,r29
-  99 0056 0FBE      		out __SREG__,__tmp_reg__
- 100 0058 CDBF      		out __SP_L__,r28
- 101 005a DF91      		pop r29
- 102 005c CF91      		pop r28
- 103 005e 0F91      		pop r16
- 104 0060 FF90      		pop r15
- 105 0062 EF90      		pop r14
- 106 0064 0895      		ret
- 107               		.cfi_endproc
- 108               	.LFE1:
- 110               		.comm	pit_y,2,1
- 111               		.comm	pit_x,2,1
- 112               		.text
- 113               	.Letext0:
- 114               		.file 2 "../teensy_graphics/sprite.h"
- 115               		.file 3 "../teensy_graphics/byte.h"
- 116               		.file 4 "../teensy_graphics/ascii_font.h"
+  32:pit.c         **** 
+  33:pit.c         **** 	const int pit_width = 6;
+  34:pit.c         **** 	const int pit_height = 6;
+  35:pit.c         **** 
+  36:pit.c         **** 	int rand_x = (rand()%70)+5;;
+  43               		.loc 1 36 0
+  44 000a 0E94 0000 		call rand
+  45               	.LVL1:
+  46 000e EC01      		movw r28,r24
+  47               	.LVL2:
+  37:pit.c         **** 	int rand_y = (rand()%30)+14;
+  48               		.loc 1 37 0
+  49 0010 0E94 0000 		call rand
+  50               	.LVL3:
+  51 0014 6EE1      		ldi r22,lo8(30)
+  52 0016 70E0      		ldi r23,0
+  53 0018 0E94 0000 		call __divmodhi4
+  54               	.LVL4:
+  55 001c AC01      		movw r20,r24
+  56 001e 425F      		subi r20,-14
+  57 0020 5F4F      		sbci r21,-1
+  58               	.LVL5:
+  36:pit.c         **** 	int rand_x = (rand()%70)+5;;
+  59               		.loc 1 36 0
+  60 0022 CE01      		movw r24,r28
+  61 0024 66E4      		ldi r22,lo8(70)
+  62 0026 70E0      		ldi r23,0
+  63 0028 0E94 0000 		call __divmodhi4
+  64 002c 0596      		adiw r24,5
+  65               	.LVL6:
+  38:pit.c         **** 
+  39:pit.c         **** 	init_sprite( &pit, rand_x,rand_y,pit_width,pit_height, bitmap_pit );
+  66               		.loc 1 39 0
+  67 002e 90E0      		ldi r25,lo8(bitmap_pit)
+  68 0030 E92E      		mov r14,r25
+  69 0032 90E0      		ldi r25,hi8(bitmap_pit)
+  70 0034 F92E      		mov r15,r25
+  71 0036 06E0      		ldi r16,lo8(6)
+  72 0038 26E0      		ldi r18,lo8(6)
+  73 003a 682F      		mov r22,r24
+  74 003c 80E0      		ldi r24,lo8(pit)
+  75 003e 90E0      		ldi r25,hi8(pit)
+  76               	.LVL7:
+  77 0040 0E94 0000 		call init_sprite
+  78               	.LVL8:
+  40:pit.c         **** 	draw_sprite( &pit );
+  79               		.loc 1 40 0
+  80 0044 80E0      		ldi r24,lo8(pit)
+  81 0046 90E0      		ldi r25,hi8(pit)
+  82 0048 0E94 0000 		call draw_sprite
+  83               	.LVL9:
+  41:pit.c         **** 	pit_prt->is_visible = 1;
+  84               		.loc 1 41 0
+  85 004c E091 0000 		lds r30,pit_prt
+  86 0050 F091 0000 		lds r31,pit_prt+1
+  87 0054 81E0      		ldi r24,lo8(1)
+  88 0056 8287      		std Z+10,r24
+  89               	/* epilogue start */
+  42:pit.c         **** }
+  90               		.loc 1 42 0
+  91 0058 DF91      		pop r29
+  92 005a CF91      		pop r28
+  93               	.LVL10:
+  94 005c 0F91      		pop r16
+  95 005e FF90      		pop r15
+  96 0060 EF90      		pop r14
+  97 0062 0895      		ret
+  98               		.cfi_endproc
+  99               	.LFE1:
+ 101               		.section	.text.draw_pit,"ax",@progbits
+ 102               	.global	draw_pit
+ 104               	draw_pit:
+ 105               	.LFB2:
+  43:pit.c         **** 
+  44:pit.c         **** void draw_pit() {
+ 106               		.loc 1 44 0
+ 107               		.cfi_startproc
+ 108               	/* prologue: function */
+ 109               	/* frame size = 0 */
+ 110               	/* stack size = 0 */
+ 111               	.L__stack_usage = 0
+  45:pit.c         **** 	draw_sprite ( &pit );
+ 112               		.loc 1 45 0
+ 113 0000 80E0      		ldi r24,lo8(pit)
+ 114 0002 90E0      		ldi r25,hi8(pit)
+ 115 0004 0C94 0000 		jmp draw_sprite
+ 116               	.LVL11:
+ 117               		.cfi_endproc
+ 118               	.LFE2:
+ 120               	.global	__gtsf2
+ 121               	.global	__addsf3
+ 122               	.global	__ltsf2
+ 123               		.section	.text.pit_collision,"ax",@progbits
+ 124               	.global	pit_collision
+ 126               	pit_collision:
+ 127               	.LFB3:
+  46:pit.c         **** }
+  47:pit.c         **** void pit_collision() {
+ 128               		.loc 1 47 0
+ 129               		.cfi_startproc
+ 130 0000 4F92      		push r4
+ 131               	.LCFI5:
+ 132               		.cfi_def_cfa_offset 3
+ 133               		.cfi_offset 4, -2
+ 134 0002 5F92      		push r5
+ 135               	.LCFI6:
+ 136               		.cfi_def_cfa_offset 4
+ 137               		.cfi_offset 5, -3
+ 138 0004 6F92      		push r6
+ 139               	.LCFI7:
+ 140               		.cfi_def_cfa_offset 5
+ 141               		.cfi_offset 6, -4
+ 142 0006 7F92      		push r7
+ 143               	.LCFI8:
+ 144               		.cfi_def_cfa_offset 6
+ 145               		.cfi_offset 7, -5
+ 146 0008 8F92      		push r8
+ 147               	.LCFI9:
+ 148               		.cfi_def_cfa_offset 7
+ 149               		.cfi_offset 8, -6
+ 150 000a 9F92      		push r9
+ 151               	.LCFI10:
+ 152               		.cfi_def_cfa_offset 8
+ 153               		.cfi_offset 9, -7
+ 154 000c AF92      		push r10
+ 155               	.LCFI11:
+ 156               		.cfi_def_cfa_offset 9
+ 157               		.cfi_offset 10, -8
+ 158 000e BF92      		push r11
+ 159               	.LCFI12:
+ 160               		.cfi_def_cfa_offset 10
+ 161               		.cfi_offset 11, -9
+ 162 0010 CF92      		push r12
+ 163               	.LCFI13:
+ 164               		.cfi_def_cfa_offset 11
+ 165               		.cfi_offset 12, -10
+ 166 0012 DF92      		push r13
+ 167               	.LCFI14:
+ 168               		.cfi_def_cfa_offset 12
+ 169               		.cfi_offset 13, -11
+ 170 0014 EF92      		push r14
+ 171               	.LCFI15:
+ 172               		.cfi_def_cfa_offset 13
+ 173               		.cfi_offset 14, -12
+ 174 0016 FF92      		push r15
+ 175               	.LCFI16:
+ 176               		.cfi_def_cfa_offset 14
+ 177               		.cfi_offset 15, -13
+ 178 0018 0F93      		push r16
+ 179               	.LCFI17:
+ 180               		.cfi_def_cfa_offset 15
+ 181               		.cfi_offset 16, -14
+ 182 001a 1F93      		push r17
+ 183               	.LCFI18:
+ 184               		.cfi_def_cfa_offset 16
+ 185               		.cfi_offset 17, -15
+ 186 001c CF93      		push r28
+ 187               	.LCFI19:
+ 188               		.cfi_def_cfa_offset 17
+ 189               		.cfi_offset 28, -16
+ 190 001e DF93      		push r29
+ 191               	.LCFI20:
+ 192               		.cfi_def_cfa_offset 18
+ 193               		.cfi_offset 29, -17
+ 194 0020 00D0      		rcall .
+ 195 0022 00D0      		rcall .
+ 196               	.LCFI21:
+ 197               		.cfi_def_cfa_offset 22
+ 198 0024 CDB7      		in r28,__SP_L__
+ 199 0026 DEB7      		in r29,__SP_H__
+ 200               	.LCFI22:
+ 201               		.cfi_def_cfa_register 28
+ 202               	/* prologue: function */
+ 203               	/* frame size = 4 */
+ 204               	/* stack size = 20 */
+ 205               	.L__stack_usage = 20
+  48:pit.c         **** 	if (
+  49:pit.c         **** 			( hero.x > pit_prt->x && hero.y + 1 > pit_prt->y && hero.x < pit_prt->x+5 && hero.y < pit_prt->y
+ 206               		.loc 1 49 0
+ 207 0028 C090 0000 		lds r12,hero
+ 208 002c D090 0000 		lds r13,hero+1
+ 209 0030 E090 0000 		lds r14,hero+2
+ 210 0034 F090 0000 		lds r15,hero+3
+ 211 0038 0091 0000 		lds r16,pit_prt
+ 212 003c 1091 0000 		lds r17,pit_prt+1
+ 213 0040 D801      		movw r26,r16
+ 214 0042 8D90      		ld r8,X+
+ 215 0044 9D90      		ld r9,X+
+ 216 0046 AD90      		ld r10,X+
+ 217 0048 BC90      		ld r11,X
+  48:pit.c         **** 	if (
+ 218               		.loc 1 48 0
+ 219 004a A501      		movw r20,r10
+ 220 004c 9401      		movw r18,r8
+ 221 004e C701      		movw r24,r14
+ 222 0050 B601      		movw r22,r12
+ 223 0052 0E94 0000 		call __gtsf2
+ 224               	.LVL12:
+ 225 0056 1816      		cp __zero_reg__,r24
+ 226 0058 04F0      		brlt .L4
+  50:pit.c         **** 			( hero.x + 1 > pit_prt->x && hero.y + 1 > pit_prt->y && hero.x < pit_prt->x+5 && hero.y < pit_pr
+ 227               		.loc 1 50 0
+ 228 005a 20E0      		ldi r18,0
+ 229 005c 30E0      		ldi r19,0
+ 230 005e 40E8      		ldi r20,lo8(-128)
+ 231 0060 5FE3      		ldi r21,lo8(63)
+ 232 0062 C701      		movw r24,r14
+ 233 0064 B601      		movw r22,r12
+ 234 0066 0E94 0000 		call __addsf3
+ 235               	.LVL13:
+  49:pit.c         **** 			( hero.x > pit_prt->x && hero.y + 1 > pit_prt->y && hero.x < pit_prt->x+5 && hero.y < pit_prt->y
+ 236               		.loc 1 49 0
+ 237 006a A501      		movw r20,r10
+ 238 006c 9401      		movw r18,r8
+ 239 006e 0E94 0000 		call __gtsf2
+ 240               	.LVL14:
+ 241 0072 1816      		cp __zero_reg__,r24
+ 242 0074 04F0      		brlt .+2
+ 243 0076 00C0      		rjmp .L3
+ 244               	.L4:
+  49:pit.c         **** 			( hero.x > pit_prt->x && hero.y + 1 > pit_prt->y && hero.x < pit_prt->x+5 && hero.y < pit_prt->y
+ 245               		.loc 1 49 0 is_stmt 0 discriminator 1
+ 246 0078 4090 0000 		lds r4,hero+4
+ 247 007c 5090 0000 		lds r5,hero+4+1
+ 248 0080 6090 0000 		lds r6,hero+4+2
+ 249 0084 7090 0000 		lds r7,hero+4+3
+ 250 0088 D801      		movw r26,r16
+ 251 008a 1496      		adiw r26,4
+ 252 008c 8D91      		ld r24,X+
+ 253 008e 9D91      		ld r25,X+
+ 254 0090 0D90      		ld __tmp_reg__,X+
+ 255 0092 BC91      		ld r27,X
+ 256 0094 A02D      		mov r26,__tmp_reg__
+ 257 0096 8983      		std Y+1,r24
+ 258 0098 9A83      		std Y+2,r25
+ 259 009a AB83      		std Y+3,r26
+ 260 009c BC83      		std Y+4,r27
+ 261 009e 20E0      		ldi r18,0
+ 262 00a0 30E0      		ldi r19,0
+ 263 00a2 40E8      		ldi r20,lo8(-128)
+ 264 00a4 5FE3      		ldi r21,lo8(63)
+ 265 00a6 C301      		movw r24,r6
+ 266 00a8 B201      		movw r22,r4
+ 267 00aa 0E94 0000 		call __addsf3
+ 268               	.LVL15:
+ 269 00ae 2981      		ldd r18,Y+1
+ 270 00b0 3A81      		ldd r19,Y+2
+ 271 00b2 4B81      		ldd r20,Y+3
+ 272 00b4 5C81      		ldd r21,Y+4
+ 273 00b6 0E94 0000 		call __gtsf2
+ 274               	.LVL16:
+ 275 00ba 1816      		cp __zero_reg__,r24
+ 276 00bc 04F4      		brge .L3
+  49:pit.c         **** 			( hero.x > pit_prt->x && hero.y + 1 > pit_prt->y && hero.x < pit_prt->x+5 && hero.y < pit_prt->y
+ 277               		.loc 1 49 0 discriminator 2
+ 278 00be 20E0      		ldi r18,0
+ 279 00c0 30E0      		ldi r19,0
+ 280 00c2 40EA      		ldi r20,lo8(-96)
+ 281 00c4 50E4      		ldi r21,lo8(64)
+ 282 00c6 C501      		movw r24,r10
+ 283 00c8 B401      		movw r22,r8
+ 284 00ca 0E94 0000 		call __addsf3
+ 285               	.LVL17:
+ 286 00ce 9B01      		movw r18,r22
+ 287 00d0 AC01      		movw r20,r24
+ 288 00d2 C701      		movw r24,r14
+ 289 00d4 B601      		movw r22,r12
+ 290 00d6 0E94 0000 		call __ltsf2
+ 291               	.LVL18:
+ 292 00da 87FF      		sbrs r24,7
+ 293 00dc 00C0      		rjmp .L3
+  49:pit.c         **** 			( hero.x > pit_prt->x && hero.y + 1 > pit_prt->y && hero.x < pit_prt->x+5 && hero.y < pit_prt->y
+ 294               		.loc 1 49 0 discriminator 3
+ 295 00de 20E0      		ldi r18,0
+ 296 00e0 30E0      		ldi r19,0
+ 297 00e2 40EA      		ldi r20,lo8(-96)
+ 298 00e4 50E4      		ldi r21,lo8(64)
+ 299 00e6 6981      		ldd r22,Y+1
+ 300 00e8 7A81      		ldd r23,Y+2
+ 301 00ea 8B81      		ldd r24,Y+3
+ 302 00ec 9C81      		ldd r25,Y+4
+ 303 00ee 0E94 0000 		call __addsf3
+ 304               	.LVL19:
+ 305 00f2 9B01      		movw r18,r22
+ 306 00f4 AC01      		movw r20,r24
+ 307 00f6 C301      		movw r24,r6
+ 308 00f8 B201      		movw r22,r4
+ 309 00fa 0E94 0000 		call __ltsf2
+ 310               	.LVL20:
+ 311 00fe 87FF      		sbrs r24,7
+ 312 0100 00C0      		rjmp .L3
+  51:pit.c         **** 	) {
+  52:pit.c         **** 		in_pit = 1;
+ 313               		.loc 1 52 0 is_stmt 1
+ 314 0102 81E0      		ldi r24,lo8(1)
+ 315 0104 90E0      		ldi r25,0
+ 316 0106 9093 0000 		sts in_pit+1,r25
+ 317 010a 8093 0000 		sts in_pit,r24
+ 318               	.L3:
+ 319               	/* epilogue start */
+  53:pit.c         **** 
+  54:pit.c         **** 	}
+  55:pit.c         **** 
+  56:pit.c         **** }
+ 320               		.loc 1 56 0
+ 321 010e 0F90      		pop __tmp_reg__
+ 322 0110 0F90      		pop __tmp_reg__
+ 323 0112 0F90      		pop __tmp_reg__
+ 324 0114 0F90      		pop __tmp_reg__
+ 325 0116 DF91      		pop r29
+ 326 0118 CF91      		pop r28
+ 327 011a 1F91      		pop r17
+ 328 011c 0F91      		pop r16
+ 329 011e FF90      		pop r15
+ 330 0120 EF90      		pop r14
+ 331 0122 DF90      		pop r13
+ 332 0124 CF90      		pop r12
+ 333 0126 BF90      		pop r11
+ 334 0128 AF90      		pop r10
+ 335 012a 9F90      		pop r9
+ 336 012c 8F90      		pop r8
+ 337 012e 7F90      		pop r7
+ 338 0130 6F90      		pop r6
+ 339 0132 5F90      		pop r5
+ 340 0134 4F90      		pop r4
+ 341 0136 0895      		ret
+ 342               		.cfi_endproc
+ 343               	.LFE3:
+ 345               	.global	in_pit
+ 346               		.section .bss
+ 349               	in_pit:
+ 350 0000 0000      		.zero	2
+ 351               	.global	bitmap_pit
+ 352               		.data
+ 355               	bitmap_pit:
+ 356 0000 FC        		.byte	-4
+ 357 0001 84        		.byte	-124
+ 358 0002 84        		.byte	-124
+ 359 0003 84        		.byte	-124
+ 360 0004 84        		.byte	-124
+ 361 0005 FC        		.byte	-4
+ 362               	.global	pit_prt
+ 365               	pit_prt:
+ 366 0006 0000      		.word	pit
+ 367               		.comm	hero,21,1
+ 368               		.comm	pit,21,1
+ 369               		.text
+ 370               	.Letext0:
+ 371               		.file 2 "../teensy_graphics/sprite.h"
+ 372               		.file 3 "../teensy_graphics/byte.h"
+ 373               		.file 4 "hero.h"
+ 374               		.file 5 "../teensy_graphics/ascii_font.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 pit.c
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccwgTJzZ.s:2      *ABS*:0000003e __SP_H__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccwgTJzZ.s:3      *ABS*:0000003d __SP_L__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccwgTJzZ.s:4      *ABS*:0000003f __SREG__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccwgTJzZ.s:5      *ABS*:00000000 __tmp_reg__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccwgTJzZ.s:6      *ABS*:00000001 __zero_reg__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccwgTJzZ.s:21     .text.start_pit:00000000 start_pit
-                            *COM*:00000002 pit_y
-                            *COM*:00000002 pit_x
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccvZYwGl.s:2      *ABS*:0000003e __SP_H__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccvZYwGl.s:3      *ABS*:0000003d __SP_L__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccvZYwGl.s:4      *ABS*:0000003f __SREG__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccvZYwGl.s:5      *ABS*:00000000 __tmp_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccvZYwGl.s:6      *ABS*:00000001 __zero_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccvZYwGl.s:13     .text.start_pit:00000000 start_pit
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccvZYwGl.s:355    .data:00000000 bitmap_pit
+                            *COM*:00000015 pit
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccvZYwGl.s:365    .data:00000006 pit_prt
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccvZYwGl.s:104    .text.draw_pit:00000000 draw_pit
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccvZYwGl.s:126    .text.pit_collision:00000000 pit_collision
+                            *COM*:00000015 hero
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccvZYwGl.s:349    .bss:00000000 in_pit
 
 UNDEFINED SYMBOLS
+rand
+__divmodhi4
 init_sprite
 draw_sprite
+__gtsf2
+__addsf3
+__ltsf2
 __do_copy_data
 __do_clear_bss

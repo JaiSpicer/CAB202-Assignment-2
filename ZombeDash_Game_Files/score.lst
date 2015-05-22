@@ -21,7 +21,7 @@
    2:score.c       ****  * score.c
    3:score.c       ****  *
    4:score.c       ****  *  Created on: 9 May 2015
-   5:score.c       ****  *      Author: Reflectin88
+   5:score.c       ****  *      Author: Jai Spicer
    6:score.c       ****  */
    7:score.c       **** 
    8:score.c       **** #include "score.h"
@@ -119,25 +119,118 @@
  100 0012 0895      		ret
  101               		.cfi_endproc
  102               	.LFE1:
- 104               		.comm	s,15,1
- 105               	.global	score
- 106               		.section .bss
- 109               	score:
- 110 0000 0000      		.zero	2
- 111               		.text
- 112               	.Letext0:
- 113               		.file 2 "<built-in>"
+ 104               		.section	.text.game_over_score,"ax",@progbits
+ 105               	.global	game_over_score
+ 107               	game_over_score:
+ 108               	.LFB2:
+  23:score.c       **** }
+  24:score.c       **** 
+  25:score.c       **** void game_over_score() {
+ 109               		.loc 1 25 0
+ 110               		.cfi_startproc
+ 111               	/* prologue: function */
+ 112               	/* frame size = 0 */
+ 113               	/* stack size = 0 */
+ 114               	.L__stack_usage = 0
+  26:score.c       **** 	draw_string("S:", 15, 10);
+ 115               		.loc 1 26 0
+ 116 0000 4AE0      		ldi r20,lo8(10)
+ 117 0002 50E0      		ldi r21,0
+ 118 0004 6FE0      		ldi r22,lo8(15)
+ 119 0006 70E0      		ldi r23,0
+ 120 0008 80E0      		ldi r24,lo8(.LC0)
+ 121 000a 90E0      		ldi r25,hi8(.LC0)
+ 122 000c 0E94 0000 		call draw_string
+ 123               	.LVL3:
+  27:score.c       **** 	sprintf(s, "%d", score);
+ 124               		.loc 1 27 0
+ 125 0010 8091 0000 		lds r24,score+1
+ 126 0014 8F93      		push r24
+ 127               	.LCFI7:
+ 128               		.cfi_def_cfa_offset 3
+ 129 0016 8091 0000 		lds r24,score
+ 130 001a 8F93      		push r24
+ 131               	.LCFI8:
+ 132               		.cfi_def_cfa_offset 4
+ 133 001c 80E0      		ldi r24,lo8(.LC1)
+ 134 001e 90E0      		ldi r25,hi8(.LC1)
+ 135 0020 9F93      		push r25
+ 136               	.LCFI9:
+ 137               		.cfi_def_cfa_offset 5
+ 138 0022 8F93      		push r24
+ 139               	.LCFI10:
+ 140               		.cfi_def_cfa_offset 6
+ 141 0024 80E0      		ldi r24,lo8(s)
+ 142 0026 90E0      		ldi r25,hi8(s)
+ 143 0028 9F93      		push r25
+ 144               	.LCFI11:
+ 145               		.cfi_def_cfa_offset 7
+ 146 002a 8F93      		push r24
+ 147               	.LCFI12:
+ 148               		.cfi_def_cfa_offset 8
+ 149 002c 0E94 0000 		call sprintf
+ 150               	.LVL4:
+  28:score.c       **** 	draw_string(s,24,10);
+ 151               		.loc 1 28 0
+ 152 0030 0F90      		pop __tmp_reg__
+ 153 0032 0F90      		pop __tmp_reg__
+ 154 0034 0F90      		pop __tmp_reg__
+ 155 0036 0F90      		pop __tmp_reg__
+ 156 0038 0F90      		pop __tmp_reg__
+ 157 003a 0F90      		pop __tmp_reg__
+ 158               	.LCFI13:
+ 159               		.cfi_def_cfa_offset 2
+ 160 003c 4AE0      		ldi r20,lo8(10)
+ 161 003e 50E0      		ldi r21,0
+ 162 0040 68E1      		ldi r22,lo8(24)
+ 163 0042 70E0      		ldi r23,0
+ 164 0044 80E0      		ldi r24,lo8(s)
+ 165 0046 90E0      		ldi r25,hi8(s)
+ 166 0048 0C94 0000 		jmp draw_string
+ 167               	.LVL5:
+ 168               		.cfi_endproc
+ 169               	.LFE2:
+ 171               		.section	.text.reset_score,"ax",@progbits
+ 172               	.global	reset_score
+ 174               	reset_score:
+ 175               	.LFB3:
+  29:score.c       **** }
+  30:score.c       **** 
+  31:score.c       **** void reset_score() {
+ 176               		.loc 1 31 0
+ 177               		.cfi_startproc
+ 178               	/* prologue: function */
+ 179               	/* frame size = 0 */
+ 180               	/* stack size = 0 */
+ 181               	.L__stack_usage = 0
+  32:score.c       **** 	score = 0;
+ 182               		.loc 1 32 0
+ 183 0000 1092 0000 		sts score+1,__zero_reg__
+ 184 0004 1092 0000 		sts score,__zero_reg__
+ 185 0008 0895      		ret
+ 186               		.cfi_endproc
+ 187               	.LFE3:
+ 189               		.comm	s,15,1
+ 190               	.global	score
+ 191               		.section .bss
+ 194               	score:
+ 195 0000 0000      		.zero	2
+ 196               		.text
+ 197               	.Letext0:
+ 198               		.file 2 "<built-in>"
 DEFINED SYMBOLS
                             *ABS*:00000000 score.c
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccd46NRe.s:2      *ABS*:0000003e __SP_H__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccd46NRe.s:3      *ABS*:0000003d __SP_L__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccd46NRe.s:4      *ABS*:0000003f __SREG__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccd46NRe.s:5      *ABS*:00000000 __tmp_reg__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccd46NRe.s:6      *ABS*:00000001 __zero_reg__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccd46NRe.s:18     .text.score_setup:00000000 score_setup
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccd46NRe.s:109    .bss:00000000 score
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccv7P5NF.s:2      *ABS*:0000003e __SP_H__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccv7P5NF.s:3      *ABS*:0000003d __SP_L__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccv7P5NF.s:4      *ABS*:0000003f __SREG__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccv7P5NF.s:5      *ABS*:00000000 __tmp_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccv7P5NF.s:6      *ABS*:00000001 __zero_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccv7P5NF.s:18     .text.score_setup:00000000 score_setup
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccv7P5NF.s:194    .bss:00000000 score
                             *COM*:0000000f s
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccd46NRe.s:86     .text.update_score_time:00000000 update_score_time
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccv7P5NF.s:86     .text.update_score_time:00000000 update_score_time
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccv7P5NF.s:107    .text.game_over_score:00000000 game_over_score
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccv7P5NF.s:174    .text.reset_score:00000000 reset_score
 
 UNDEFINED SYMBOLS
 draw_string

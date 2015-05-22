@@ -19,8 +19,12 @@ void start_zombies ( void );
 void update_zombies ( Sprite * zombies );
 void new_zombies_pos( void );
 void zombie_updater( void );
+void zombie_drawer( void );
+void check_zombie( void );
+void kill_zombies( Sprite * zombie );
 
 #define zombie_count (8)
+extern int dead_zombies;
 Sprite zombies[zombie_count];
 Sprite * z;
 

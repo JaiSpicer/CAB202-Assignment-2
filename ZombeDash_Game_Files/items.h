@@ -11,9 +11,18 @@
 void sword_setup( void );
 void sword_pickup( void );
 void sword_use( void );
+void draw_sword( void );
+Sprite sword;
+extern Sprite *sword_prt;
 
 void grenades_setup( void );
-void grenades_pickup( void );
-void grenades_use( void );
+void pickup_granades( void );
+void granade_use( void );
+void draw_granades( void );
+void bang_setup( void );
+Sprite grenades;
+extern Sprite *grenades_prt;
+Sprite bomb;
+extern Sprite *bomb_prt;
 
 #endif /* ITEMS */

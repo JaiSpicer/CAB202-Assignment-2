@@ -86,70 +86,20 @@
   72 005a 70E0      		ldi r23,0
   73 005c 80E0      		ldi r24,0
   74 005e 90E0      		ldi r25,0
-  75 0060 0E94 0000 		call draw_line
+  75 0060 0C94 0000 		jmp draw_line
   76               	.LVL4:
-  16:screen.c      **** 
-  17:screen.c      **** 	//zombie spawn debug
-  18:screen.c      **** 	draw_line(28,18,51,18);
-  77               		.loc 1 18 0
-  78 0064 22E1      		ldi r18,lo8(18)
-  79 0066 30E0      		ldi r19,0
-  80 0068 43E3      		ldi r20,lo8(51)
-  81 006a 50E0      		ldi r21,0
-  82 006c 62E1      		ldi r22,lo8(18)
-  83 006e 70E0      		ldi r23,0
-  84 0070 8CE1      		ldi r24,lo8(28)
-  85 0072 90E0      		ldi r25,0
-  86 0074 0E94 0000 		call draw_line
-  87               	.LVL5:
-  19:screen.c      **** 	draw_line(28,41,51,41);
-  88               		.loc 1 19 0
-  89 0078 29E2      		ldi r18,lo8(41)
-  90 007a 30E0      		ldi r19,0
-  91 007c 43E3      		ldi r20,lo8(51)
-  92 007e 50E0      		ldi r21,0
-  93 0080 69E2      		ldi r22,lo8(41)
-  94 0082 70E0      		ldi r23,0
-  95 0084 8CE1      		ldi r24,lo8(28)
-  96 0086 90E0      		ldi r25,0
-  97 0088 0E94 0000 		call draw_line
-  98               	.LVL6:
-  20:screen.c      **** 	draw_line(28,18,28,41);
-  99               		.loc 1 20 0
- 100 008c 29E2      		ldi r18,lo8(41)
- 101 008e 30E0      		ldi r19,0
- 102 0090 4CE1      		ldi r20,lo8(28)
- 103 0092 50E0      		ldi r21,0
- 104 0094 62E1      		ldi r22,lo8(18)
- 105 0096 70E0      		ldi r23,0
- 106 0098 8CE1      		ldi r24,lo8(28)
- 107 009a 90E0      		ldi r25,0
- 108 009c 0E94 0000 		call draw_line
- 109               	.LVL7:
-  21:screen.c      **** 	draw_line(51,18,51,41);
- 110               		.loc 1 21 0
- 111 00a0 29E2      		ldi r18,lo8(41)
- 112 00a2 30E0      		ldi r19,0
- 113 00a4 43E3      		ldi r20,lo8(51)
- 114 00a6 50E0      		ldi r21,0
- 115 00a8 62E1      		ldi r22,lo8(18)
- 116 00aa 70E0      		ldi r23,0
- 117 00ac 83E3      		ldi r24,lo8(51)
- 118 00ae 90E0      		ldi r25,0
- 119 00b0 0C94 0000 		jmp draw_line
- 120               	.LVL8:
- 121               		.cfi_endproc
- 122               	.LFE0:
- 124               		.text
- 125               	.Letext0:
+  77               		.cfi_endproc
+  78               	.LFE0:
+  80               		.text
+  81               	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:00000000 screen.c
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc7raIqI.s:2      *ABS*:0000003e __SP_H__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc7raIqI.s:3      *ABS*:0000003d __SP_L__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc7raIqI.s:4      *ABS*:0000003f __SREG__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc7raIqI.s:5      *ABS*:00000000 __tmp_reg__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc7raIqI.s:6      *ABS*:00000001 __zero_reg__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc7raIqI.s:13     .text.screen_lines:00000000 screen_lines
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccIrkIh6.s:2      *ABS*:0000003e __SP_H__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccIrkIh6.s:3      *ABS*:0000003d __SP_L__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccIrkIh6.s:4      *ABS*:0000003f __SREG__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccIrkIh6.s:5      *ABS*:00000000 __tmp_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccIrkIh6.s:6      *ABS*:00000001 __zero_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccIrkIh6.s:13     .text.screen_lines:00000000 screen_lines
 
 UNDEFINED SYMBOLS
 draw_line

@@ -13,4 +13,11 @@ void start_pit( void );
 Sprite pit;
 extern Sprite * pit_prt;
 
+void pit_collision( void );
+void move_out_pit( void );
+void draw_pit( void );
+//void zombie_pit( void );s
+
+extern int in_pit;
+
 #endif /* PIT */

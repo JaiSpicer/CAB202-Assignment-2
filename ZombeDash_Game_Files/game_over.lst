@@ -1,0 +1,63 @@
+   1               		.file	"game_over.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.text.game_over,"ax",@progbits
+  11               	.global	game_over
+  13               	game_over:
+  14               	.LFB0:
+  15               		.file 1 "game_over.c"
+   1:game_over.c   **** /*
+   2:game_over.c   ****  * game_over.c
+   3:game_over.c   ****  *
+   4:game_over.c   ****  *  Created on: 19 May 2015
+   5:game_over.c   ****  *      Author: Reflectin88
+   6:game_over.c   ****  */
+   7:game_over.c   **** 
+   8:game_over.c   **** #include "game_over.h"
+   9:game_over.c   **** #include "score.h"
+  10:game_over.c   **** 
+  11:game_over.c   **** 
+  12:game_over.c   **** void game_over() {
+  16               		.loc 1 12 0
+  17               		.cfi_startproc
+  18               	/* prologue: function */
+  19               	/* frame size = 0 */
+  20               	/* stack size = 0 */
+  21               	.L__stack_usage = 0
+  13:game_over.c   **** 	draw_string( 'GAMEOVER', 15, 1 );
+  22               		.loc 1 13 0
+  23 0000 41E0      		ldi r20,lo8(1)
+  24 0002 50E0      		ldi r21,0
+  25 0004 6FE0      		ldi r22,lo8(15)
+  26 0006 70E0      		ldi r23,0
+  27 0008 82E5      		ldi r24,lo8(82)
+  28 000a 95E4      		ldi r25,lo8(69)
+  29 000c 0E94 0000 		call draw_string
+  30               	.LVL0:
+  14:game_over.c   **** 	game_over_score();
+  31               		.loc 1 14 0
+  32 0010 0C94 0000 		jmp game_over_score
+  33               	.LVL1:
+  34               		.cfi_endproc
+  35               	.LFE0:
+  37               		.text
+  38               	.Letext0:
+  39               		.file 2 "score.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 game_over.c
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc9DfxNd.s:2      *ABS*:0000003e __SP_H__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc9DfxNd.s:3      *ABS*:0000003d __SP_L__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc9DfxNd.s:4      *ABS*:0000003f __SREG__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc9DfxNd.s:5      *ABS*:00000000 __tmp_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc9DfxNd.s:6      *ABS*:00000001 __zero_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc9DfxNd.s:13     .text.game_over:00000000 game_over
+
+UNDEFINED SYMBOLS
+draw_string
+game_over_score

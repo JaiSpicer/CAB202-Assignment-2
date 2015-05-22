@@ -31,130 +31,137 @@
   17:main.c        **** #include "byte.h"
   18:main.c        **** #include "sprite.h"
   19:main.c        **** 
-  20:main.c        **** #include "start_screen.h"
-  21:main.c        **** #include "screen.h"
-  22:main.c        **** #include "lives.h"
-  23:main.c        **** #include "score.h"
-  24:main.c        **** #include "hero.h"
-  25:main.c        **** #include "zombies.h"
-  26:main.c        **** 
-  27:main.c        **** //#include "pit.h"
-  28:main.c        **** //#include "items.h"
-  29:main.c        **** 
-  30:main.c        **** void zombie_collision( void );
-  31:main.c        **** void setup_device(void);
-  32:main.c        **** void pit_collision( void );
+  20:main.c        **** #include "random_seed.h"
+  21:main.c        **** #include "start_screen.h"
+  22:main.c        **** #include "screen.h"
+  23:main.c        **** #include "lives.h"
+  24:main.c        **** #include "score.h"
+  25:main.c        **** #include "hero.h"
+  26:main.c        **** #include "zombies.h"
+  27:main.c        **** #include "game_over.h"
+  28:main.c        **** 
+  29:main.c        **** #include "pit.h"
+  30:main.c        **** #include "items.h"
+  31:main.c        **** 
+  32:main.c        **** void setup_device(void);
   33:main.c        **** 
   34:main.c        **** int main() {
   35:main.c        **** 	setup_device();
-  36:main.c        **** 	setup_start_screen();
-  37:main.c        **** 
-  38:main.c        **** 	screen_lines();
-  39:main.c        **** 	lives_setup();
-  40:main.c        **** 	score_setup();
-  41:main.c        **** 
-  42:main.c        **** //	start_pit();
-  43:main.c        **** //	sword_setup();
-  44:main.c        **** //	grenades_setup();
+  36:main.c        **** 	while( 1 ) {
+  37:main.c        **** 		dead_zombies = 0;
+  38:main.c        **** 		setup_start_screen();
+  39:main.c        **** 		screen_lines();
+  40:main.c        **** 		reset_lives();
+  41:main.c        **** 		lives_setup();
+  42:main.c        **** 		reset_score();
+  43:main.c        **** 		score_setup();
+  44:main.c        **** 		start_pit();
   45:main.c        **** 
-  46:main.c        **** 	start_hero();
-  47:main.c        **** 	start_zombies ();
+  46:main.c        **** 		sword_setup();
+  47:main.c        **** 		grenades_setup();
   48:main.c        **** 
-  49:main.c        **** 	clear();
-  50:main.c        **** 
-  51:main.c        **** 	int zombie_update = 0;
-  52:main.c        **** 	int score_update = 0;
-  53:main.c        **** 	while ( lives > 0 ) {
-  54:main.c        **** 		clear();
-  55:main.c        **** 		screen_lines();
-  56:main.c        ****     	lives_setup();
-  57:main.c        ****     	score_setup();
-  58:main.c        **** 
-  59:main.c        **** //    	start_pit();
-  60:main.c        **** //    	sword_setup();
-  61:main.c        **** //    	grenades_setup();
-  62:main.c        **** 
-  63:main.c        **** //    	move_hero ( hero_prt );
-  64:main.c        **** //    	draw_sprite ( hero_prt );
-  65:main.c        **** 
-  66:main.c        ****     	update_hero();
-  67:main.c        **** 
-  68:main.c        **** 		if ( zombie_update == 10 ) {
-  69:main.c        **** 			update_zombies ( z );
-  70:main.c        **** //			zombie_updater();
-  71:main.c        **** 			zombie_update = 0;
-  72:main.c        **** 		}
-  73:main.c        **** 		if ( score_update == 50 ) {
-  74:main.c        **** 			update_score_time();
-  75:main.c        **** 			score_update = 0;
-  76:main.c        **** 		}
-  77:main.c        **** //		zombie_collision();
-  78:main.c        **** 		zombie_updater();
-  79:main.c        **** //		draw_zombies ( z );
-  80:main.c        **** 		refresh();
-  81:main.c        **** 		zombie_update++;
-  82:main.c        **** 		score_update++;
-  83:main.c        **** 		_delay_ms( 100 );
-  84:main.c        **** 	}
+  49:main.c        **** 		start_hero();
+  50:main.c        **** 		start_zombies ();
+  51:main.c        **** 
+  52:main.c        **** 		clear();
+  53:main.c        **** 
+  54:main.c        **** 		int zombie_update = 0;
+  55:main.c        **** 		int score_update = 0;
+  56:main.c        **** 		while ( lives > 0 && dead_zombies < 8) {
+  57:main.c        **** 			clear();
+  58:main.c        **** 			screen_lines();
+  59:main.c        **** 			lives_setup();
+  60:main.c        **** 			score_setup();
+  61:main.c        **** 
+  62:main.c        **** 			draw_pit();
+  63:main.c        ****     		draw_sword();
+  64:main.c        ****     		pickup_sword();
+  65:main.c        ****     		draw_granades();
+  66:main.c        ****     		pickup_granades();
+  67:main.c        ****     		granade_use();
+  68:main.c        ****     		bang_setup();
+  69:main.c        **** 
+  70:main.c        **** 			update_hero();
+  71:main.c        **** 
+  72:main.c        **** 			if ( zombie_update == 10 ) {
+  73:main.c        **** 				zombie_updater();
+  74:main.c        **** 				zombie_update = 0;
+  75:main.c        **** 			}
+  76:main.c        **** 			if ( score_update == 50 ) {
+  77:main.c        **** 				update_score_time();
+  78:main.c        **** 				score_update = 0;
+  79:main.c        **** 			}
+  80:main.c        **** 			zombie_drawer();
+  81:main.c        **** 
+  82:main.c        **** 			check_zombie();
+  83:main.c        **** 			pit_collision(); // Hero pit collision
+  84:main.c        **** //			zombie_pit();
   85:main.c        **** 
-  86:main.c        **** 	clear();
-  87:main.c        **** 	draw_string("GAME OVER", 2,3);
-  88:main.c        **** 
-  89:main.c        **** 
-  90:main.c        **** 	refresh();
-  91:main.c        **** 	return 0;
-  92:main.c        **** 
-  93:main.c        **** }
-  94:main.c        **** 
-  95:main.c        **** void setup_device() {
-  16               		.loc 1 95 0
+  86:main.c        **** 			refresh();
+  87:main.c        **** 			zombie_update++;
+  88:main.c        **** 			score_update++;
+  89:main.c        **** 			_delay_ms( 100 );
+  90:main.c        **** 		}
+  91:main.c        **** 		clear();
+  92:main.c        **** 		refresh();
+  93:main.c        **** 		draw_string("GAMEOVER",20,10);
+  94:main.c        **** 		wait_until(pressed(SW1));
+  95:main.c        **** 		clear();
+  96:main.c        **** 		refresh();
+  97:main.c        **** 	}
+  98:main.c        **** 	return 0;
+  99:main.c        **** 
+ 100:main.c        **** }
+ 101:main.c        **** 
+ 102:main.c        **** void setup_device() {
+  16               		.loc 1 102 0
   17               		.cfi_startproc
   18               	/* prologue: function */
   19               	/* frame size = 0 */
   20               	/* stack size = 0 */
   21               	.L__stack_usage = 0
-  96:main.c        **** 	CPU_PRESCALE(CPU_8MHz);
-  22               		.loc 1 96 0
+ 103:main.c        **** 	CPU_PRESCALE(CPU_8MHz);
+  22               		.loc 1 103 0
   23 0000 E1E6      		ldi r30,lo8(97)
   24 0002 F0E0      		ldi r31,0
   25 0004 80E8      		ldi r24,lo8(-128)
   26 0006 8083      		st Z,r24
   27 0008 81E0      		ldi r24,lo8(1)
   28 000a 8083      		st Z,r24
-  97:main.c        **** 
-  98:main.c        **** 	DDRB = ( LED0 | LED1 ) & ~( SW0 | SW1 ); // Output to LEDs, input from switches.
-  29               		.loc 1 98 0
+ 104:main.c        **** 
+ 105:main.c        **** 	DDRB = ( LED0 | LED1 ) & ~( SW0 | SW1 ); // Output to LEDs, input from switches.
+  29               		.loc 1 105 0
   30 000c 8CE0      		ldi r24,lo8(12)
   31 000e 84B9      		out 0x4,r24
-  99:main.c        **** 	DDRD = LED2; // Turn on the little yellow LED.
-  32               		.loc 1 99 0
+ 106:main.c        **** 	DDRD = LED2; // Turn on the little yellow LED.
+  32               		.loc 1 106 0
   33 0010 80E4      		ldi r24,lo8(64)
   34 0012 8AB9      		out 0xa,r24
- 100:main.c        **** 
- 101:main.c        **** 	// Turn everything off to start with
- 102:main.c        **** 	PORTB = 0x00;
-  35               		.loc 1 102 0
+ 107:main.c        **** 
+ 108:main.c        **** 	// Turn everything off to start with
+ 109:main.c        **** 	PORTB = 0x00;
+  35               		.loc 1 109 0
   36 0014 15B8      		out 0x5,__zero_reg__
- 103:main.c        **** 	PORTD = 0x00;
-  37               		.loc 1 103 0
+ 110:main.c        **** 	PORTD = 0x00;
+  37               		.loc 1 110 0
   38 0016 1BB8      		out 0xb,__zero_reg__
- 104:main.c        **** 
- 105:main.c        **** 	LCDInitialise(LCD_DEFAULT_CONTRAST);
-  39               		.loc 1 105 0
+ 111:main.c        **** 
+ 112:main.c        **** 	LCDInitialise(LCD_DEFAULT_CONTRAST);
+  39               		.loc 1 112 0
   40 0018 8FE3      		ldi r24,lo8(63)
   41 001a 0E94 0000 		call LCDInitialise
   42               	.LVL0:
- 106:main.c        **** 	clear();
-  43               		.loc 1 106 0
+ 113:main.c        **** 	clear();
+  43               		.loc 1 113 0
   44 001e 0C94 0000 		jmp clear
   45               	.LVL1:
   46               		.cfi_endproc
   47               	.LFE8:
   49               		.section	.rodata.str1.1,"aMS",@progbits,1
   50               	.LC0:
-  51 0000 4741 4D45 		.string	"GAME OVER"
-  51      204F 5645 
-  51      5200 
+  51 0000 4741 4D45 		.string	"GAMEOVER"
+  51      4F56 4552 
+  51      00
   52               		.section	.text.startup.main,"ax",@progbits
   53               	.global	main
   55               	main:
@@ -162,143 +169,188 @@
   34:main.c        **** int main() {
   57               		.loc 1 34 0
   58               		.cfi_startproc
-  59 0000 0F93      		push r16
-  60               	.LCFI0:
-  61               		.cfi_def_cfa_offset 3
-  62               		.cfi_offset 16, -2
-  63 0002 1F93      		push r17
-  64               	.LCFI1:
-  65               		.cfi_def_cfa_offset 4
-  66               		.cfi_offset 17, -3
-  67 0004 CF93      		push r28
-  68               	.LCFI2:
-  69               		.cfi_def_cfa_offset 5
-  70               		.cfi_offset 28, -4
-  71 0006 DF93      		push r29
-  72               	.LCFI3:
-  73               		.cfi_def_cfa_offset 6
-  74               		.cfi_offset 29, -5
-  75               	/* prologue: function */
-  76               	/* frame size = 0 */
-  77               	/* stack size = 4 */
-  78               	.L__stack_usage = 4
+  59               	/* prologue: function */
+  60               	/* frame size = 0 */
+  61               	/* stack size = 0 */
+  62               	.L__stack_usage = 0
   35:main.c        **** 	setup_device();
-  79               		.loc 1 35 0
-  80 0008 0E94 0000 		call setup_device
-  81               	.LVL2:
-  36:main.c        **** 	setup_start_screen();
-  82               		.loc 1 36 0
-  83 000c 0E94 0000 		call setup_start_screen
-  84               	.LVL3:
-  38:main.c        **** 	screen_lines();
-  85               		.loc 1 38 0
-  86 0010 0E94 0000 		call screen_lines
-  87               	.LVL4:
-  39:main.c        **** 	lives_setup();
-  88               		.loc 1 39 0
-  89 0014 0E94 0000 		call lives_setup
-  90               	.LVL5:
-  40:main.c        **** 	score_setup();
-  91               		.loc 1 40 0
-  92 0018 0E94 0000 		call score_setup
-  93               	.LVL6:
-  46:main.c        **** 	start_hero();
-  94               		.loc 1 46 0
-  95 001c 0E94 0000 		call start_hero
-  96               	.LVL7:
-  47:main.c        **** 	start_zombies ();
-  97               		.loc 1 47 0
-  98 0020 0E94 0000 		call start_zombies
-  99               	.LVL8:
-  49:main.c        **** 	clear();
- 100               		.loc 1 49 0
- 101 0024 0E94 0000 		call clear
- 102               	.LVL9:
-  52:main.c        **** 	int score_update = 0;
- 103               		.loc 1 52 0
- 104 0028 00E0      		ldi r16,0
- 105 002a 10E0      		ldi r17,0
-  51:main.c        **** 	int zombie_update = 0;
- 106               		.loc 1 51 0
- 107 002c C0E0      		ldi r28,0
- 108 002e D0E0      		ldi r29,0
-  53:main.c        **** 	while ( lives > 0 ) {
- 109               		.loc 1 53 0
- 110 0030 00C0      		rjmp .L3
- 111               	.LVL10:
- 112               	.L6:
-  54:main.c        **** 		clear();
- 113               		.loc 1 54 0
- 114 0032 0E94 0000 		call clear
- 115               	.LVL11:
-  55:main.c        **** 		screen_lines();
- 116               		.loc 1 55 0
- 117 0036 0E94 0000 		call screen_lines
- 118               	.LVL12:
-  56:main.c        ****     	lives_setup();
- 119               		.loc 1 56 0
- 120 003a 0E94 0000 		call lives_setup
- 121               	.LVL13:
-  57:main.c        ****     	score_setup();
- 122               		.loc 1 57 0
- 123 003e 0E94 0000 		call score_setup
- 124               	.LVL14:
-  66:main.c        ****     	update_hero();
- 125               		.loc 1 66 0
- 126 0042 0E94 0000 		call update_hero
- 127               	.LVL15:
-  68:main.c        **** 		if ( zombie_update == 10 ) {
- 128               		.loc 1 68 0
- 129 0046 CA30      		cpi r28,10
- 130 0048 D105      		cpc r29,__zero_reg__
- 131 004a 01F4      		brne .L4
-  69:main.c        **** 			update_zombies ( z );
- 132               		.loc 1 69 0
- 133 004c 8091 0000 		lds r24,z
- 134 0050 9091 0000 		lds r25,z+1
- 135 0054 0E94 0000 		call update_zombies
- 136               	.LVL16:
-  71:main.c        **** 			zombie_update = 0;
- 137               		.loc 1 71 0
- 138 0058 C0E0      		ldi r28,0
- 139 005a D0E0      		ldi r29,0
- 140               	.LVL17:
- 141               	.L4:
-  73:main.c        **** 		if ( score_update == 50 ) {
- 142               		.loc 1 73 0
- 143 005c 0233      		cpi r16,50
- 144 005e 1105      		cpc r17,__zero_reg__
- 145 0060 01F4      		brne .L5
-  74:main.c        **** 			update_score_time();
- 146               		.loc 1 74 0
- 147 0062 0E94 0000 		call update_score_time
- 148               	.LVL18:
-  75:main.c        **** 			score_update = 0;
- 149               		.loc 1 75 0
- 150 0066 00E0      		ldi r16,0
- 151 0068 10E0      		ldi r17,0
- 152               	.LVL19:
- 153               	.L5:
-  78:main.c        **** 		zombie_updater();
- 154               		.loc 1 78 0
- 155 006a 0E94 0000 		call zombie_updater
- 156               	.LVL20:
-  80:main.c        **** 		refresh();
- 157               		.loc 1 80 0
- 158 006e 0E94 0000 		call refresh
- 159               	.LVL21:
-  81:main.c        **** 		zombie_update++;
- 160               		.loc 1 81 0
- 161 0072 2196      		adiw r28,1
- 162               	.LVL22:
-  82:main.c        **** 		score_update++;
- 163               		.loc 1 82 0
- 164 0074 0F5F      		subi r16,-1
- 165 0076 1F4F      		sbci r17,-1
- 166               	.LVL23:
- 167               	.LBB4:
- 168               	.LBB5:
- 169               		.file 2 "/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h"
+  63               		.loc 1 35 0
+  64 0000 0E94 0000 		call setup_device
+  65               	.LVL2:
+  66               	.L9:
+  67               	.LBB6:
+  37:main.c        **** 		dead_zombies = 0;
+  68               		.loc 1 37 0
+  69 0004 1092 0000 		sts dead_zombies+1,__zero_reg__
+  70 0008 1092 0000 		sts dead_zombies,__zero_reg__
+  38:main.c        **** 		setup_start_screen();
+  71               		.loc 1 38 0
+  72 000c 0E94 0000 		call setup_start_screen
+  73               	.LVL3:
+  39:main.c        **** 		screen_lines();
+  74               		.loc 1 39 0
+  75 0010 0E94 0000 		call screen_lines
+  76               	.LVL4:
+  40:main.c        **** 		reset_lives();
+  77               		.loc 1 40 0
+  78 0014 0E94 0000 		call reset_lives
+  79               	.LVL5:
+  41:main.c        **** 		lives_setup();
+  80               		.loc 1 41 0
+  81 0018 0E94 0000 		call lives_setup
+  82               	.LVL6:
+  42:main.c        **** 		reset_score();
+  83               		.loc 1 42 0
+  84 001c 0E94 0000 		call reset_score
+  85               	.LVL7:
+  43:main.c        **** 		score_setup();
+  86               		.loc 1 43 0
+  87 0020 0E94 0000 		call score_setup
+  88               	.LVL8:
+  44:main.c        **** 		start_pit();
+  89               		.loc 1 44 0
+  90 0024 0E94 0000 		call start_pit
+  91               	.LVL9:
+  46:main.c        **** 		sword_setup();
+  92               		.loc 1 46 0
+  93 0028 0E94 0000 		call sword_setup
+  94               	.LVL10:
+  47:main.c        **** 		grenades_setup();
+  95               		.loc 1 47 0
+  96 002c 0E94 0000 		call grenades_setup
+  97               	.LVL11:
+  49:main.c        **** 		start_hero();
+  98               		.loc 1 49 0
+  99 0030 0E94 0000 		call start_hero
+ 100               	.LVL12:
+  50:main.c        **** 		start_zombies ();
+ 101               		.loc 1 50 0
+ 102 0034 0E94 0000 		call start_zombies
+ 103               	.LVL13:
+  52:main.c        **** 		clear();
+ 104               		.loc 1 52 0
+ 105 0038 0E94 0000 		call clear
+ 106               	.LVL14:
+  55:main.c        **** 		int score_update = 0;
+ 107               		.loc 1 55 0
+ 108 003c 00E0      		ldi r16,0
+ 109 003e 10E0      		ldi r17,0
+  54:main.c        **** 		int zombie_update = 0;
+ 110               		.loc 1 54 0
+ 111 0040 C0E0      		ldi r28,0
+ 112 0042 D0E0      		ldi r29,0
+  56:main.c        **** 		while ( lives > 0 && dead_zombies < 8) {
+ 113               		.loc 1 56 0
+ 114 0044 00C0      		rjmp .L3
+ 115               	.LVL15:
+ 116               	.L7:
+ 117               	.LBB7:
+  57:main.c        **** 			clear();
+ 118               		.loc 1 57 0
+ 119 0046 0E94 0000 		call clear
+ 120               	.LVL16:
+  58:main.c        **** 			screen_lines();
+ 121               		.loc 1 58 0
+ 122 004a 0E94 0000 		call screen_lines
+ 123               	.LVL17:
+  59:main.c        **** 			lives_setup();
+ 124               		.loc 1 59 0
+ 125 004e 0E94 0000 		call lives_setup
+ 126               	.LVL18:
+  60:main.c        **** 			score_setup();
+ 127               		.loc 1 60 0
+ 128 0052 0E94 0000 		call score_setup
+ 129               	.LVL19:
+  62:main.c        **** 			draw_pit();
+ 130               		.loc 1 62 0
+ 131 0056 0E94 0000 		call draw_pit
+ 132               	.LVL20:
+  63:main.c        ****     		draw_sword();
+ 133               		.loc 1 63 0
+ 134 005a 0E94 0000 		call draw_sword
+ 135               	.LVL21:
+  64:main.c        ****     		pickup_sword();
+ 136               		.loc 1 64 0
+ 137 005e 0E94 0000 		call pickup_sword
+ 138               	.LVL22:
+  65:main.c        ****     		draw_granades();
+ 139               		.loc 1 65 0
+ 140 0062 0E94 0000 		call draw_granades
+ 141               	.LVL23:
+  66:main.c        ****     		pickup_granades();
+ 142               		.loc 1 66 0
+ 143 0066 0E94 0000 		call pickup_granades
+ 144               	.LVL24:
+  67:main.c        ****     		granade_use();
+ 145               		.loc 1 67 0
+ 146 006a 0E94 0000 		call granade_use
+ 147               	.LVL25:
+  68:main.c        ****     		bang_setup();
+ 148               		.loc 1 68 0
+ 149 006e 0E94 0000 		call bang_setup
+ 150               	.LVL26:
+  70:main.c        **** 			update_hero();
+ 151               		.loc 1 70 0
+ 152 0072 0E94 0000 		call update_hero
+ 153               	.LVL27:
+  72:main.c        **** 			if ( zombie_update == 10 ) {
+ 154               		.loc 1 72 0
+ 155 0076 CA30      		cpi r28,10
+ 156 0078 D105      		cpc r29,__zero_reg__
+ 157 007a 01F4      		brne .L4
+  73:main.c        **** 				zombie_updater();
+ 158               		.loc 1 73 0
+ 159 007c 0E94 0000 		call zombie_updater
+ 160               	.LVL28:
+  74:main.c        **** 				zombie_update = 0;
+ 161               		.loc 1 74 0
+ 162 0080 C0E0      		ldi r28,0
+ 163 0082 D0E0      		ldi r29,0
+ 164               	.LVL29:
+ 165               	.L4:
+  76:main.c        **** 			if ( score_update == 50 ) {
+ 166               		.loc 1 76 0
+ 167 0084 0233      		cpi r16,50
+ 168 0086 1105      		cpc r17,__zero_reg__
+ 169 0088 01F4      		brne .L5
+  77:main.c        **** 				update_score_time();
+ 170               		.loc 1 77 0
+ 171 008a 0E94 0000 		call update_score_time
+ 172               	.LVL30:
+  78:main.c        **** 				score_update = 0;
+ 173               		.loc 1 78 0
+ 174 008e 00E0      		ldi r16,0
+ 175 0090 10E0      		ldi r17,0
+ 176               	.LVL31:
+ 177               	.L5:
+  80:main.c        **** 			zombie_drawer();
+ 178               		.loc 1 80 0
+ 179 0092 0E94 0000 		call zombie_drawer
+ 180               	.LVL32:
+  82:main.c        **** 			check_zombie();
+ 181               		.loc 1 82 0
+ 182 0096 0E94 0000 		call check_zombie
+ 183               	.LVL33:
+  83:main.c        **** 			pit_collision(); // Hero pit collision
+ 184               		.loc 1 83 0
+ 185 009a 0E94 0000 		call pit_collision
+ 186               	.LVL34:
+  86:main.c        **** 			refresh();
+ 187               		.loc 1 86 0
+ 188 009e 0E94 0000 		call refresh
+ 189               	.LVL35:
+  87:main.c        **** 			zombie_update++;
+ 190               		.loc 1 87 0
+ 191 00a2 2196      		adiw r28,1
+ 192               	.LVL36:
+  88:main.c        **** 			score_update++;
+ 193               		.loc 1 88 0
+ 194 00a4 0F5F      		subi r16,-1
+ 195 00a6 1F4F      		sbci r17,-1
+ 196               	.LVL37:
+ 197               	.LBB8:
+ 198               	.LBB9:
+ 199               		.file 2 "/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h"
    1:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** /* Copyright (c) 2002, Marek Michalkiewicz
    2:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    Copyright (c) 2004,2005,2007 Joerg Wunsch
    3:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h ****    Copyright (c) 2007  Florin-Viorel Petrov
@@ -463,83 +515,107 @@
  162:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 	#endif
  163:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 
  164:/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
- 170               		.loc 2 164 0
- 171 0078 2FEF      		ldi r18,lo8(159999)
- 172 007a 80E7      		ldi r24,hi8(159999)
- 173 007c 92E0      		ldi r25,hlo8(159999)
- 174 007e 2150      		1: subi r18,1
- 175 0080 8040      		sbci r24,0
- 176 0082 9040      		sbci r25,0
- 177 0084 01F4      		brne 1b
- 178 0086 00C0      		rjmp .
- 179 0088 0000      		nop
- 180               	.LVL24:
- 181               	.L3:
- 182               	.LBE5:
- 183               	.LBE4:
-  53:main.c        **** 	while ( lives > 0 ) {
- 184               		.loc 1 53 0 discriminator 1
- 185 008a 8091 0000 		lds r24,lives
- 186 008e 9091 0000 		lds r25,lives+1
- 187 0092 1816      		cp __zero_reg__,r24
- 188 0094 1906      		cpc __zero_reg__,r25
- 189 0096 04F0      		brlt .L6
-  86:main.c        **** 	clear();
- 190               		.loc 1 86 0
- 191 0098 0E94 0000 		call clear
- 192               	.LVL25:
-  87:main.c        **** 	draw_string("GAME OVER", 2,3);
- 193               		.loc 1 87 0
- 194 009c 43E0      		ldi r20,lo8(3)
- 195 009e 62E0      		ldi r22,lo8(2)
- 196 00a0 80E0      		ldi r24,lo8(.LC0)
- 197 00a2 90E0      		ldi r25,hi8(.LC0)
- 198 00a4 0E94 0000 		call draw_string
- 199               	.LVL26:
-  90:main.c        **** 	refresh();
- 200               		.loc 1 90 0
- 201 00a8 0E94 0000 		call refresh
- 202               	.LVL27:
-  93:main.c        **** }
- 203               		.loc 1 93 0
- 204 00ac 80E0      		ldi r24,0
- 205 00ae 90E0      		ldi r25,0
- 206               	/* epilogue start */
- 207 00b0 DF91      		pop r29
- 208 00b2 CF91      		pop r28
- 209               	.LVL28:
- 210 00b4 1F91      		pop r17
- 211 00b6 0F91      		pop r16
- 212               	.LVL29:
- 213 00b8 0895      		ret
- 214               		.cfi_endproc
- 215               	.LFE7:
- 217               		.comm	z,2,1
- 218               		.comm	zombies,168,1
- 219               		.comm	hero,21,1
- 220               		.text
- 221               	.Letext0:
- 222               		.file 3 "/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/stdint.h"
- 223               		.file 4 "../teensy_graphics/byte.h"
- 224               		.file 5 "../teensy_graphics/sprite.h"
- 225               		.file 6 "../teensy_graphics/ascii_font.h"
- 226               		.file 7 "lives.h"
- 227               		.file 8 "hero.h"
- 228               		.file 9 "zombies.h"
- 229               		.file 10 "../teensy_graphics/graphics.h"
- 230               		.file 11 "start_screen.h"
- 231               		.file 12 "screen.h"
- 232               		.file 13 "score.h"
- 233               		.file 14 "../teensy_graphics/lcd.h"
+ 200               		.loc 2 164 0
+ 201 00a8 2FEF      		ldi r18,lo8(159999)
+ 202 00aa 80E7      		ldi r24,hi8(159999)
+ 203 00ac 92E0      		ldi r25,hlo8(159999)
+ 204 00ae 2150      		1: subi r18,1
+ 205 00b0 8040      		sbci r24,0
+ 206 00b2 9040      		sbci r25,0
+ 207 00b4 01F4      		brne 1b
+ 208 00b6 00C0      		rjmp .
+ 209 00b8 0000      		nop
+ 210               	.LVL38:
+ 211               	.L3:
+ 212               	.LBE9:
+ 213               	.LBE8:
+ 214               	.LBE7:
+  56:main.c        **** 		while ( lives > 0 && dead_zombies < 8) {
+ 215               		.loc 1 56 0 discriminator 1
+ 216 00ba 8091 0000 		lds r24,lives
+ 217 00be 9091 0000 		lds r25,lives+1
+ 218 00c2 1816      		cp __zero_reg__,r24
+ 219 00c4 1906      		cpc __zero_reg__,r25
+ 220 00c6 04F4      		brge .L6
+  56:main.c        **** 		while ( lives > 0 && dead_zombies < 8) {
+ 221               		.loc 1 56 0 is_stmt 0 discriminator 2
+ 222 00c8 8091 0000 		lds r24,dead_zombies
+ 223 00cc 9091 0000 		lds r25,dead_zombies+1
+ 224 00d0 0897      		sbiw r24,8
+ 225 00d2 04F4      		brge .+2
+ 226 00d4 00C0      		rjmp .L7
+ 227               	.L6:
+  91:main.c        **** 		clear();
+ 228               		.loc 1 91 0 is_stmt 1
+ 229 00d6 0E94 0000 		call clear
+ 230               	.LVL39:
+  92:main.c        **** 		refresh();
+ 231               		.loc 1 92 0
+ 232 00da 0E94 0000 		call refresh
+ 233               	.LVL40:
+  93:main.c        **** 		draw_string("GAMEOVER",20,10);
+ 234               		.loc 1 93 0
+ 235 00de 4AE0      		ldi r20,lo8(10)
+ 236 00e0 64E1      		ldi r22,lo8(20)
+ 237 00e2 80E0      		ldi r24,lo8(.LC0)
+ 238 00e4 90E0      		ldi r25,hi8(.LC0)
+ 239 00e6 0E94 0000 		call draw_string
+ 240               	.LVL41:
+ 241               	.L8:
+  94:main.c        **** 		wait_until(pressed(SW1));
+ 242               		.loc 1 94 0 discriminator 1
+ 243 00ea 199B      		sbis 0x3,1
+ 244 00ec 00C0      		rjmp .L8
+  95:main.c        **** 		clear();
+ 245               		.loc 1 95 0
+ 246 00ee 0E94 0000 		call clear
+ 247               	.LVL42:
+  96:main.c        **** 		refresh();
+ 248               		.loc 1 96 0
+ 249 00f2 0E94 0000 		call refresh
+ 250               	.LVL43:
+ 251               	.LBE6:
+  97:main.c        **** 	}
+ 252               		.loc 1 97 0
+ 253 00f6 00C0      		rjmp .L9
+ 254               		.cfi_endproc
+ 255               	.LFE7:
+ 257               		.comm	bomb,21,1
+ 258               		.comm	grenades,21,1
+ 259               		.comm	sword,21,1
+ 260               		.comm	pit,21,1
+ 261               		.comm	z,2,1
+ 262               		.comm	zombies,168,1
+ 263               		.comm	hero,21,1
+ 264               		.text
+ 265               	.Letext0:
+ 266               		.file 3 "/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/stdint.h"
+ 267               		.file 4 "../teensy_graphics/byte.h"
+ 268               		.file 5 "../teensy_graphics/sprite.h"
+ 269               		.file 6 "../teensy_graphics/ascii_font.h"
+ 270               		.file 7 "lives.h"
+ 271               		.file 8 "hero.h"
+ 272               		.file 9 "zombies.h"
+ 273               		.file 10 "pit.h"
+ 274               		.file 11 "items.h"
+ 275               		.file 12 "../teensy_graphics/lcd.h"
+ 276               		.file 13 "../teensy_graphics/graphics.h"
+ 277               		.file 14 "screen.h"
+ 278               		.file 15 "score.h"
+ 279               		.file 16 "start_screen.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc1pMTR5.s:2      *ABS*:0000003e __SP_H__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc1pMTR5.s:3      *ABS*:0000003d __SP_L__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc1pMTR5.s:4      *ABS*:0000003f __SREG__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc1pMTR5.s:5      *ABS*:00000000 __tmp_reg__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc1pMTR5.s:6      *ABS*:00000001 __zero_reg__
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc1pMTR5.s:13     .text.setup_device:00000000 setup_device
-/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc1pMTR5.s:55     .text.startup.main:00000000 main
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccbrvEI7.s:2      *ABS*:0000003e __SP_H__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccbrvEI7.s:3      *ABS*:0000003d __SP_L__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccbrvEI7.s:4      *ABS*:0000003f __SREG__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccbrvEI7.s:5      *ABS*:00000000 __tmp_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccbrvEI7.s:6      *ABS*:00000001 __zero_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccbrvEI7.s:13     .text.setup_device:00000000 setup_device
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccbrvEI7.s:55     .text.startup.main:00000000 main
+                            *COM*:00000015 bomb
+                            *COM*:00000015 grenades
+                            *COM*:00000015 sword
+                            *COM*:00000015 pit
                             *COM*:00000002 z
                             *COM*:000000a8 zombies
                             *COM*:00000015 hero
@@ -547,16 +623,31 @@ DEFINED SYMBOLS
 UNDEFINED SYMBOLS
 LCDInitialise
 clear
+dead_zombies
 setup_start_screen
 screen_lines
+reset_lives
 lives_setup
+reset_score
 score_setup
+start_pit
+sword_setup
+grenades_setup
 start_hero
 start_zombies
+draw_pit
+draw_sword
+pickup_sword
+draw_granades
+pickup_granades
+granade_use
+bang_setup
 update_hero
-update_zombies
-update_score_time
 zombie_updater
+update_score_time
+zombie_drawer
+check_zombie
+pit_collision
 refresh
 lives
 draw_string

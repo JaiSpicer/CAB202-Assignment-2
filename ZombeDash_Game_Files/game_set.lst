@@ -1,0 +1,85 @@
+   1               		.file	"game_set.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.text.hero_die,"ax",@progbits
+  11               	.global	hero_die
+  13               	hero_die:
+  14               	.LFB1:
+  15               		.file 1 "game_set.c"
+   1:game_set.c    **** /*
+   2:game_set.c    ****  * game_set.c
+   3:game_set.c    ****  *
+   4:game_set.c    ****  *  Created on: 19 May 2015
+   5:game_set.c    ****  *      Author: Reflectin88
+   6:game_set.c    ****  */
+   7:game_set.c    **** 
+   8:game_set.c    **** #include "sprite.h"
+   9:game_set.c    **** #include "graphics.h"
+  10:game_set.c    **** #include "friendly_ports.h"
+  11:game_set.c    **** 
+  12:game_set.c    **** #include "screen.h"
+  13:game_set.c    **** #include "hero.h"
+  14:game_set.c    **** #include "zombies.h"
+  15:game_set.c    **** #include "game_over.h"
+  16:game_set.c    **** 
+  17:game_set.c    **** void hero_die() {
+  16               		.loc 1 17 0
+  17               		.cfi_startproc
+  18               	/* prologue: function */
+  19               	/* frame size = 0 */
+  20               	/* stack size = 0 */
+  21               	.L__stack_usage = 0
+  18:game_set.c    **** 	clear();
+  22               		.loc 1 18 0
+  23 0000 0E94 0000 		call clear
+  24               	.LVL0:
+  19:game_set.c    **** 	screen_lines();
+  25               		.loc 1 19 0
+  26 0004 0E94 0000 		call screen_lines
+  27               	.LVL1:
+  20:game_set.c    **** 	start_hero();
+  28               		.loc 1 20 0
+  29 0008 0E94 0000 		call start_hero
+  30               	.LVL2:
+  21:game_set.c    **** 	start_zombies ();
+  31               		.loc 1 21 0
+  32 000c 0C94 0000 		jmp start_zombies
+  33               	.LVL3:
+  34               		.cfi_endproc
+  35               	.LFE1:
+  37               		.comm	z,2,1
+  38               		.comm	zombies,168,1
+  39               		.comm	hero,21,1
+  40               		.text
+  41               	.Letext0:
+  42               		.file 2 "../teensy_graphics/sprite.h"
+  43               		.file 3 "../teensy_graphics/byte.h"
+  44               		.file 4 "hero.h"
+  45               		.file 5 "zombies.h"
+  46               		.file 6 "../teensy_graphics/graphics.h"
+  47               		.file 7 "screen.h"
+  48               		.file 8 "../teensy_graphics/ascii_font.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 game_set.c
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc0WPtKe.s:2      *ABS*:0000003e __SP_H__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc0WPtKe.s:3      *ABS*:0000003d __SP_L__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc0WPtKe.s:4      *ABS*:0000003f __SREG__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc0WPtKe.s:5      *ABS*:00000000 __tmp_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc0WPtKe.s:6      *ABS*:00000001 __zero_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//cc0WPtKe.s:13     .text.hero_die:00000000 hero_die
+                            *COM*:00000002 z
+                            *COM*:000000a8 zombies
+                            *COM*:00000015 hero
+
+UNDEFINED SYMBOLS
+clear
+screen_lines
+start_hero
+start_zombies
+__do_clear_bss

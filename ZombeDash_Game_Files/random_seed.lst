@@ -1,0 +1,74 @@
+   1               		.file	"random_seed.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               		.section	.text.random_seed,"ax",@progbits
+  11               	.global	random_seed
+  13               	random_seed:
+  14               	.LFB0:
+  15               		.file 1 "random_seed.c"
+   1:random_seed.c **** /*
+   2:random_seed.c ****  * random_seed.c
+   3:random_seed.c ****  *
+   4:random_seed.c ****  *  Created on: 20 May 2015
+   5:random_seed.c ****  *      Author: Reflectin88
+   6:random_seed.c ****  */
+   7:random_seed.c **** 
+   8:random_seed.c **** #include "friendly_ports.h"
+   9:random_seed.c **** 
+  10:random_seed.c **** void random_seed( void );
+  11:random_seed.c **** 
+  12:random_seed.c **** void random_seed() {
+  16               		.loc 1 12 0
+  17               		.cfi_startproc
+  18               	/* prologue: function */
+  19               	/* frame size = 0 */
+  20               	/* stack size = 0 */
+  21               	.L__stack_usage = 0
+  22               	.LVL0:
+  13:random_seed.c **** 	unsigned int seed = 0;
+  23               		.loc 1 13 0
+  24 0000 80E0      		ldi r24,0
+  25 0002 90E0      		ldi r25,0
+  14:random_seed.c **** 	while (!(PINB & 3 )) {
+  26               		.loc 1 14 0
+  27 0004 00C0      		rjmp .L2
+  28               	.LVL1:
+  29               	.L3:
+  15:random_seed.c **** 	seed++;
+  30               		.loc 1 15 0
+  31 0006 0196      		adiw r24,1
+  32               	.LVL2:
+  33               	.L2:
+  14:random_seed.c **** 	while (!(PINB & 3 )) {
+  34               		.loc 1 14 0 discriminator 1
+  35 0008 23B1      		in r18,0x3
+  36 000a 2370      		andi r18,lo8(3)
+  37 000c 01F0      		breq .L3
+  16:random_seed.c **** 	}
+  17:random_seed.c **** 	// Seed the random number generator
+  18:random_seed.c **** 	srand(seed);
+  38               		.loc 1 18 0
+  39 000e 0C94 0000 		jmp srand
+  40               	.LVL3:
+  41               		.cfi_endproc
+  42               	.LFE0:
+  44               		.text
+  45               	.Letext0:
+  46               		.file 2 "/usr/local/bin/../lib/gcc/avr/4.7.2/../../../../avr/include/stdint.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 random_seed.c
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccKCALZA.s:2      *ABS*:0000003e __SP_H__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccKCALZA.s:3      *ABS*:0000003d __SP_L__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccKCALZA.s:4      *ABS*:0000003f __SREG__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccKCALZA.s:5      *ABS*:00000000 __tmp_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccKCALZA.s:6      *ABS*:00000001 __zero_reg__
+/var/folders/dz/7l40hrmj72997lgmj3pdxb_m0000gn/T//ccKCALZA.s:13     .text.random_seed:00000000 random_seed
+
+UNDEFINED SYMBOLS
+srand

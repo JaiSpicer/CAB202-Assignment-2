@@ -10,6 +10,7 @@
 
 void lives_setup( void );
 void update_score_time( void );
+void reset_lives( void );
 extern int lives;
 
 #endif /* LIVES */

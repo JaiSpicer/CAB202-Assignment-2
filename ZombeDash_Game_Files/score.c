@@ -21,3 +21,13 @@ void score_setup() {
 void update_score_time() {
 	score = score + 1;
 }
+
+void game_over_score() {
+	draw_string("S:", 15, 10);
+	sprintf(s, "%d", score);
+	draw_string(s,24,10);
+}
+
+void reset_score() {
+	score = 0;
+}

@@ -46,7 +46,7 @@ TARGET = main
 
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC =	$(TARGET).c start_screen.c screen.c lives.c score.c hero.c zombies.c
+SRC =	$(TARGET).c start_screen.c screen.c lives.c score.c hero.c zombies.c game_over.c game_set.c pit.c random_seed.c items.c
 # 	usb_debug_only.c \
 # 	print.c
 

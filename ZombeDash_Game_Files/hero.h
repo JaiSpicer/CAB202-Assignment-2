@@ -13,5 +13,6 @@ void update_hero( void );
 
 Sprite hero;
 extern Sprite * hero_prt;
+extern int hero_d;
 
 #endif /* HERO */
